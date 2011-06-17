@@ -1,0 +1,97 @@
+{% extends "page.html" %}
+
+{% block pagetitle %}
+{%if template.id%}修改模板{%else%}创建模板{%endif%}
+{% endblock %}
+{% block maincontent %}
+{%if errno == -1 %}
+<!-- {{{ msg -->
+<div class="msg">
+	<div class="msg-default msg-error">
+		<i class="msg-icon"></i>
+		<div class="msg-content">{{msg}}<br/>您可以前往<a href="rechome.html">模板列表</a>页面对现有模板进行操作。</div>
+	</div>
+</div>
+<!-- msg }}} -->
+{% else %}
+<!-- {{{ msg -->
+<div class="msg">
+	<div class="msg-default msg-tips">
+		<i class="msg-icon"></i>
+		<div class="msg-content">供您{%if template.id%}修改模板{%else%}创建模板{%endif%}，“保存”后可以查看预览效果</div>
+	</div>
+</div>
+<!-- msg }}} -->
+
+<!-- {{{ box -->
+<div class="box">
+	<s class="box-tp"><b></b></s>
+	<div class="box-hd">
+		<h3>{%if template.id%}修改模板{%else%}创建模板{%endif%}</h3>
+	</div>
+	<div class="box-bd">
+
+		<!-- {{{ form -->
+		<form class="form" action="{{action}}" method="POST">
+			{%if template.id %}
+			<input id="S_TemplateId" type="hidden" value="{{template.id}}"/>
+			{%endif%}
+			
+			<!-- {{{ field.input -->
+			<div class="field">
+				<div class="hd">
+					<span class="required">*</span>
+					<label class="label">模板名称：</label>
+				</div>
+				<div class="bd">
+					<div class="cell"><input id="S_TemplateName" class="text" type="text" name="name" value="{{template.name}}"/></div>
+				</div>
+			</div>
+			<!-- field.input }}} -->
+
+			<!-- {{{ field.radio -->
+			<div class="field">
+				<div class="hd">
+					<span class="required">*</span>
+					<label class="label">模板位置：</label>
+				</div>
+				<div class="bd">
+					<div class="cell">
+						<input id="S_TemplatePosition" type="radio" name="position" value="t" {%if template.position == 't' %} checked="checked" {%endif%} /><label class="label">宝贝描述顶部</label>
+						<input type="radio" name="position" value="b" {%if template.position == 'b' %} checked="checked" {%endif%} /><label class="label">宝贝描述底部</label>
+					</div>
+				</div>
+			</div>
+			<!-- field.radio }}} -->
+
+			<!-- {{{ field.radio -->
+			<div class="field">
+				<div class="hd">
+					<span class="required">*</span>
+					<label class="label">推荐模式：</label>
+				</div>
+				<div class="bd">
+					<div class="cell">
+						<input id="S_SelectAuto" type="radio" name="mode" value="a" {%if template.mode == 'a' %} checked="checked" {%endif%} /><label class="label">系统自动推荐</label>
+						<input id="S_SelectItemTrigger" type="radio" name="mode" value="m" {%if template.mode == 'm' %} checked="checked" {%endif%} /><label class="label">人工选择宝贝</label>
+						<input id="S_SelectItems" type="hidden" value="{{template.goods_iid}}" />
+					</div>
+				</div>
+			</div>
+			<!-- field.radio }}} -->
+
+
+			<div class="button-box">
+				<button id="S_SaveSetting" class="button">保存</button>
+			</div>
+			<div id="S_PreviewBox"></div>
+
+		</form>
+		<!-- form }}} -->
+	</div>
+	<s class="box-bt"><b></b></s>
+</div>
+<!-- box }}} -->
+{% endif %}
+
+{% endblock %}

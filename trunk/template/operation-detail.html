@@ -1,0 +1,72 @@
+{% extends "page.html" %}
+
+{% block pagetitle %}
+历史操作详情
+{% endblock %}
+
+{% block maincontent %}
+
+<!-- {{{ msg -->
+<div class="msg">
+	<div class="msg-default msg-tips">
+		<i class="msg-icon"></i>
+		<div class="msg-content">供您查看启用或禁用模板时涉及的具体宝贝</div>
+	</div>
+</div>
+<!-- msg }}} -->
+
+<!-- {{{ grid -->
+<div class="grid">
+	<table class="table">
+		<colgroup>
+			<col width="548">
+			<col width="100">
+			<col width="100">
+		</colgroup>
+		<thead>
+			<tr class="row">
+				<th>宝贝名称</th>
+				<th>操作类型</th>
+				<th>操作结果</th>
+			</tr>
+		</thead>
+		<tbody>
+			{%for d in details %}
+			<tr class="row">
+				<td><a href="http://item.taobao.com/item.htm?id={{d.num_iid}}" target="_blank">{{d.title}}</a></td>
+				<td>
+					{%if manipulate == 'u'%} 启用 {%endif%}
+					{%if manipulate == 's'%} 禁用 {%endif%}
+				</td>
+				<td>
+					{%if op == 'suc' %}成功{%endif%}
+					{%if op == 'fail' %}失败{%endif%}
+				</td>
+			</tr>
+			{%endfor%}
+		</tbody>
+	</table>
+</div>
+<!-- grid }}} -->
+<!-- {{{ pagination -->
+<!--
+<div class="pagination pagination-normal">
+	<div class="pagination-wrapper">
+		<span class="info">共1000条/100页</span>
+		<span class="start">首页</span>
+		<a class="start" href="#">首页</a>
+		<span class="prev">上一页</span>
+		<a class="prev" href="#">上一页</a>
+		<a class="page" href="#">1</a>
+		<span class="page">2</span>
+		<a class="next" href="#">下一页</a>
+		<span class="next">下一页</span>
+		<a class="end" href="#">末页</a>
+		<span class="end">末页</span>
+		<span class="skip-to">到第<input type="text"/>页<button type="button">确定</button></span>
+		<span class="data-limit">每页<select><option>20条</option><option>40条</option><option>60条</option></select></span>
+	</div>
+</div>
+-->
+<!-- pagination }}} -->
+{% endblock %}

@@ -1,0 +1,32 @@
+<div style="color:#444;border:1px solid #ccc;background:#fff;">
+	<div style="height:37px;border-bottom:1px solid #ccc;">
+		<img src="{%if user_type == 'B' %}http://img03.taobaocdn.com/imgextra/i3/691355835/T2Tk0jXmhMXXXXXXXX-691355835.png{%else%}http://img01.taobaocdn.com/imgextra/i1/691355835/T2SA8jXmtMXXXXXXXX-691355835.png{%endif%}" style="float:left;margin:7px 0 0 12px;" />
+		<a href="http://fuwu.taobao.com/service/service.htm?service_id=9489" target="_blank" style="float:right;margin:10px 18px 0 0;">我也想要此功能</a>
+	</div>
+	<div style="border-top:2px solid #e5e5e5;">
+		<table style="width:98%;margin:0 1%;">
+			<tbody>
+				<tr>
+					{% for goods in goods_list %}
+					<td>
+						<div style="width:233px;height:331px;overflow:hidden;margin:15px auto;">
+							<a href=http://item.taogao.com/item.htm?id="{{goods.num_iid}}">
+								<div style="float:left;width:220px;height:220px;padding:4px;overflow:hidden;text-align:center;line-height:220px;border:1px solid #ccc;">
+									<img src="{{goods.pic_url}}" style="max-width:220px;max-height:220px;vertical-align:middle;_width:220px;" />
+								</div>
+							</a>
+							<div style="float:left;width:0;height:227px;margin-top:3px;border-left:3px solid #e5e5e5;"></div>
+							<div style="display:inline;float:left;width:230px;height:0;margin-left:3px;font-size:0;line-height:0;border-top:3px solid #e5e5e5;"></div>
+							<div style="float:left;margin-top:15px;line-height:1em;">
+							促销价：<span style="color:#de0011;font:24px tahoma;">{{goods.price_a}}{% if goods.price_b > 0 %}{% if goods.price_a < 100 %}<span style="font:bold 14px tahoma;">.{{goods.price_b}}</span>{% endif %}{% else %}<span style="font:bold 14px tahoma;">.{{goods.price_b}}</span>{% endif %}元<span>							
+							</div>
+							<a href="http://item.taobao.com/item.htm?id={{goods.num_iid}}" style="float:right;margin-top:17px"><img src="{%if user_type == 'B' %}http://img01.taobaocdn.com/imgextra/i1/691355835/T27vJIXk4XXXXXXXXX-691355835.png{%else%}http://img04.taobaocdn.com/imgextra/i4/691355835/T2DBXjXmXMXXXXXXXX-691355835.png{%endif%}" /></a>
+							<a href="{{goods.detail_url}}" style="float:left;width:100%;height:3em;overflow:hidden;margin-top:8px;font-size:14px;text-align:center;">{{goods.title}}</a>
+						</div>
+					</td>
+					{% endfor %}
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div> 

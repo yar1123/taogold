@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>淘金宝</title>
+	<meta name="description" content="淘金宝是专业的淘宝相关宝贝推荐工具。只需一键操作，自动为宝贝描述插入最合适的“相关宝贝推荐”！通过先进的“关联营销算法”，帮您提升流量转化率。" /> 
+    <link rel="stylesheet" href="/assets/reset.css"/>
+    <link rel="stylesheet" href="/assets/layout.css"/>
+    <link rel="stylesheet" href="/assets/dpl-pkg.css"/>
+    <link rel="stylesheet" href="/assets/global.css"/>
+    <script src="/assets/kissy.js"></script>
+	<script src="/assets/global.js"></script>
+</head>
+<body>
+    <div id="header">
+        <h1 class="logo"><a href="index.html">淘金宝</a><span class="sub-title">{% block pagetitle %}{% endblock %}</span></h1>
+        <p class="desc"><a href="index.html">app.23201.com</a></p>
+        <div class="user">您好，{{nick}}！</div>
+        <div class="tools"><a href="http://fuwu.taobao.com/service/service.htm?service_id=9489" target=_blank>立即续订</a></div>
+    </div>
+    <div id="content">
+    	{% block content %}
+        <div class="layout grid-s5m0">
+			<div class="col-main">
+				<div class="main-wrap">
+                    {% block maincontent %} {% endblock %}
+				</div>
+			</div>
+			<div class="col-sub">
+                <!-- {{{ tree -->
+                <div class="tree tree-menu">
+                    <ul class="branch root">
+                        <li class="node">
+                            <div class="anchor">
+                                <div class="wrapper">
+                                    <div class="col"><a href="index.html">首页</a></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="node">
+                            <div class="anchor">
+                                <div class="wrapper">
+                                    <div class="col"><a href="rechome.html">相关宝贝推荐</a></div>
+                                </div>
+                            </div>
+                            <ul class="branch">
+                                <li class="node">
+                                    <div class="anchor">
+                                        <div class="wrapper">
+                                            <div class="col"><a href="rechome.html">模板列表</a></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="node">
+                                    <div class="anchor">
+                                        <div class="wrapper">
+                                            <div class="col"><a href="new-template.html">创建模板</a></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="node node-last">
+                                    <div class="anchor">
+                                        <div class="wrapper">
+                                            <div class="col"><a href="history.html">历史操作</a></div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="node node-last">
+                            <div class="anchor">
+                                <div class="wrapper">
+                                    <div class="col"><a href="share.html">使用心得分享</a></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- tree }}} -->
+			</div>
+		</div>
+		{% endblock %}
+    </div>
+    <div id="footer">
+        <p class="copyright">Copyright  &copy; <a href="index.html">app.23201.com</a> 版权所有</p>
+    </div>
+	<script type="text/javascript">
+	var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F27fa7389b29130b1e347cb350b6060b8' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	
+</body>
+</html>

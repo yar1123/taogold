@@ -1,0 +1,14 @@
+﻿{% extends "page.html" %}
+
+{% block pagetitle %}
+出错了！
+{% endblock %}
+
+{% block maincontent %}
+<div class="msg">
+	<div class="msg-default msg-error">
+		<i class="msg-icon"></i>
+		<div class="msg-content">囧，出错了！可能的原因为：<br>1、您还没有在淘宝开店，因此无法使用淘金宝<br>2、网络抽筋，导致淘金宝从淘宝获取数据失败<br>您可以<a href="/top/index.html">点此返回首页</a></div>
+	</div>
+</div>
+{% endblock %}

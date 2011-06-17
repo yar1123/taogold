@@ -1,0 +1,87 @@
+{% extends "page.html" %}
+
+{% block pagetitle %}
+历史操作
+{% endblock %}
+
+{% block maincontent %}
+
+<!-- {{{ msg -->
+<div class="msg">
+	<div class="msg-default msg-tips">
+		<i class="msg-icon"></i>
+		<div class="msg-content">供您查看每个模板的最近5次操作记录</div>
+	</div>
+</div>
+<!-- msg }}} -->
+
+<!-- {{{ grid -->
+<div class="grid">
+	<table class="table">
+		<colgroup>
+			<col width="170">
+			<col width="278">
+			<col width="100">
+			<col width="200">
+		</colgroup>
+		<thead>
+			<tr class="row">
+				<th>操作时间</th>
+				<th>模板名称</th>
+				<th>操作类型</th>
+				<th>操作结果</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for h in history %}
+			<tr class="row">
+				<td>{{h.time}}</td>
+				<td>{{h.name}}</td>
+				<td>
+					{%if h.manipulate == 'u' %}启用{%endif%}
+					{%if h.manipulate == 's' %}禁用{%endif%}
+				</td>
+				<td>
+					成功：
+					{% if h.success_num == 0 %}
+					{{h.success_num}} 
+					{%else%}
+                    <a href="/top/hisdetail.html?hisid={{h.id}}&op=suc&mp={{h.mpid}}">{{h.success_num}}</a>
+					{%endif%}
+					| 
+					失败：
+					{% if h.fail_num == 0 %}
+					{{h.fail_num}} 
+					{%else%}
+                    <a href="/top/hisdetail.html?hisid={{h.id}}&op=fail&mp={{h.mpid}}">{{h.fail_num}}</a>
+					{%endif%} 
+				</td>
+			</tr>
+			{%endfor%}
+		</tbody>
+	</table>
+</div>
+<!-- grid }}} -->
+
+<!-- {{{ pagination -->
+<!--
+<div class="pagination pagination-normal">
+	<div class="pagination-wrapper">
+		<span class="info">共1000条/100页</span>
+		<span class="start">首页</span>
+		<a class="start" href="#">首页</a>
+		<span class="prev">上一页</span>
+		<a class="prev" href="#">上一页</a>
+		<a class="page" href="#">1</a>
+		<span class="page">2</span>
+		<a class="next" href="#">下一页</a>
+		<span class="next">下一页</span>
+		<a class="end" href="#">末页</a>
+		<span class="end">末页</span>
+		<span class="skip-to">到第<input type="text"/>页<button type="button">确定</button></span>
+		<span class="data-limit">每页<select><option>20条</option><option>40条</option><option>60条</option></select></span>
+	</div>
+</div>
+-->
+<!-- pagination }}} -->
+{% endblock %}
