@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>电子商务智能推荐系统——打造全球最强悍中文电子商务推荐系统</title>
+        <link href="/css/rechome.css" rel="stylesheet" type="text/css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    </head>
+    <body>
+        <div id="title">
+            <h1 align="center"> 欢迎 {{ nick }} 光临电子商务智能推荐系统，在这里，可以让你的电子商务做的更加得心应手</h1>
+        </div>
+        <div id="result">
+            <table border="1">
+                <tr>
+                    <td>num_iid</td>
+                    <td>title</td>
+                    <td>status</td>
+                </tr>
+                {% for i in result%}
+                <tr>
+                    <td> {{ i.num_iid }} </td>
+                    <td> {{ i.title}}</td>
+                    <td> {{ i.status }}</td>
+                </tr>
+                {%endfor%}
+            </table>
+        </div>
+        <div>
+            <a href="/top/rechome.html">返回首页</a>
+            </div>
+    </body>
+</html>
+
+

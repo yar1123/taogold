@@ -1,0 +1,65 @@
+{% extends "page.html" %}
+
+{% block pagetitle %}
+模板列表
+{% endblock %}
+
+{% block maincontent %}
+<!-- {{{ grid -->
+<div class="grid">
+	<table id="S_TemplateList" class="table template-list">
+<colgroup>
+			<col width="268">
+			<col width="100">
+			<col width="100">
+			<col width="100">
+			<col width="180">
+		</colgroup>
+		<thead>
+			<tr class="row">
+				<th>模板名称</th>
+				<th>模板位置</th>
+				<th>推荐模式</th>
+				<th>模板状态</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for i in temp_list %}
+			<tr class="row">
+				<td>{{i.name}}</td>
+				<td>{% if i.position == 't' %}宝贝描述顶部{%else%}宝贝描述底部{%endif%}</td>
+				<td>{% if i.mode == 'a'%}系统自动推荐{%else%}人工选择宝贝{%endif%}</td>
+				<td>
+					{%if i.status == 'u' %}<span class="h">已经启用</span>{%endif%}
+					{%if i.status == 's' %}尚未启用{%endif%}
+					{%if i.status == 'U' %}正在启用...{% endif %}
+					{%if i.status == 'S' %}正在禁用...{% endif %}
+				</td>
+				<td >
+					{%if i.status == 'U' or i.status == 'S' %}
+						<a href="/top/rechome.html">刷新页面</a>
+					{% else %}
+						{% if i.status == 's' %}
+						<a class="S_UseTrigger" tempid="{{i.id}}" href="/top/use.html?tempid={{i.id}}">启用</a> 
+						{%endif%}
+
+						{% if i.status == 'u' %}
+							<a class="S_StopUseTrigger" tempid="{{i.id}}" href="/top/stop.html?tempid={{i.id}}">禁用</a> 
+						{%endif%}					
+
+						| 
+						<a href="/top/history.html?tempid={{i.id}}">历史</a>
+						| 
+						<a href="/top/edit.html?tempid={{i.id}}">修改</a>					
+						| 
+						<a class="S_PriviewTrigger" data-temp-id="{{i.id}}" href="/top/preview.html?tempid={{i.id}}">预览</a> 
+					{% endif %}	
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+<!-- grid }}} -->
+{% endblock %}

@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>电子商务推荐系统——打造全球最强悍中文电子商务推荐系统</title>
+        <link href="/css/recommend.css" rel="stylesheet" type="text/css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    </head>
+    <body>
+        <div id="template">
+            <form id="selectedTemplate" action="/top/style.html" method="POST">{% csrf_token %}
+                <table border="1">
+                    {% for t in template_list %}
+                    <tr>
+                        <td><input type="RADIO" name="temp_id" value="{{ t.id }}" id="{{ t.id }}" /></td>
+                        <td><img src="/static/template_{{ t.id }}.jpg" /></td>
+                        <td>模板介绍，使用人数10000，预览，某某推荐，某某使用了这个模板提升了多少的转化率</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <div>
+                    <input type="submit" style="height: 30px; width: 130px; font-size: 14pt;" value="下一步">
+                </div>
+            </form>
+
+            <div>
+                {{selected_info}}
+            </div>
+
+        </div>
+    </body>
+</html>
+
+

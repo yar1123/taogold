@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <title>电子商务智能推荐系统——打造全球最强悍中文电子商务推荐系统</title>
+        <link href="/css/rechome.css" rel="stylesheet" type="text/css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    </head>
+    <body>
+        <div id="title">
+            <h1 align="center"> 欢迎 {{ nick }} 光临电子商务智能推荐系统，在这里，可以让你的电子商务做的更加得心应手</h1>
+            <br>
+            <h2> 编辑模板，我的地盘我做主</h2>
+        </div>
+        <div id="template">
+            <form action="/top/updatetemplate.html" method="POST">
+            <table border="1">
+                <tr>
+                    <td>name</td>
+                    <td>picture, for preview</td>
+                    <td>position, b for bottom, t for top</td>
+                    <td>mode, a for auto, m for manual</td>
+                    <td>goods num_iid list</td>
+                </tr>
+                <tr>
+                    <td> {{ temp.name }} </td>
+                    <td> {{ temp.pic }} </td>
+                    <td> {{ temp.position }}</td>
+                    <td> {{ temp.mode }} </td>
+                    <td> {{ temp.goods_iid }}</td>
+                </tr>
+                <tr>
+                    <td> <input type="TEXT" name="name" maxlength="128" size="64" value="{{temp.name}}"/></td>
+                    <td>&nbsp;</td>
+                    <td> <input type="RADIO" name="position" value="b" {%if temp.position == "b" %} checked {%endif%}> 底部</input>
+                        <input type="RADIO" name="position" value="t" {%if temp.position == "t"%} checked {%endif%}> 顶部</input></td>
+                    <td> <input type="RADIO" name="mode" value="a" {%if temp.mode == "a" %} checked {%endif%}> 自动</input>
+                        <input type="RADIO" name="mode" value="m" {%if temp.mode == "m"%} checked {%endif%}> 手动</input></td>
+                    <td>&nbsp;
+                            {% for goods in goods_list %}
+                            <input type="CHECKBOX"  name="goods_iid" value="{{goods.num_iid}}">{{goods.title}}</input>
+                            {%endfor%}
+                    </td>
+                </tr>
+            </table>
+            <input type="hidden" name='tempid' value="{{temp.id}}" readonly />
+            <input type="SUBMIT" value="更新模板" />
+            </form>
+            <div>
+            </div>
+
+        </div>
+    </body>
+</html>
+
+
