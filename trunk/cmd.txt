@@ -4,7 +4,11 @@ D:\project\taogold>python django-admin.py runserver --settings=top.settings
 
 （设置一次即可）新增环境变量：PYTHONPATH=D:\project\taogold
 
+
+(windows设置)
+修改 D:\project\taogold\tsvr\bin\tsvr.py 注释196-207行
+
 D:\project\taogold\tsvr>python ./bin/tsvr.py
 
 http://127.0.0.1:8000/top/index.html
-登录后以127.0.0.1:8000替换23201.com
+登录后以127.0.0.1:8000替换app.23201.com
