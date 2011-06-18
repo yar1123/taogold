@@ -1,0 +1,10 @@
+D:\project\taogold\mongodb-win\bin>mongod.exe --dbpath d:\project\taogold\mongodb-data
+
+D:\project\taogold>python django-admin.py runserver --settings=top.settings
+
+（设置一次即可）新增环境变量：PYTHONPATH=D:\project\taogold
+
+D:\project\taogold\tsvr>python ./bin/tsvr.py
+
+http://127.0.0.1:8000/top/index.html
+登录后以127.0.0.1:8000替换23201.com
