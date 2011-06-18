@@ -3,29 +3,27 @@
 .gray{color:#888;}
 .b{font-weight:bold;}
 
-#header, #content, #footer{width:950px;margin:0 auto 10px auto;}
-#header{position:relative;}
-#header .logo{font: 22px '微软雅黑';color:#888}
-#header .logo a{padding-right:10px;font-size:28px;}
-#header .desc{font-size:14px;}
-#header .user{position:absolute;top:5px;right:0;}
-#header .tools{position:absolute;top:23px;right:0;}
-#header .menu{margin:10px 0 0 0;}
-#header .menu .tabs-hd{border-bottom:1px solid #bad6ff}
-#header .menu .tabs-panel{position:absolute;width:928px;padding:0 10px;line-height:36px;}
-#footer{padding:15px 0 25px 0;text-align:center;border-top:1px dashed #ccc;}
+#header,
+#content,
+#footer{width:1000px;margin:0 auto;}
+#header{margin-bottom:15px;}
+#header {position:relative;height:80px;}
+#header .logo{float:left;margin-top:12px;}
+#header .desc{position:absolute;left:0;top:60px;color:#888;}
+#header .sub-title{float:left;margin:22px 0 0 4px;color:#888;font-family:"微软雅黑";font-size:26px;font-weight:bold;}
+#header .user{position:absolute;top:27px;right:0;}
+#header .tools{position:absolute;top:45px;right:0;}
+#footer{padding:15px 0 25px 0;text-align:center;}
 
-.box-bd{padding:10px;}
-.bar{padding:6px;overflow:hidden;border-bottom:1px dashed #ccc;background:#f2f2f2;}
-.grid{margin-bottom:10px;}
+.grid .table{border:none;}
 
-/*首页介绍*/
-.intro{border:1px solid #ccc;padding:5px 10px;}
+/*首页-介绍*/
 .intro p{margin:5px 0;}
 .intro dl dt{margin:10px 0;padding:0 10px;line-height:1.7em;font-size:15px;font-weight:bold;font-family:'微软雅黑';background:#fef1de;}
 .intro dl dd{margin:5px 0;margin-left:2em;}
-.intro .go{margin:20px 0 0 0;text-align:center;}
-/*手动选择推荐宝贝*/
+.intro .go{margin:15px 0;text-align:center;}
+
+/*新建模板-选择商品*/
 .couple-select{overflow:hidden;}
 .couple-select .item:hover{background:#e8fcd6}
 .couple-select-src{float:left;width:450px;border:1px solid #ddd;}
@@ -43,3 +41,5 @@
 .couple-select .item-list .price{color:#f30;}
 .couple-select .item-list .operation{float:right;}
 .couple-select .item-list .operation a{padding-left:6px;}
+
+.couple-select .bar{padding:5px 10px;border-bottom:1px dashed #ddd;background:#f2f2f2;}

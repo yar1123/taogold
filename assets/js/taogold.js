@@ -52,7 +52,7 @@ KISSY.ready(function(S){
 		},
 		_render:function(){
 			var self = this, fragment = '';
-			fragment += '<div class="box" style="display:none;position:absolute;width:944px;border:3px solid #ccc;z-index:100;">'
+			fragment += '<div class="box box-padding" style="display:none;position:absolute;width:944px;border:3px solid #ccc;z-index:100;">'
 			fragment += '<div class="box-hd"><h3 class="box-title">选择宝贝</h3><div class="box-act"><a class="box-close" href="#">关闭</a></div></div>'
 			fragment += '<div class="box-bd"></div>'
 			fragment += '</div>'
