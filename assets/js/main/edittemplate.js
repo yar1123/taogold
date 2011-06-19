@@ -162,7 +162,6 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
                 return function(param){
                     param = param || {};
                     S.mix(param,lastParam,false);
-                    console.log(param);
                     //获取item数据
                     S.io.get(
                         'onsales.html',
@@ -192,11 +191,16 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
                 null,
                 function(o){
                     var data = eval('['+o+']');
-                    var cats = data[0].sellercats_list_get_response.seller_cats.seller_cat;
+                    var cats = data[0].seller_cat;
                     var catSelect = S.get('#S_ItemCat');
                     for(var i = 0,len = cats.length;i<len;i++){
                         catSelect.appendChild(D.create('<option value="'+cats[i].cid+'">'+cats[i].name+'</option>'))
                     }
+                    catSelect.value = '';
+                    //改变类目时重新获取item
+                    E.on(catSelect,'change',function(e){
+                        getItems({cat:catSelect.value});
+                    });
                 }
             );
             
