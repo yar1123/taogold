@@ -1,6 +1,6 @@
 KISSY.add("taogold/preview",function(S, Dialog){
     var D = S.DOM, E = S.Event, doc = document;
-    var dialog = new Dialog({'title':'\u6a21\u677f\u9884\u89c8',width:744});
+    var dialog = new Dialog({'title':'\u6a21\u677f\u9884\u89c8',width:770});
     function Preview(tempid){        
         S.IO({
             type: 'GET',
@@ -9,7 +9,7 @@ KISSY.add("taogold/preview",function(S, Dialog){
             success: function(data, textStatus, xhr) {
                 var c = D.create('<div></div>');
                 c.innerHTML = data;
-                dialog.refresh(c);
+                dialog.refreshContent(c);
                 dialog.show();
             },
             dataType:'text'

@@ -25,7 +25,7 @@ KISSY.use("taogold/preview,taogold/dialog",function(S, Preview, Dialog){
                 {'tempid':t.getAttribute('tempid')},
                 function(o){
                     var data = eval('['+o+']');
-                    dialog.append(D.create('<div style="padding:10px;">'+ (D.hasClass(t,'S_UseTrigger') ? '正在启用' : '正在禁用')+'，整个处理过程大约需要<span class="h">'+data[0].ti+'</span>分钟。<br/>届时我们会为您自动刷新页面。<br/>您也可以点击操作栏的<a href="/top/rechome.html">刷新页面</a>按钮进行手动刷行。</div>'));
+                    dialog.appendContent(D.create('<div style="padding:10px;">'+ (D.hasClass(t,'S_UseTrigger') ? '正在启用' : '正在禁用')+'，整个处理过程大约需要<span class="h">'+data[0].ti+'</span>分钟。<br/>届时我们会为您自动刷新页面。<br/>您也可以点击操作栏的<a href="/top/rechome.html">刷新页面</a>按钮进行手动刷行。</div>'));
                     dialog.show();
                     setTimeout(function(){window.location.reload();},data[0].ti*60*1000);
                     var td = D.parent(t,'td'), prevTd = D.prev(td,'td');
