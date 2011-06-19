@@ -296,7 +296,15 @@ def getCats(request):
     except Exception as e:
         dlog.warning('check session fail: %s' %str(e))
         return ErrorRedirect.sessionKey()
-    y=str(param)
+    nick = param['nick']
+    try:
+        c=pymongo.Connection('127.0.0.1', 27017)
+    except Exception as e:
+        dlog.warning('connecting to mongodb fail: %s' %(str(e)))
+        return ErrorRedirect.defaultError()
+    tc = c.top.cats
+    r = tc.find_one({'nick':nick}) 
+    y = json.dumps(r['seller_cats'])
     return HttpResponse(y, mimetype="text/plain")
 
 def editTemplateInternal(request, c, nick):

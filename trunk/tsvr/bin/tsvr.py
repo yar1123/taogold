@@ -32,9 +32,11 @@ class Tsvr( threading.Thread ):
 
     def newUser(self):
         tu = self.mc.top.user 
-        ti = self.mc.top.items
+        ti = self.mc.top.items 
+        tc = self.mc.top.cats
         tuser = User()
         titems = Items()
+        tcats = Sellercats()
         while True:
             x = tu.find({'new_user':True})
             for i in x:
@@ -49,14 +51,20 @@ class Tsvr( threading.Thread ):
                 try:
                     tbio = titems.onsale(i['top_session'], fields= \
                             'id,detail_url,num_iid,title,nick,type,pic_url,num,price,volume,created,seller_cids')
-                    [ i.update(_onsale_=True) for i in tbio ]
+                    [ j.update(_onsale_=True) for j in tbio ]
                     ti.insert(tbio)
                     tbii = titems.inventory(i['top_session'], fields= \
                             'id,detail_url,num_iid,title,nick,type,pic_url,num,price,volume,created,seller_cids')
-                    [ i.update(_onsale_=False) for i in tbii ]
+                    [ j.update(_onsale_=False) for j in tbii ]
                     ti.insert(tbii)
                 except Exception as e:
                     tlog.warning('error in getting onsale items: %s' %(str(e)))
+                try:
+                    tscs = tcats.list(i['top_session'], i['nick'])
+                    tscs['nick'] = i['nick']
+                    tc.insert(tscs)
+                except Exception as e:
+                    tlog.warning('error in getting Sellercats: %s' %(str(e)))
             time.sleep(1)
     
     def updateItem(self):
