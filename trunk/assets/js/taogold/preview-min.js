@@ -1,0 +1,1 @@
+KISSY.add("taogold/preview",function(a,d){function e(f){a.IO({type:"GET",url:"preview.html",data:{tempid:f},success:function(g){var b=h.create("<div></div>");b.innerHTML=g;c.refresh(b);c.show()},dataType:"text"})}var h=a.DOM,c=new d({title:"\u6a21\u677f\u9884\u89c8",width:744});return e},{requires:["taogold/dialog"]});
