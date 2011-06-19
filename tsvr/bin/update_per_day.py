@@ -41,8 +41,22 @@ class Tsvr( threading.Thread ):
                 for j in tbii:
                     ti.update({'num_iid':j['num_iid']}, {'$set':j}, upsert=True)
             except Exception as e:
-                raise
                 tlog.warning('error in getting onsale items: %s' %(str(e)))
+
+    def updateTrade(self):
+        tu = self.mc.top.user
+        ti = self.mc.top.trade
+        tuser = User()
+        ttrade = Trade()
+        x = tu.find()
+        for i in x:
+            tlog.info('update trade of user: %s' %(i['nick']))
+            try:
+                tt = ttrade.sold_get(i['top_session'], i['nick'])
+                for j in tt:
+                    ti.update({'tid':j['tid']}, {'$set':j}, upsert=True)
+            except Exception as e:
+                tlog.warning('error in getting trade: %s' %(str(e)))
 
 
     def run ( self ): 

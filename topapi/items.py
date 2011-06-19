@@ -29,7 +29,7 @@ class Items(TBase):
         r = []
         n=1
         while True:
-            rt = self.do(page_size=1, page_no=n)
+            rt = self.do(page_size=200, page_no=n)
             if not rt:
                 break
             r.extend(rt['items']['item'])
