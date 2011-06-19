@@ -23,12 +23,12 @@ KISSY.add("taogold/dialog",function(S,Overlay,Mask){
             self._visible = 0;
             self.fire('hide');
         },
-        refresh:function(el){
+        refreshContent:function(el){
             var self = this;
             self._bdEl.innerHTML = '';
-            self.append(el);
+            self.appendContent(el);
         },
-        append:function(el){
+        appendContent:function(el){
             var self = this, bdEl = self._bdEl, inner = bdEl.innerHTML;
             if(S.isString(el)){
                 bdEl.innerHTML = inner + el;
