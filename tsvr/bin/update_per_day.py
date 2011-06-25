@@ -46,31 +46,52 @@ class Tsvr( threading.Thread ):
     def updateTrade(self):
         tu = self.mc.top.user
         ti = self.mc.top.trade
-        tuser = User()
         ttrade = Trade()
         x = tu.find()
         for i in x:
             tlog.info('update trade of user: %s' %(i['nick']))
             try:
-                tt = ttrade.sold_get(i['top_session'], i['nick'])
+                tt = ttrade.sold_get(i['top_session'])
                 for j in tt:
-                    ti.update({'tid':j['tid']}, {'$set':j}, upsert=True)
+                    try:
+                        ti.update({'tid':j['tid']}, {'$set':j}, upsert=True)
+                    except Exception as e:
+                        tlog.warning('error in update trade to db: e' %str(e))
             except Exception as e:
                 tlog.warning('error in getting trade: %s' %(str(e)))
 
+    def updateCats(self):
+        tu = self.mc.top.user
+        tc = self.mc.top.cats
+        tcats = Sellercats()
+        x = tu.find()
+        for i in x:
+            tlog.info('update cats of user: %s' %(i['nick']))
+            try:
+                tscs = tcats.list(i['top_session'], i['nick'])
+                print tscs
+                tscs['nick'] = i['nick']
+                tc.update({'nick':i['nick']}, {'$set': tscs}, upsert=True)
+            except Exception as e:
+                tlog.warning('error in getting cats: %s' %(str(e)))
 
     def run ( self ): 
         tlog.debug('run thread, type: %s' %(self.type))
         if self.type=='updateItems':
             self.updateItems()
-
+        if self.type=='updateTrade':
+            self.updateTrade()
+        if self.type=='updateCats':
+            self.updateCats()
 
 def start_tsvr(tnum=3):
     fw = open(os.path.abspath('./status/tsvr.pid'), 'w')
     fw.write(str(os.getpid()))
     fw.flush()
     fw.close
-    Tsvr('updateItems').start()
+    #Tsvr('updateItems').start()
+    #Tsvr('updateTrade').start()
+    Tsvr('updateCats').start()
 
 
 logging.config.fileConfig('./conf/log_for_updateItems.conf')

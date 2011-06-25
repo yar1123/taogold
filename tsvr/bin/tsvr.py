@@ -49,20 +49,31 @@ class Tsvr( threading.Thread ):
                 tbui.update(new_user=False) 
                 tu.update(i, {'$set':tbui}, upsert=True)
                 try:
-                    tbio = titems.onsale(i['top_session'], fields= \
-                            'id,detail_url,num_iid,title,nick,type,pic_url,num,price,volume,created,seller_cids')
-                    [ j.update(_onsale_=True) for j in tbio ]
-                    ti.insert(tbio)
-                    tbii = titems.inventory(i['top_session'], fields= \
-                            'id,detail_url,num_iid,title,nick,type,pic_url,num,price,volume,created,seller_cids')
-                    [ j.update(_onsale_=False) for j in tbii ]
-                    ti.insert(tbii)
+                    tbio = titems.onsale(i['top_session'], 
+                            fields='id,detail_url,num_iid,title,nick,type,pic_url,num,price,volume,created,seller_cids')
                 except Exception as e:
                     tlog.warning('error in getting onsale items: %s' %(str(e)))
+                for j in tbio:
+                    try:
+                        j.update(_onsale_=True)
+                        ti.update({{'num_iid':j['num_iid']}}, {'$set':j}, upsert=True)
+                    except Exception as e:
+                        tlog.warning('error when insert items to db: %s' %(str(e)))
+                try:
+                    tbii = titems.inventory(i['top_session'], 
+                            fields='id,detail_url,num_iid,title,nick,type,pic_url,num,price,volume,created,seller_cids')
+                except Exception as e:
+                    tlog.warning('error in getting inventory items: %s' %(str(e)))
+                for j in tbii:
+                    try:
+                        j.update(_onsale_=False)
+                        ti.update({{'num_iid':j['num_iid']}}, {'$set':j}, upsert=True)
+                    except Exception as e:
+                        tlog.warning('error when insert items to db: %s' %(str(e)))
                 try:
                     tscs = tcats.list(i['top_session'], i['nick'])
                     tscs['nick'] = i['nick']
-                    tc.insert(tscs)
+                    tc.update({'nick':i['nick']}, {'$set': tscs}, upsert=True)
                 except Exception as e:
                     tlog.warning('error in getting Sellercats: %s' %(str(e)))
             time.sleep(1)
@@ -103,7 +114,7 @@ class Tsvr( threading.Thread ):
             desc = '%s<a name="recommend_wgid_%s"></a>%s<a name="recommend_wgid_%s"></a>' \
                     %(desc, temp['html_flag'], amp['page'], temp['html_flag'])
         tbinfo = tbitem.update(top_session, str(amp['num_iid']), desc=desc)
-        print str(tbinfo)
+        tlog.info('update result: %s' %str(tbinfo) )
 
     def _stopTemplate(self, temp, top_session, amp, tbitem):
         tbinfo = tbitem.get(top_session, str(amp['num_iid']), fields='num_iid,desc')
