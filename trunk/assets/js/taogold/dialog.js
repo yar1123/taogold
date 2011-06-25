@@ -56,7 +56,7 @@ KISSY.add("taogold/dialog",function(S,Overlay,Mask){
                         footstr +
                     '</div>';
             self._el = D.create(str);
-            doc.body.appendChild(self._el);
+            S.ready(function(){doc.body.appendChild(self._el);});
             self._titleEl = D.get('.box-title',self._el);
             self._closeEl = D.get('.box-close',self._el);                      
             E.on(self._closeEl,'click',function(e){
