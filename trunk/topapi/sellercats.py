@@ -13,5 +13,6 @@ class Sellercats(TBase):
         self.setParams(nick=nick)
         if fields:
             self.fields=fields
-        return self.do() 
+        r = self.do() 
+        return r['seller_cats']
 

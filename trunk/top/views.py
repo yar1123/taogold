@@ -99,7 +99,14 @@ def checkSessionAndGetNick(request):
 def getRecommendItems(c, nick):
     items = c.top.items.find({'nick':nick})
     if items.count() < 3:
-        raise Exception('goods is too less')
+        tu = c.top.user.find_one({'nick':nick})
+        if not tu:
+            raise Exception('find user in db fail in getRecommendItems')
+        titems = Items()
+        items = titems.onsale(tu['top_session'], 
+                fields = 'id,detail_url,num_iid,title,nick,type,pic_url,num,price,volume,created,seller_cids')
+        if len(items) < 3:
+            raise Exception('goods is too less')
     return (items[0], items[1], items[2])
 
 def recommendHome(request):
@@ -121,6 +128,7 @@ def recommendHome(request):
         qs = top.find({'nick':nick})
     except Exception as e:
         dlog.warning('find [%s] in db fail, error: %s' %(nick, str(e)))
+        c.disconnect()
         return ErrorRedirect.defaultError()
     if qs.count()==0:
 #there is not any template for the current user, create the default template for him.
@@ -128,14 +136,18 @@ def recommendHome(request):
             t = defaultTemplate()
             t.update(nick=nick)
             t.update(rec_goods=getRecommendItems(c, nick))
-            top.insert(t)
-            qs = qs.find({'nick':nick})
-            if qs.count() != 1:
-                raise Exception('new user[%s], template num is %d' %(nick, qs.count()))
-            dlog.info('create new template[%s] for %s' %(str(qs[0]['_id']), nick))
+            top.update({'nick':nick}, {'$set':t}, upsert=True)
         except Exception as e:
             dlog.warning('create new template for new user[%s] fail, error: %s' %(nick, str(e)))
+            c.disconnect()
             return ErrorRedirect.defaultError()
+        qs = top.find({'nick':nick})
+        if qs.count() != 1:
+            top.remove({'nick':nick})
+            dlog.warning('new user[%s], template num is %d' %(nick, qs.count()))
+            c.disconnect()
+            return ErrorRedirect.defaultError()
+        dlog.info('create new template[%s] for %s' %(str(qs[0]['_id']), nick))
     tset = []
     for i in qs:
         i['id']=i['_id']
@@ -149,6 +161,7 @@ def recommendHome(request):
         r.set_cookie('top_sign', g.get('top_sign', ''))
         r.set_cookie('top_appkey', g.get('top_appkey', ''))
     setWGID(request, r)
+    c.disconnect()
     return r
 
 def newtemplate(request):
@@ -168,15 +181,24 @@ def newtemplate(request):
     if qs.count() >= maxTemplateNum():
         dlog.warning('user[%s] reach the max template num' %(nick))
         d={'errno':-1, 'tnum':maxTemplateNum(), 'msg':'达到最大模板数', 'nick':nick}
+        c.disconnect()
         return render_to_response('new-template.html', d)
     d={'template': {'name':'掌柜自定义模板', 'mode':'a', 'position':'b'},
             'action':'/top/add.html', 'nick':nick}
     dlog.info('user[%s] new a template' %(nick))
+    c.disconnect()
     return render_to_response('new-template.html', d)
 
 
 def generatePage(c, tempid, nick):
     t = c.top.template 
+    u = c.top.user 
+    try:
+        user_type = u.find_one({'nick':nick})
+        user_type = user_type['user']['type']
+    except Exception as e:
+        user_type = 'C'
+        dlog.warning('get user type fail: %s' %str(e))
     x = t.find({'_id':bson.ObjectId(tempid)})
     if x.count() != 1:
         raise Exception('get template[%s] from db fail' %(tempid))
@@ -194,7 +216,7 @@ def generatePage(c, tempid, nick):
     d= {
             'goods_list':y,
             'nick':nick,
-            #'user_type':qi.user_type,
+            'user_type':user_type,
     }
     page = t.render(Context(d))
     return page
@@ -218,9 +240,9 @@ def previewTemplate(request, tempid=""):
         dlog.warning('connecting to mongodb fail: %s' %(str(e)))
         return ErrorRedirect.defaultError()
     page = generatePage(c, tempid, nick)
+    c.disconnect()
     return HttpResponse(page, mimetype="text/plain")
     
-
 def addTemplate(request, nick):
     try:
         c=pymongo.Connection('127.0.0.1', 27017)
@@ -232,12 +254,14 @@ def addTemplate(request, nick):
     if qs.count() >= maxTemplateNum():
         dlog.warning('user[%s] reach the max template num' %(nick))
         d={'errno':-1, 'tnum':maxTemplateNum(), 'msg':'达到最大模板数', 'nick':nick}
+        c.disconnect()
         return render_to_response('new-template.html', d)
     created=time.time()
     try:
         d = editTemplateInternal(request, c, nick)
     except Exception as e:
         dlog.warning('user[%s] add template fail: %s' %(nick, e))
+        c.disconnect()
         return ErrorRedirect.defaultError()
     d.update(created=created)
     d.update(html_name='standard.html')
@@ -281,7 +305,7 @@ def onsaleGoods(request):
         del i['_id']
         goods.append(i)
     if catid:
-        catid = int(catid)
+        #catid = int(catid)
         goods = [i for i in goods if catid in i['seller_cids'].split(',')]
     if word:
         goods = [i for i in goods if word in i['title']]
@@ -304,7 +328,8 @@ def getCats(request):
         return ErrorRedirect.defaultError()
     tc = c.top.cats
     r = tc.find_one({'nick':nick}) 
-    y = json.dumps(r['seller_cats'])
+    y = json.dumps(r)
+    c.disconnect()
     return HttpResponse(y, mimetype="text/plain")
 
 def editTemplateInternal(request, c, nick):
@@ -365,6 +390,7 @@ def saveEditTemplate(request):
         qc = ts.find({'_id':bson.ObjectId(tempid), 'nick':nick, 'editable':True})
     except Exception as e:
         dlog.warning('error in getting template of tempid=%s and nick=%s from db: %s' %(tempid, nick, e))
+        c.disconnect()
         return ErrorRedirect.defaultError()
     if qc.count() != 1:
         dlog.warning('get template[%s] from db fail: [%s]' \
@@ -373,6 +399,7 @@ def saveEditTemplate(request):
         d = editTemplateInternal(request, c, nick)
     except Exception as e:
         dlog.warning('user[%s] edit template[%s] fail: %s' %(nick, tempid, str(e)))
+        c.disconnect()
         return ErrorRedirect.defaultError()
     ts.update({'_id':bson.ObjectId(tempid)}, {'$set':d})
     page = generatePage(c, tempid, nick)
@@ -402,9 +429,11 @@ def editTemplate(request):
         q = ts.find({'_id':bson.ObjectId(tempid), 'nick':nick, 'editable':True})
     except Exception as e:
         dlog.warning('error in getting template of tempid=%d and nick=%s: %s' %(tempid, nick, str(e)))
+        c.disconnect()
         return ErrorRedirect.defaultError()
     if q.count() != 1:
         dlog.warning('get template from db fail: count==%d' %(q.count()))
+        c.disconnect()
         return ErrorRedirect.defaultError()
     q = q[0]
     q['id']=str(q['_id'])
@@ -438,6 +467,7 @@ def viewHistory(request):
             hl = mh.find({'nick':nick})
     except Exception as e:
         dlog.warning('error in getting template of tempid=%s and nick=%s: %s' %(tempid, nick, str(e)))
+        c.disconnect()
         return ErrorRedirect.defaultError()
     hl = hl.sort('_id', pymongo.DESCENDING)
     qsl = []
@@ -455,6 +485,7 @@ def viewHistory(request):
         t = ts.find({'_id':bson.ObjectId(i['tempid'])})
         if t.count() != 1:
             dlog.warning('error when getting template[%s]' %(i['tempid']))
+            c.disconnect()
             return ErrorRedirect.defaultError()
         i['name']=t[0]['name']
         i['id']=str(i['_id'])
@@ -476,11 +507,13 @@ def historyDetail(request):
     op = g.get('op', '').strip()
     if not hisid or op not in ['suc', 'fail'] or not mp:
         dlog.warning('user[%s] get hisid or op from request fail' %(nick))
+        c.disconnect()
         return ErrorRedirect.defaultError()
     try:
         c=pymongo.Connection('127.0.0.1', 27017)
     except Exception as e:
         dlog.warning('connecting to mongodb fail: %s' %(str(e)))
+        c.disconnect()
         return ErrorRedirect.defaultError()
     mh = c.top.history 
     q = mh.find({'_id':bson.ObjectId(hisid), 'mpid':mp})
@@ -509,6 +542,11 @@ def historyDetail(request):
         print i[0]
         ai = its.find_one({'num_iid':i[0]})
         if ai:
+            if op == 'fail':
+                try:
+                    ai['fail_factor'] = i[1]
+                except:
+                    ai['fail_factor'] = 'unkown'
             details.append(ai)
     d={'details':details, 
             'manipulate':q['status']=='U' and 'u' or 's', 
@@ -536,6 +574,7 @@ def useTemplate(request):
     x = ts.find_and_modify({'_id':bson.ObjectId(tempid), 'status':'s'}, update={'$set':{'status':'U'}})
     if not x:
         dlog.warning('template[%s] is not found or is not unused' %(tempid))
+        c.disconnect()
         return ErrorRedirect.defaultError()
     page = generatePage(c, tempid, nick)
     its = c.top.items 
@@ -573,6 +612,7 @@ def stopTemplate(request):
     x = ts.find_and_modify({'_id':bson.ObjectId(tempid), 'status':'u'}, update={'$set':{'status':'S'}})
     if not x:
         dlog.warning('template[%s] is not found or is not used' %(tempid))
+        c.disconnect()
         return ErrorRedirect.defaultError()
     its = c.top.items 
     mp = c.top.manipulate
