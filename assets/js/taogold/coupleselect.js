@@ -63,7 +63,7 @@ KISSY.add("taogold/coupleselect",function(S){
         },
         getTargetItems:function(){
             var self = this;
-            return D.children(self.targetEl,'.'+self._cfg.itemCls);
+            return D.query('.'+self._cfg.itemCls, self.targetEl);
         }
     });
     
