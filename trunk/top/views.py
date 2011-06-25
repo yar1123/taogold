@@ -328,7 +328,7 @@ def getCats(request):
         return ErrorRedirect.defaultError()
     tc = c.top.cats
     r = tc.find_one({'nick':nick}) 
-    y = json.dumps(r)
+    y = json.dumps(r['seller_cat'])
     c.disconnect()
     return HttpResponse(y, mimetype="text/plain")
 
