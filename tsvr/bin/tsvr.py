@@ -73,7 +73,9 @@ class Tsvr( threading.Thread ):
                     except Exception as e:
                         tlog.warning('error when insert items to db: %s' %(str(e)))
                 try:
+                    tlog.debug('getting cats from top...')
                     tscs = tcats.list(i['top_session'], i['nick'])
+                    print tscs
                     tscs['nick'] = i['nick']
                     tc.update({'nick':i['nick']}, {'$set': tscs}, upsert=True)
                 except Exception as e:
