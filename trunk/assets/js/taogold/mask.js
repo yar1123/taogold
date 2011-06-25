@@ -21,7 +21,7 @@ KISSY.add("taogold/mask",function(S){
         _render:function(){
             var self = this;
             self._el = D.create('<div style = "display:none;position:absolute;width:100%;left:0;top:0;font-size:0px;line-height:0px;background:#000;filter:alpha(opacity=10);opacity:0.1;z-index:9999;"></div>');
-            doc.body.appendChild(self._el);
+            S.ready(function(){doc.body.appendChild(self._el);});
             E.on(window,'resize',function(e){
                 if(self._visible) self._el.style.height = D.docHeight()+'px';
             });

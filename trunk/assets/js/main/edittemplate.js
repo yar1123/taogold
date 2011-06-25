@@ -51,6 +51,8 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
         //如果手工模式下选择不满3个则disable
         if(info.mode == 'm' && (info.iid.split(',').length < 3)){
             btn.disabled = true;
+        }else if(info.name == ''){//标题为空则disable
+            btn.disabled = true;
         }else if(initTemplInfo.tempid && isEqualsInitInfo(info)){//是修改模板，且同初始值，则disable
             btn.disabled = true;
         }else{
@@ -209,7 +211,6 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
             E.on('#S_ItemSchTrigger','click',function(e){
                 e.preventDefault();
                 var param = {};
-                param.cat = D.get('#S_ItemCat').value;
                 param.kw = D.get('#S_ItemKw').value;
                 getItems(param);
             })
@@ -243,7 +244,7 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
             function(o){
                 var c = D.create('<div></div>');
                 c.innerHTML = '<div class="msg"><div class="msg-default msg-tips"><i class="msg-icon"></i><div class="msg-content">模板保存成功，以下为预览效果。您可以去<a href="rechome.html">模板列表</a>页面进行相关操作。</div></div></div>'+ o;
-                var previewDialog = new Dialog({title:'模板预览',width:770});
+                var previewDialog = new Dialog({type:'alert', title:'模板预览',width:770});
                 previewDialog.on('hide',function(){
                     window.location = 'rechome.html';
                 });

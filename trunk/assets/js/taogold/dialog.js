@@ -1,6 +1,11 @@
 KISSY.add("taogold/dialog",function(S,Overlay,Mask){
     var D = S.DOM, E = S.Event, doc = document, mask = new Mask();
     
+    /**
+     * config.width
+     * config.title
+     * config.type 对话框类型，可选'alert','confirm'，默认为null
+     */
     function Dialog(config){
         var self = this;
         self._config = config || {};
@@ -37,10 +42,18 @@ KISSY.add("taogold/dialog",function(S,Overlay,Mask){
             }
         },
         _render:function(){
-            var self = this, cfg = self._config,
-                str = '<div class="overlay box box-padding" style="display:none;position:absolute;width:'+ ( cfg.width || 900 ) +'px;z-index:10000;">'+
+            var self = this, cfg = self._config, type = cfg.type, str, footstr = '';
+            
+            //为alert或confirm类型的对话框增加按钮
+            if(type == 'alert' || type == 'confirm'){
+                footstr = '<div class="box-ft"><button class="confirm-btn" type="button">\u786e\u5b9a</button>';
+                if(type == 'confirm') footstr += '<button class="cancel-btn" type="button">\u53d6\u6d88</button>';
+                footstr += '</div>';
+            }
+            str = '<div class="overlay box box-padding" style="display:none;position:absolute;width:'+ ( cfg.width || 900 ) +'px;z-index:10000;">'+
                         '<div class="box-hd"><h3 class="box-title">' + ( cfg.title || '弹出层' ) + '</h3><div class="box-act"><a class="box-close" href="#">\u5173\u95ed</a></div></div>'+
                         '<div class="box-bd"></div>'+
+                        footstr +
                     '</div>';
             self._el = D.create(str);
             doc.body.appendChild(self._el);
@@ -50,7 +63,24 @@ KISSY.add("taogold/dialog",function(S,Overlay,Mask){
                 e.preventDefault();                
                 self.hide();
             });
-            self._bdEl = D.get('.box-bd',self._el);  
+            self._bdEl = D.get('.box-bd',self._el); 
+            
+            //为alert或confirm类型的对话框的按钮添加事件
+            if(type == 'alert' || type == 'confirm'){
+                self._confirmBtnEl = D.get('.confirm-btn', self._el);                
+                E.on(self._confirmBtnEl,'click',function(e){
+                    self.hide();
+                    self.fire('confirm');
+                    
+                });
+                if(type == 'confirm'){
+                    self._cancelBtnEl = D.get('.cancel-btn',self._el);
+                    E.on(self._cancelBtnEl,'click',function(e){
+                        self.hide();
+                        self.fire('cancel');                        
+                    });
+                }
+            }
             
             E.on(window,'resize',function(){self._setPosition()});
         },

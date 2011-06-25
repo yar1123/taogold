@@ -15,8 +15,11 @@
         <a class="logo" href="index.html"><img src="/assets/appimg/logo.png" alt="淘金宝" /></a>
         <p class="desc">为淘宝卖家提供最专业的智能电子商务推荐系统</p>
         <p class="sub-title">{% block pagetitle %}{% endblock %}</p>      
-        <div class="user">您好，{{nick}}！</div>
-        <div class="tools"><a href="http://fuwu.taobao.com/service/service.htm?service_id=9489" target=_blank>立即续订</a></div>
+        <div class="user">您好，{{nick}}! <a href="https://login.taobao.com/member/logout.jhtml?f=top">退出</a></div>
+        <div class="tools">
+            <a href="http://fuwu.taobao.com/service/service.htm?service_id=9489" target=_blank>立即续订</a>
+            <a href="share.html" target=_blank>帮助</a>
+        </div>
     </div>
     <div id="content">
         {% block content %}
