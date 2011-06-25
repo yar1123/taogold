@@ -44,7 +44,7 @@ stop()
 {
   echo "Stopping tsvr...... "
   [ ! -f $rootdir/status/tsvr.lock ] && echo "tsvr is not running!" && return
-  killproc -p $rootdir/status/tsvr.pid -d 5
+  killproc -p $rootdir/status/tsvr.pid -d 9
   RETVAL=$?
   echo
   [ $RETVAL -eq 0 ] && rm -f $rootdir/status/tsvr.lock

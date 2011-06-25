@@ -48,6 +48,7 @@ class Tsvr( threading.Thread ):
                     tbui = {'error':str(e)}
                 tbui.update(new_user=False) 
                 tu.update(i, {'$set':tbui}, upsert=True)
+                tbio = []
                 try:
                     tbio = titems.onsale(i['top_session'], 
                             fields='id,detail_url,num_iid,title,nick,type,pic_url,num,price,volume,created,seller_cids')
@@ -56,9 +57,10 @@ class Tsvr( threading.Thread ):
                 for j in tbio:
                     try:
                         j.update(_onsale_=True)
-                        ti.update({{'num_iid':j['num_iid']}}, {'$set':j}, upsert=True)
+                        ti.update({'num_iid':j['num_iid']}, {'$set':j}, upsert=True)
                     except Exception as e:
                         tlog.warning('error when insert items to db: %s' %(str(e)))
+                tbii = []
                 try:
                     tbii = titems.inventory(i['top_session'], 
                             fields='id,detail_url,num_iid,title,nick,type,pic_url,num,price,volume,created,seller_cids')
@@ -67,7 +69,7 @@ class Tsvr( threading.Thread ):
                 for j in tbii:
                     try:
                         j.update(_onsale_=False)
-                        ti.update({{'num_iid':j['num_iid']}}, {'$set':j}, upsert=True)
+                        ti.update({'num_iid':j['num_iid']}, {'$set':j}, upsert=True)
                     except Exception as e:
                         tlog.warning('error when insert items to db: %s' %(str(e)))
                 try:
