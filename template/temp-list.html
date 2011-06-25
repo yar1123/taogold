@@ -57,16 +57,14 @@
                                 {%endif%}                    
 
                                 | 
-                                <a href="/top/history.html?tempid={{i.id}}">历史</a>
+                                <a class="S_PriviewTrigger" data-temp-id="{{i.id}}" href="/top/preview.html?tempid={{i.id}}">预览</a> 
                                 | 
                                 {% if i.editable %}
                                 <a href="/top/edit.html?tempid={{i.id}}">修改</a>  
                                 {% else %}
                                 <span title="预置模板不允许修改，需要自定义宝贝请点击'创建模板'">修改</span>  
                                 {% endif %}
-                                                  
-                                | 
-                                <a class="S_PriviewTrigger" data-temp-id="{{i.id}}" href="/top/preview.html?tempid={{i.id}}">预览</a> 
+                                
                             {% endif %}    
                         </td>
                     </tr>
@@ -76,6 +74,5 @@
         </div>
     </div>
 </div>
-
 
 {% endblock %}

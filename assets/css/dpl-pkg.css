@@ -14,7 +14,7 @@
     -webkit-border-radius: 4px;
     border-radius: 4px;
 }
-.box .box-hd{position:relative;overflow:hidden;padding:4px 10px;border-bottom:1px solid #ddd;background:#f2f2f2 url(../img/bg-repeatx.png) repeat-x 0 -130px;
+.box .box-hd{position:relative;overflow:hidden;height:23px;padding:4px 10px;border-bottom:1px solid #ddd;background:#f2f2f2 url(../img/bg-repeatx.png) repeat-x 0 -130px;
     -moz-border-radius: 4px;
     -khtml-border-radius: 4px;
     -webkit-border-radius: 4px;

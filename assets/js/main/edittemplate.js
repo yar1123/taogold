@@ -154,7 +154,7 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
             
             //异步加载数据并渲染
             getItems = (function(){
-                var amount = 0, lastParam = {start:0,len:40};
+                var lastParam = {start:-40,len:40};
                 /*
                 param.start
                 param.len
@@ -163,6 +163,12 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
                 */
                 return function(param){
                     param = param || {};
+                    if((param.cat != lastParam.cat)||(param.kw != lastParam.kw)){
+                        param.start = 0;
+                    }else{
+                        param.start = lastParam.start +lastParam.len;
+                    }
+                    
                     S.mix(param,lastParam,false);
                     //获取item数据
                     S.io.get(
@@ -173,10 +179,9 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
                             //如果更换了分类或关键词，则重新加载备选项，否则鼠标在coupleSelect源滚动时，增加备选项
                             if((param.cat != lastParam.cat)||(param.kw != lastParam.kw)){
                                 coupleSelect.refreshSrcItems(data);
-                                amount = 0;
                             }else{
+                                console.log('appendItem');
                                 coupleSelect.appendSrcItems(data);
-                                amount += data.length;
                             }
                             lastParam = param;
                         }
@@ -186,6 +191,12 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
             
             //初始化获取item
             getItems();
+            
+            //滚动时动态获取更多待选item
+            E.on('#S_CoupleSelectSrc','scroll',function(){
+                //var el = D.get('#S_CoupleSelectSrc');
+                //if(el.scrollHeight - el.offsetHeight - el.scrollTop < 600){getItems();}
+            })
             
             //获取类目
             S.io.get(
