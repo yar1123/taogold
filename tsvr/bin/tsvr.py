@@ -29,9 +29,8 @@ class Tsvr( threading.Thread ):
                 except Exception as e:
                     tlog.warning('error in getting user info from top: %s' %(str(e)))
                     if 'Invalid session' in str(e):
-                        tu.update(i, {'$set':{'sessV':False}})
-                    else:
-                        tu.update(i, {'$set':{'sessV':True}})
+                        tlog.info('%s session key invalid' %(i['nick']))
+                        tu.update({'nick':i['nick']}, {'$set':{'sessV':False}})
             time.sleep(600)
 
     def newUser(self):
