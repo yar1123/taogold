@@ -28,6 +28,10 @@ class Tsvr( threading.Thread ):
                     tuser.get(i['top_session'], i['nick'], fields='user_id,alipay_bind')
                 except Exception as e:
                     tlog.warning('error in getting user info from top: %s' %(str(e)))
+                    if 'Invalid session' in str(e):
+                        tu.update(i, {'$set':{'sessV':False}})
+                    else:
+                        tu.update(i, {'$set':{'sessV':True}})
             time.sleep(600)
 
     def newUser(self):
@@ -75,7 +79,6 @@ class Tsvr( threading.Thread ):
                 try:
                     tlog.debug('getting cats from top...')
                     tscs = tcats.list(i['top_session'], i['nick'])
-                    print tscs
                     tscs['nick'] = i['nick']
                     tc.update({'nick':i['nick']}, {'$set': tscs}, upsert=True)
                 except Exception as e:
@@ -201,7 +204,7 @@ class Tsvr( threading.Thread ):
             self.manipulate()
 
 
-def start_tsvr(tnum=3):
+def start_tsvr(tnum=30):
     fw = open(os.path.abspath('./status/tsvr.pid'), 'w')
     fw.write(str(os.getpid()))
     fw.flush()
@@ -228,7 +231,7 @@ if __name__ == '__main__':
             sys.exit(0)
     except Exception as e:
         sys.exit('fork #2 error: %s' %(str(e)))
-    start_tsvr(5)
+    start_tsvr(50)
 
 
 
