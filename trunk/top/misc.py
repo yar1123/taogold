@@ -21,5 +21,5 @@ def defaultTemplate():
     return a
 
 def maxTemplateNum(vip=0):
-    return 20+2*vip
+    return 2+2*vip
 
