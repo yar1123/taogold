@@ -17,6 +17,10 @@
 
 .grid .table{border:none;}
 
+/*主菜单*/
+.main-menu .list{overflow:hidden;}
+.main-menu .list li{margin-top:-1px;padding:3px 0 4px 10px;font-size:14px;border-top:1px dashed #ccc;}
+
 /*首页-介绍*/
 .intro p{margin:5px 0;}
 .intro dl dt{margin:10px 0;padding:0 10px;line-height:1.7em;font-size:15px;font-weight:bold;font-family:'微软雅黑';background:#fef1de;}
