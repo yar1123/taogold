@@ -672,13 +672,29 @@ def topindex(request):
     except Exception as e:
         raise Exception('connecting to mongodb fail: %s' %(str(e)))
     tu = c.top.user 
-    if tu.find({'nick':nick}).count()==0:
+    uu = tu.find({'nick':nick})
+    if uu.count()==0:
         try:
-            tu.insert({'nick':nick, 'top_session':param['top_session'], 'new_user':True}, safe=True)
+            tu.update({'nick':nick}, {'nick':nick, 'top_session':param['top_session'], 'new_user':True}, safe=True, upsert=True)
         except Exception as e:
             dlog.warning('insert new user to db fail: %s' %(str(e)))
     if param['sk_from_req']:
-        tu.update({'nick':nick}, {'$set':{'top_session':param['top_session']}})
+        tu.update({'nick':nick}, {'$set':{'top_session':param['top_session'], 'sessV':True}}, upsert=True)
+    try:
+        uu = tu.find({'nick':nick})
+        if len(uu) != 1:
+            dlog.warning('more than 1 nick in db, nick: %s' %(nick))
+            c.disconnect()
+            return ErrorRedirect.defaultError()
+        uu = uu[0]
+        if 'sessV' in uu and not uu['sessV']:
+            dlog.warning('sessionKey expire: %s' %(nick))
+            c.disconnect()
+            return ErrorRedirect.sessionKey()
+    except Exception as e:
+        dlog.warning('error occur when checking sessionKey in db[%s]: %s' %(nick, str(e)))
+        c.disconnect()
+        return ErrorRedirect.defaultError()
     c.disconnect()
     r = render_to_response('index.html', {'nick':nick})
     if param['sk_from_req']:
