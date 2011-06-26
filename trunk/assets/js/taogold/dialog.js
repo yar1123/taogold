@@ -5,10 +5,11 @@ KISSY.add("taogold/dialog",function(S,Overlay,Mask){
      * config.width
      * config.title
      * config.type 对话框类型，可选'alert','confirm'，默认为null
+     * config.closeBtn true
      */
     function Dialog(config){
         var self = this;
-        self._config = config || {};
+        self._config = S.merge({width:900,title:'弹出层',closeBtn:1}, config);
         self._render();
     }
     
@@ -50,19 +51,26 @@ KISSY.add("taogold/dialog",function(S,Overlay,Mask){
                 if(type == 'confirm') footstr += '<button class="cancel-btn" type="button">\u53d6\u6d88</button>';
                 footstr += '</div>';
             }
-            str = '<div class="overlay box box-padding" style="display:none;position:absolute;width:'+ ( cfg.width || 900 ) +'px;z-index:10000;">'+
-                        '<div class="box-hd"><h3 class="box-title">' + ( cfg.title || '弹出层' ) + '</h3><div class="box-act"><a class="box-close" href="#">\u5173\u95ed</a></div></div>'+
+            str = '<div class="overlay box box-padding" style="display:none;position:absolute;width:'+ cfg.width +'px;z-index:10000;">'+
+                        '<div class="box-hd">'+
+                            '<h3 class="box-title">' + cfg.title + '</h3>'+
+                            (cfg.closeBtn ? '<div class="box-act"><a class="box-close" href="#">\u5173\u95ed</a></div>': '')+
+                        '</div>'+
                         '<div class="box-bd"></div>'+
                         footstr +
                     '</div>';
             self._el = D.create(str);
             S.ready(function(){doc.body.appendChild(self._el);});
             self._titleEl = D.get('.box-title',self._el);
-            self._closeEl = D.get('.box-close',self._el);                      
-            E.on(self._closeEl,'click',function(e){
-                e.preventDefault();                
-                self.hide();
-            });
+            
+            if(cfg.closeBtn){
+                self._closeEl = D.get('.box-close',self._el);                      
+                E.on(self._closeEl,'click',function(e){
+                    e.preventDefault();                
+                    self.hide();
+                });
+            }
+            
             self._bdEl = D.get('.box-bd',self._el); 
             
             //为alert或confirm类型的对话框的按钮添加事件

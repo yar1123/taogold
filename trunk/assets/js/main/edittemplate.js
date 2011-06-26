@@ -60,7 +60,7 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
         }
     }
     
-    E.on('#S_TemplateName','blur',function(){checkSavePreviewBtn();});
+    E.on('#S_TemplateName','keyup',function(){checkSavePreviewBtn();});
     E.on('#S_PositionTop','click',function(){checkSavePreviewBtn();});
     E.on('#S_PositionBottom','click',function(){checkSavePreviewBtn();});
     E.on('#S_SelectAuto','click',function(){checkSavePreviewBtn();});
@@ -154,7 +154,7 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
             
             //异步加载数据并渲染
             getItems = (function(){
-                var lastParam = {start:-40,len:40};
+                var lastParam = {start:-1,len:40};//start：页数，len：每页条数
                 /*
                 param.start
                 param.len
@@ -166,10 +166,11 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
                     if((param.cat != lastParam.cat)||(param.kw != lastParam.kw)){
                         param.start = 0;
                     }else{
-                        param.start = lastParam.start +lastParam.len;
+                        param.start = lastParam.start +1;
                     }
                     
                     S.mix(param,lastParam,false);
+                    
                     //获取item数据
                     S.io.get(
                         'onsales.html',
@@ -180,7 +181,6 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
                             if((param.cat != lastParam.cat)||(param.kw != lastParam.kw)){
                                 coupleSelect.refreshSrcItems(data);
                             }else{
-                                console.log('appendItem');
                                 coupleSelect.appendSrcItems(data);
                             }
                             lastParam = param;
@@ -193,10 +193,20 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
             getItems();
             
             //滚动时动态获取更多待选item
-            E.on('#S_CoupleSelectSrc','scroll',function(){
-                //var el = D.get('#S_CoupleSelectSrc');
-                //if(el.scrollHeight - el.offsetHeight - el.scrollTop < 600){getItems();}
-            })
+            (function(){
+                var el = D.get('#S_CoupleSelectSrc'), 
+                    useable = true,
+                    scrollHeight = 0;//判断是否还有返回
+                E.on(el,'scroll',function(){
+                    if(useable && (el.scrollHeight - el.offsetHeight - el.scrollTop < 600) && (el.scrollHeight > scrollHeight)){
+                        useable = false;
+                        setTimeout(function(){useable = true;},3000);
+                        scrollHeight = el.scrollHeight;
+                        getItems();                        
+                    }
+                })
+            })();
+            
             
             //获取类目
             S.io.get(
@@ -253,9 +263,8 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
             'saveedit.html',
             param,
             function(o){
-                var c = D.create('<div></div>');
-                c.innerHTML = '<div class="msg"><div class="msg-default msg-tips"><i class="msg-icon"></i><div class="msg-content">模板保存成功，以下为预览效果。您可以去<a href="rechome.html">模板列表</a>页面进行相关操作。</div></div></div>'+ o;
-                var previewDialog = new Dialog({type:'alert', title:'模板预览',width:770});
+                var c = '<div class="msg"><div class="msg-default msg-tips"><i class="msg-icon"></i><div class="msg-content">模板保存成功，以下为预览效果。您可以去<a href="rechome.html">模板列表</a>页面进行相关操作。</div></div></div>'+ o;
+                var previewDialog = new Dialog({title:'模板预览',width:770});
                 previewDialog.on('hide',function(){
                     window.location = 'rechome.html';
                 });
