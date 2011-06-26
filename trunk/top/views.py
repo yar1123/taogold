@@ -14,6 +14,7 @@ import uuid
 import base64
 import re
 import hashlib 
+import operator
 
 import pymongo
 import bson 
@@ -97,7 +98,7 @@ def checkSessionAndGetNick(request):
     return param
 
 def getRecommendItems(c, nick):
-    items = c.top.items.find({'nick':nick})
+    items = c.top.items.find({'nick':nick}, limit=5)
     if items.count() < 3:
         tu = c.top.user.find_one({'nick':nick})
         if not tu:
@@ -107,7 +108,36 @@ def getRecommendItems(c, nick):
                 fields = 'id,detail_url,num_iid,title,nick,type,pic_url,num,price,volume,created,seller_cids')
         if len(items) < 3:
             raise Exception('goods is too less')
-    return (items[0], items[1], items[2])
+        return  (items[0], items[1], items[2])
+    trades = c.top.trade.find({'seller_nick':nick}, fields=['num_iid', 'total_fee'])
+    sell_info = {} 
+    for i in trades:
+        try:
+            num_iid = i['num_iid']
+            if num_iid in sell_info:
+                sell_info[num_iid] += float(i['total_fee'])
+            else:
+                sell_info[num_iid] = float(i['total_fee'])
+        except Exception as e:
+            dlog.warning('error in getRecommendItems to calc the total trades fees: %s' %(str(e))) 
+    try:
+        sell_info = sorted(sell_info.iteritems(), key=operator.itemgetter(1), reverse=True)[:3]
+        r = [ i[0] for i in sell_info ]
+        r = [ i for i in c.top.items.find({'num_iid':{'$nin':r}}) ]
+    except Exception as e:
+        dlog.warning('error in getRecommendItems to get the max trades fees items: %s' %(str(e)))
+        r = []
+    try:
+        items_r = [ i for i in c.top.items.find({'nick':nick, 'num_iid':{'$in':r}}) ]
+    except Exception as e:
+        dlog.warning('error in getRecommendItems to get the items or max trades fees: %s' %(str(e)))
+    if len(items_r) > 3:
+        raise Exception('some repeat num_iid in db: %s' %(','.join([i['num_iid'] for i in items_r])))
+    if len(items_r)< 3:
+        items=c.top.items.find({'nick':nick, 'num_iid':{'$nin':r}}, limit=3)
+    for i in items:
+        items_r.append(i)
+    return (items_r[0], items_r[1], items_r[2])
 
 def recommendHome(request):
     try:
