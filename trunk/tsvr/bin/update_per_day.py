@@ -63,8 +63,8 @@ class Tsvr( threading.Thread ):
     def updateCats(self):
         tu = self.mc.top.user
         tc = self.mc.top.cats
-        tcats = Sellercats({'sessV':{'$nin':[False, ]}})
-        x = tu.find()
+        tcats = Sellercats()
+        x = tu.find({'sessV':{'$nin':[False, ]}})
         for i in x:
             tlog.info('update cats of user: %s' %(i['nick']))
             try:
