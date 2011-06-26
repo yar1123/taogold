@@ -22,7 +22,7 @@ class Tsvr( threading.Thread ):
         ti = self.mc.top.items
         tuser = User()
         titems = Items()
-        x = tu.find()
+        x = tu.find({'sessV':{'$not':False}})
         for i in x:
             tlog.info('update items of user: %s' %(i['nick']))
             try:
@@ -47,7 +47,7 @@ class Tsvr( threading.Thread ):
         tu = self.mc.top.user
         ti = self.mc.top.trade
         ttrade = Trade()
-        x = tu.find()
+        x = tu.find({'sessV':{'$not':False}})
         for i in x:
             tlog.info('update trade of user: %s' %(i['nick']))
             try:
@@ -63,13 +63,12 @@ class Tsvr( threading.Thread ):
     def updateCats(self):
         tu = self.mc.top.user
         tc = self.mc.top.cats
-        tcats = Sellercats()
+        tcats = Sellercats({'sessV':{'$not':False}})
         x = tu.find()
         for i in x:
             tlog.info('update cats of user: %s' %(i['nick']))
             try:
                 tscs = tcats.list(i['top_session'], i['nick'])
-                print tscs
                 tscs['nick'] = i['nick']
                 tc.update({'nick':i['nick']}, {'$set': tscs}, upsert=True)
             except Exception as e:
@@ -89,8 +88,8 @@ def start_tsvr(tnum=3):
     fw.write(str(os.getpid()))
     fw.flush()
     fw.close
-    #Tsvr('updateItems').start()
-    #Tsvr('updateTrade').start()
+    Tsvr('updateItems').start()
+    Tsvr('updateTrade').start()
     Tsvr('updateCats').start()
 
 
