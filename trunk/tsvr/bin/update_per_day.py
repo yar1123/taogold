@@ -22,7 +22,7 @@ class Tsvr( threading.Thread ):
         ti = self.mc.top.items
         tuser = User()
         titems = Items()
-        x = tu.find({'sessV':{'$not':False}})
+        x = tu.find({'sessV':{'$nin':[False, ]}})
         for i in x:
             tlog.info('update items of user: %s' %(i['nick']))
             try:
@@ -47,7 +47,7 @@ class Tsvr( threading.Thread ):
         tu = self.mc.top.user
         ti = self.mc.top.trade
         ttrade = Trade()
-        x = tu.find({'sessV':{'$not':False}})
+        x = tu.find({'sessV':{'$nin':[False, ]}})
         for i in x:
             tlog.info('update trade of user: %s' %(i['nick']))
             try:
@@ -63,7 +63,7 @@ class Tsvr( threading.Thread ):
     def updateCats(self):
         tu = self.mc.top.user
         tc = self.mc.top.cats
-        tcats = Sellercats({'sessV':{'$not':False}})
+        tcats = Sellercats({'sessV':{'$nin':[False, ]}})
         x = tu.find()
         for i in x:
             tlog.info('update cats of user: %s' %(i['nick']))
