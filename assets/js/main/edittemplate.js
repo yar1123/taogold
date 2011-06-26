@@ -213,8 +213,7 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
                 'cats.html',
                 null,
                 function(o){
-                    var data = eval('['+o+']');
-                    var cats = data[0].seller_cat;
+                    var cats = eval(o);
                     var catSelect = S.get('#S_ItemCat');
                     for(var i = 0,len = cats.length;i<len;i++){
                         catSelect.appendChild(D.create('<option value="'+cats[i].cid+'">'+cats[i].name+'</option>'))
