@@ -682,7 +682,7 @@ def topindex(request):
         tu.update({'nick':nick}, {'$set':{'top_session':param['top_session'], 'sessV':True}}, upsert=True)
     try:
         uu = tu.find({'nick':nick})
-        if len(uu) != 1:
+        if uu.count() != 1:
             dlog.warning('more than 1 nick in db, nick: %s' %(nick))
             c.disconnect()
             return ErrorRedirect.defaultError()
