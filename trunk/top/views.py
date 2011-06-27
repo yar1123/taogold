@@ -130,6 +130,7 @@ def getRecommendItems(c, nick):
     try:
         items_r = [ i for i in c.top.items.find({'nick':nick, 'num_iid':{'$in':r}}) ]
     except Exception as e:
+        items_r = []
         dlog.warning('error in getRecommendItems to get the items or max trades fees: %s' %(str(e)))
     if len(items_r) > 3:
         raise Exception('some repeat num_iid in db: %s' %(','.join([i['num_iid'] for i in items_r])))
