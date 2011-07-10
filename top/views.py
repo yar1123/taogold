@@ -504,8 +504,8 @@ def viewHistory(request):
     qsl = []
     for i in hl:
         itmptime = i['_id'].generation_time.strftime('%s')
-        itmptime = int(itmptime) - 28800
-        i['time']= time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(itmptime))
+        itmptime = int(itmptime) + 28800
+        i['time']= time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(itmptime))
         try:
             i['success_num'] = len(i['success'])
         except:
