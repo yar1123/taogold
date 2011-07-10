@@ -108,7 +108,7 @@ def getRecommendItems(c, nick):
                 fields = 'id,detail_url,num_iid,title,nick,type,pic_url,num,price,volume,created,seller_cids')
         if len(items) < 3:
             raise Exception('goods is too less')
-        return  (items[0], items[1], items[2])
+    return  (items[0], items[1], items[2])
     trades = c.top.trade.find({'seller_nick':nick}, fields=['num_iid', 'total_fee'])
     sell_info = {} 
     for i in trades:
@@ -503,7 +503,9 @@ def viewHistory(request):
     hl = hl.sort('_id', pymongo.DESCENDING)
     qsl = []
     for i in hl:
-        i['time']=i['_id'].generation_time.strftime('%Y-%m-%d %H:%M')
+        itmptime = i['_id'].generation_time.strftime('%s')
+        itmptime = int(itmptime) - 28800
+        i['time']= time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(itmptime))
         try:
             i['success_num'] = len(i['success'])
         except:
