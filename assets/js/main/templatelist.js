@@ -19,6 +19,7 @@ KISSY.use("taogold/preview,taogold/dialog",function(S, Preview, Dialog){
     
     //确认后执行启用或禁用操作
     confirmDialog.on('confirm',function(){
+        
         S.io.get(
             D.hasClass(currentTrigger,'S_UseTrigger') ? '/top/use.html':'/top/stop.html',
             {'tempid':currentTrigger.getAttribute('tempid')},
