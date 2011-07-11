@@ -209,7 +209,7 @@ def start_tsvr(tnum=30):
     fw.flush()
     fw.close
     Tsvr('new_user').start()
-    Tsvr('keepSessionValid').start()
+    #Tsvr('keepSessionValid').start()
     for i in range(tnum):
         Tsvr('update').start()
 
