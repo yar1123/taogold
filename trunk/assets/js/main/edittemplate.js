@@ -154,7 +154,9 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
             
             //异步加载数据并渲染
             getItems = (function(){
-                var lastParam = {start:-1,len:40};//start：页数，len：每页条数
+                var lastParam = {start:-1,len:40,cat:'',kw:''};//start：页数，len：每页条数,cat：类目, kw:搜索关键词
+                var lastData = 1;//上一次加载的数据，用以判定是否已经到翻页最后
+
                 /*
                 param.start
                 param.len
@@ -163,13 +165,17 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
                 */
                 return function(param){
                     param = param || {};
-                    if((param.cat != lastParam.cat)||(param.kw != lastParam.kw)){
-                        param.start = 0;
-                    }else{
-                        param.start = lastParam.start +1;
-                    }
-                    
                     S.mix(param,lastParam,false);
+                    
+                    if((param.cat == lastParam.cat) && (param.kw == lastParam.kw)){
+                        if(lastData == ''){
+                            return;
+                        }else{
+                            param.start = lastParam.start +1;
+                        }
+                    }else{
+                        param.start = 0;
+                    }
                     
                     //获取item数据
                     S.io.get(
@@ -178,12 +184,13 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
                         function(o){
                             var data = eval(o);
                             //如果更换了分类或关键词，则重新加载备选项，否则鼠标在coupleSelect源滚动时，增加备选项
-                            if((param.cat != lastParam.cat)||(param.kw != lastParam.kw)){
-                                coupleSelect.refreshSrcItems(data);
-                            }else{
+                            if((param.cat == lastParam.cat) && (param.kw == lastParam.kw)){
                                 coupleSelect.appendSrcItems(data);
+                            }else{
+                                coupleSelect.refreshSrcItems(data);
                             }
                             lastParam = param;
+                            lastData = data;
                         }
                     );
                 }    
