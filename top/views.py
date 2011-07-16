@@ -674,8 +674,8 @@ def useShow(request):
             itemsnum = len(itemsnum)
             try:
                 sid = ushop.get(i['nick'], fields='sid,title')
-                sid = sid['shop']['sid']
                 st = sid['shop']['title']
+                sid = sid['shop']['sid']
             except:
                 raise
                 sid=0
