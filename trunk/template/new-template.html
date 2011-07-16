@@ -4,7 +4,10 @@
 {%if template.id%}修改模板{%else%}创建模板{%endif%}
 {% endblock %}
 
-{% block customjs %}<script src="/assets/js/main/edittemplate.js"></script>
+{% block customjs %}
+{%if errno != -1 %}
+<script src="/assets/js/main/edittemplate.js"></script>
+{% endif %}
 {% endblock %}
 
 {% block maincontent %}
