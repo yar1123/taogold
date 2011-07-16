@@ -658,9 +658,10 @@ def toperror(request):
     return r
 
 def useShow(request):
-    db = mongo.top
+    db = mongo.top 
+    user_filter = ['淘金电商', '淘宝开放平台', '装修市场测试', '商家测试帐号17']
     try:
-        x = db.history.find({'status':'U', 'nick':{'$nin':['淘金电商', '淘宝开放平台', '装修市场测试']}}, fields=['nick', 'tempid', 'success']).sort( [('_id', -1), ] ).limit(10)
+        x = db.history.find({'status':'U', 'nick':{'$nin':user_filter}}, fields=['nick', 'tempid', 'success']).sort( [('_id', -1), ] ).limit(10)
         r = []
         for i in x:
             u = db.user.find_one({'nick':i['nick']}, fields=['user.seller_credit.level'])
