@@ -678,6 +678,7 @@ def useShow(request):
                 st = sid['shop']['title']
             except:
                 sid=0
+                st=''
             d = {'time': itmptime,
                     'nick':i['nick'],
                     'level':u['user']['seller_credit']['level'],
