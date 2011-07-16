@@ -665,11 +665,13 @@ def useShow(request):
             itmptime = i['_id'].generation_time.strftime('%s')
             itmptime = int(itmptime) + 28800
             itmptime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(itmptime))
+            itemsnum = i['success']
+            itemsnum = len(itemsnum)
             d = {'time': itmptime,
                     'nick':i['nick'],
                     'level':u['user']['seller_credit']['level'],
                     'tempname':t['name'],
-                    'itemsnum':len(i['success'])
+                    'itemsnum':itemsnum,
                     }
             r.append(d)
     except Exception as e:
