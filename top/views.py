@@ -32,6 +32,8 @@ from topapi import *
 
 from misc import *
 
+from settings import mongo
+
 dlog = logging.getLogger('django')
 
 
@@ -97,10 +99,10 @@ def checkSessionAndGetNick(request):
     #param['user_type']= u['type']
     return param
 
-def getRecommendItems(c, nick):
-    items = c.top.items.find({'nick':nick}, limit=5)
+def getRecommendItems(mongo, nick):
+    items = mongo.top.items.find({'nick':nick}, limit=5)
     if items.count() < 3:
-        tu = c.top.user.find_one({'nick':nick})
+        tu = mongo.top.user.find_one({'nick':nick})
         if not tu:
             raise Exception('find user in db fail in getRecommendItems')
         titems = Items()
@@ -109,7 +111,7 @@ def getRecommendItems(c, nick):
         if len(items) < 3:
             raise Exception('goods is too less')
     return  (items[0], items[1], items[2])
-    trades = c.top.trade.find({'seller_nick':nick}, fields=['num_iid', 'total_fee'])
+    trades = mongo.top.trade.find({'seller_nick':nick}, fields=['num_iid', 'total_fee'])
     sell_info = {} 
     for i in trades:
         try:
@@ -123,19 +125,19 @@ def getRecommendItems(c, nick):
     try:
         sell_info = sorted(sell_info.iteritems(), key=operator.itemgetter(1), reverse=True)[:3]
         r = [ i[0] for i in sell_info ]
-        r = [ i for i in c.top.items.find({'num_iid':{'$nin':r}}) ]
+        r = [ i for i in mongo.top.items.find({'num_iid':{'$nin':r}}) ]
     except Exception as e:
         dlog.warning('error in getRecommendItems to get the max trades fees items: %s' %(str(e)))
         r = []
     try:
-        items_r = [ i for i in c.top.items.find({'nick':nick, 'num_iid':{'$in':r}}) ]
+        items_r = [ i for i in mongo.top.items.find({'nick':nick, 'num_iid':{'$in':r}}) ]
     except Exception as e:
         items_r = []
         dlog.warning('error in getRecommendItems to get the items or max trades fees: %s' %(str(e)))
     if len(items_r) > 3:
         raise Exception('some repeat num_iid in db: %s' %(','.join([i['num_iid'] for i in items_r])))
     if len(items_r)< 3:
-        items=c.top.items.find({'nick':nick, 'num_iid':{'$nin':r}}, limit=3)
+        items=mongo.top.items.find({'nick':nick, 'num_iid':{'$nin':r}}, limit=3)
     for i in items:
         items_r.append(i)
     return (items_r[0], items_r[1], items_r[2])
@@ -149,34 +151,26 @@ def recommendHome(request):
         return r
     nick = param['nick']
 #get template list from db 
-    try:
-        c=pymongo.Connection('127.0.0.1', 27017)
-    except Exception as e:
-        dlog.warning('connecting to mongodb fail: %s' %(str(e)))
-        return ErrorRedirect.defaultError()
-    top=c.top.template
+    top=mongo.top.template
     try:
         qs = top.find({'nick':nick})
     except Exception as e:
         dlog.warning('find [%s] in db fail, error: %s' %(nick, str(e)))
-        c.disconnect()
         return ErrorRedirect.defaultError()
     if qs.count()==0:
 #there is not any template for the current user, create the default template for him.
         try:
             t = defaultTemplate()
             t.update(nick=nick)
-            t.update(rec_goods=getRecommendItems(c, nick))
+            t.update(rec_goods=getRecommendItems(mongo, nick))
             top.update({'nick':nick}, {'$set':t}, upsert=True)
         except Exception as e:
             dlog.warning('create new template for new user[%s] fail, error: %s' %(nick, str(e)))
-            c.disconnect()
             return ErrorRedirect.defaultError()
         qs = top.find({'nick':nick})
         if qs.count() != 1:
             top.remove({'nick':nick})
             dlog.warning('new user[%s], template num is %d' %(nick, qs.count()))
-            c.disconnect()
             return ErrorRedirect.defaultError()
         dlog.info('create new template[%s] for %s' %(str(qs[0]['_id']), nick))
     tset = []
@@ -192,7 +186,6 @@ def recommendHome(request):
         r.set_cookie('top_sign', g.get('top_sign', ''))
         r.set_cookie('top_appkey', g.get('top_appkey', ''))
     setWGID(request, r)
-    c.disconnect()
     return r
 
 def newtemplate(request):
@@ -202,28 +195,21 @@ def newtemplate(request):
         dlog.warning('check session fail: %s' %str(e))
         return ErrorRedirect.sessionKey()
     nick = param['nick']
-    try:
-        c=pymongo.Connection('127.0.0.1', 27017)
-    except Exception as e:
-        dlog.warning('connecting to mongodb fail: %s' %(str(e)))
-        return ErrorRedirect.defaultError()
-    top=c.top.template
+    top=mongo.top.template
     qs = top.find({'nick':nick})
     if qs.count() >= maxTemplateNum():
         dlog.warning('user[%s] reach the max template num' %(nick))
         d={'errno':-1, 'tnum':maxTemplateNum(), 'msg':'达到最大模板数', 'nick':nick}
-        c.disconnect()
         return render_to_response('new-template.html', d)
     d={'template': {'name':'掌柜自定义模板', 'mode':'a', 'position':'b'},
             'action':'/top/add.html', 'nick':nick}
     dlog.info('user[%s] new a template' %(nick))
-    c.disconnect()
     return render_to_response('new-template.html', d)
 
 
-def generatePage(c, tempid, nick):
-    t = c.top.template 
-    u = c.top.user 
+def generatePage(mongo, tempid, nick):
+    t = mongo.top.template 
+    u = mongo.top.user 
     try:
         user_type = u.find_one({'nick':nick})
         user_type = user_type['user']['type']
@@ -265,45 +251,32 @@ def previewTemplate(request, tempid=""):
     if not tempid:
         dlog.warning('user[%s] get tempid from request fail' %(nick))
         return ErrorRedirect.defaultError()
-    try:
-        c=pymongo.Connection('127.0.0.1', 27017)
-    except Exception as e:
-        dlog.warning('connecting to mongodb fail: %s' %(str(e)))
-        return ErrorRedirect.defaultError()
-    page = generatePage(c, tempid, nick)
-    c.disconnect()
+    page = generatePage(mongo, tempid, nick)
     return HttpResponse(page, mimetype="text/plain")
     
 def addTemplate(request, nick):
-    try:
-        c=pymongo.Connection('127.0.0.1', 27017)
-    except Exception as e:
-        dlog.warning('connecting to mongodb fail: %s' %(str(e)))
-        return ErrorRedirect.defaultError()
-    top=c.top.template
+    top=mongo.top.template
     qs = top.find({'nick':nick})
     if qs.count() >= maxTemplateNum():
         dlog.warning('user[%s] reach the max template num' %(nick))
         d={'errno':-1, 'tnum':maxTemplateNum(), 'msg':'达到最大模板数', 'nick':nick}
-        c.disconnect()
         return render_to_response('new-template.html', d)
     created=time.time()
     try:
-        d = editTemplateInternal(request, c, nick)
+        d = editTemplateInternal(request, mongo, nick)
     except Exception as e:
         dlog.warning('user[%s] add template fail: %s' %(nick, e))
-        c.disconnect()
+        mongo.disconnect()
         return ErrorRedirect.defaultError()
     d.update(created=created)
     d.update(html_name='standard.html')
     d.update(editable=True)
     d.update(status='s')
     d.update(html_flag=uuid.uuid4().hex)
-    t = c.top.template
+    t = mongo.top.template
     id = t.insert(d, safe=True)
     id=str(id)
-    page = generatePage(c, id, nick)
-    c.disconnect()
+    page = generatePage(mongo, id, nick)
     dlog.info('user[%s] add a template: %s' %(nick, id))
     return  HttpResponse(page, mimetype="text/plain")
 
@@ -323,12 +296,7 @@ def onsaleGoods(request):
     except:
         start = 0
         len = 40
-    try:
-        c=pymongo.Connection('127.0.0.1', 27017)
-    except Exception as e:
-        dlog.warning('connecting to mongodb fail: %s' %(str(e)))
-        return ErrorRedirect.defaultError()
-    its = c.top.items 
+    its = mongo.top.items 
     x = its.find({'nick':nick})
     goods = []
     for i in x:
@@ -343,7 +311,6 @@ def onsaleGoods(request):
         goods = [i for i in goods if word in i['title'].lower()]
     goods = goods[start*len : (start+1)*len]
     rstr = json.dumps(goods)
-    c.disconnect()
     return HttpResponse(rstr, mimetype="text/plain")
 
 def getCats(request):
@@ -353,18 +320,12 @@ def getCats(request):
         dlog.warning('check session fail: %s' %str(e))
         return ErrorRedirect.sessionKey()
     nick = param['nick']
-    try:
-        c=pymongo.Connection('127.0.0.1', 27017)
-    except Exception as e:
-        dlog.warning('connecting to mongodb fail: %s' %(str(e)))
-        return ErrorRedirect.defaultError()
-    tc = c.top.cats
+    tc = mongo.top.cats
     r = tc.find_one({'nick':nick}) 
     y = json.dumps(r['seller_cat'])
-    c.disconnect()
     return HttpResponse(y, mimetype="text/plain")
 
-def editTemplateInternal(request, c, nick):
+def editTemplateInternal(request, mongo, nick):
     if request.method == 'POST':
         g=request.POST 
     else:
@@ -382,13 +343,13 @@ def editTemplateInternal(request, c, nick):
             raise Exception('num of manual recommend goods is not 3: %d' %(len(rec_goods_iid)))
         rec_goods = []
         for i in rec_goods_iid:
-            x = c.top.items.find({'num_iid':int(i), 'nick':nick})
+            x = mongo.top.items.find({'num_iid':int(i), 'nick':nick})
             if x.count() != 1:
                 raise Exception('num_iid of manual recommend goods is wrong: [%s] -- [%s]' \
                         %(i, ';'.join(map(lambda x: x['num_iid']), x)))
             rec_goods.append(x[0])
     else:
-        rec_goods = getRecommendItems(c, nick)
+        rec_goods = getRecommendItems(mongo, nick)
     d = {'name':name,
             'position':position,
             'mode':mode,
@@ -412,30 +373,23 @@ def saveEditTemplate(request):
     tempid=g.get('tempid', '').strip()
     if not tempid:
         return addTemplate(request, nick)
-    try:
-        c=pymongo.Connection('127.0.0.1', 27017)
-    except Exception as e:
-        dlog.warning('connecting to mongodb fail: %s' %(str(e)))
-        return ErrorRedirect.defaultError()
-    ts = c.top.template
+    ts = mongo.top.template
     try:
         qc = ts.find({'_id':bson.ObjectId(tempid), 'nick':nick, 'editable':True})
     except Exception as e:
         dlog.warning('error in getting template of tempid=%s and nick=%s from db: %s' %(tempid, nick, e))
-        c.disconnect()
         return ErrorRedirect.defaultError()
     if qc.count() != 1:
         dlog.warning('get template[%s] from db fail: [%s]' \
                 %(tempid, ';'.join(map(lambda x: str(x['_id']), qc))))
     try:
-        d = editTemplateInternal(request, c, nick)
+        d = editTemplateInternal(request, mongo, nick)
     except Exception as e:
         dlog.warning('user[%s] edit template[%s] fail: %s' %(nick, tempid, str(e)))
-        c.disconnect()
+        mongo.disconnect()
         return ErrorRedirect.defaultError()
     ts.update({'_id':bson.ObjectId(tempid)}, {'$set':d})
-    page = generatePage(c, tempid, nick)
-    c.disconnect()
+    page = generatePage(mongo, tempid, nick)
     dlog.info('user [%s] save edit template[%s] result' %(nick, tempid))
     return HttpResponse(page, mimetype="text/plain")
     
@@ -451,28 +405,20 @@ def editTemplate(request):
     if not tempid:
         dlog.warning('user[%s] get tempid from request fail: %s' %(nick))
         return ErrorRedirect.defaultError()
-    try:
-        c=pymongo.Connection('127.0.0.1', 27017)
-    except Exception as e:
-        dlog.warning('connecting to mongodb fail: %s' %(str(e)))
-        return ErrorRedirect.defaultError()
-    ts = c.top.template
+    ts = mongo.top.template
     try:
         q = ts.find({'_id':bson.ObjectId(tempid), 'nick':nick, 'editable':True})
     except Exception as e:
         dlog.warning('error in getting template of tempid=%d and nick=%s: %s' %(tempid, nick, str(e)))
-        c.disconnect()
         return ErrorRedirect.defaultError()
     if q.count() != 1:
         dlog.warning('get template from db fail: count==%d' %(q.count()))
-        c.disconnect()
         return ErrorRedirect.defaultError()
     q = q[0]
     q['id']=str(q['_id'])
     d={'template':q, 
             'action':'/top/saveedit.html?&tempid='+tempid,
             'nick':nick}
-    c.disconnect()
     dlog.info('user[%s] edit template[%s]' %(nick, q['id']))
     return render_to_response('new-template.html', d)
 
@@ -485,13 +431,8 @@ def viewHistory(request):
     nick = param['nick']
     g = request.GET
     tempid=g.get('tempid', '').strip()
-    try:
-        c=pymongo.Connection('127.0.0.1', 27017)
-    except Exception as e:
-        dlog.warning('connecting to mongodb fail: %s' %(str(e)))
-        return ErrorRedirect.defaultError()
-    mh = c.top.history
-    ts = c.top.template
+    mh = mongo.top.history
+    ts = mongo.top.template
     try:
         if tempid:
             hl = mh.find({'tempid':tempid, 'nick':nick})
@@ -499,7 +440,6 @@ def viewHistory(request):
             hl = mh.find({'nick':nick})
     except Exception as e:
         dlog.warning('error in getting template of tempid=%s and nick=%s: %s' %(tempid, nick, str(e)))
-        c.disconnect()
         return ErrorRedirect.defaultError()
     hl = hl.sort('_id', pymongo.DESCENDING)
     qsl = []
@@ -519,13 +459,11 @@ def viewHistory(request):
         t = ts.find({'_id':bson.ObjectId(i['tempid'])})
         if t.count() != 1:
             dlog.warning('error when getting template[%s]' %(i['tempid']))
-            c.disconnect()
             return ErrorRedirect.defaultError()
         i['name']=t[0]['name']
         i['id']=str(i['_id'])
         qsl.append(i)
     d={'history':qsl, 'nick':nick}
-    c.disconnect()
     return render_to_response('operation-list.html', d)
 
 def historyDetail(request):
@@ -541,19 +479,12 @@ def historyDetail(request):
     op = g.get('op', '').strip()
     if not hisid or op not in ['suc', 'fail'] or not mp:
         dlog.warning('user[%s] get hisid or op from request fail' %(nick))
-        c.disconnect()
         return ErrorRedirect.defaultError()
-    try:
-        c=pymongo.Connection('127.0.0.1', 27017)
-    except Exception as e:
-        dlog.warning('connecting to mongodb fail: %s' %(str(e)))
-        c.disconnect()
-        return ErrorRedirect.defaultError()
-    mh = c.top.history 
+    mh = mongo.top.history 
     q = mh.find({'_id':bson.ObjectId(hisid), 'mpid':mp})
     if q.count() != 1:
         dlog.warning('error in getting history from db: %s' %(hisid))
-        c.disconnect()
+        mongo.disconnect()
         return ErrorRedirect.defaultError()
     q = q[0]
     if op == 'suc':
@@ -571,7 +502,7 @@ def historyDetail(request):
     num = math.ceil(1.0*num/rn)
     ct = ct[pn:pn+rn]
     details = []
-    its = c.top.items
+    its = mongo.top.items
     for i in ct:
         print i[0]
         ai = its.find_one({'num_iid':i[0]})
@@ -599,28 +530,20 @@ def useTemplate(request):
     if not tempid:
         dlog.warning('user[%s] get tempid fail' %(nick))
         return ErrorRedirect.defaultError()
-    try:
-        c=pymongo.Connection('127.0.0.1', 27017)
-    except Exception as e:
-        dlog.warning('connecting to mongodb fail: %s' %(str(e)))
-        return ErrorRedirect.defaultError()
-    ts = c.top.template 
+    ts = mongo.top.template 
     x = ts.find_and_modify({'_id':bson.ObjectId(tempid), 'status':'s'}, update={'$set':{'status':'U'}})
     if not x:
         dlog.warning('template[%s] is not found or is not unused' %(tempid))
-        c.disconnect()
         return ErrorRedirect.defaultError()
-    page = generatePage(c, tempid, nick)
-    its = c.top.items 
-    mp = c.top.manipulate 
-    #mh = c.top.history
+    page = generatePage(mongo, tempid, nick)
+    its = mongo.top.items 
+    mp = mongo.top.manipulate 
     goods = its.find({'nick':nick})
     n = goods.count()
     mpid = uuid.uuid4().hex
     for i in goods:
         mp.insert({'tempid':tempid, 'nick':nick, 'num_iid':i['num_iid'], 'page':page, 'status':'U', 'created':time.time(), 'mpid':mpid})
     #mh.insert({'nick':nick, 'tempid':tempid, 'status':'U', 'created':time.time()})
-    c.disconnect()
     n = n/60+1
     d={'op':'use', 'ti':n}
     return HttpResponse(json.dumps(d), mimetype="text/plain")
@@ -637,27 +560,19 @@ def stopTemplate(request):
     if not tempid:
         dlog.warning('user[%s] get tempid fail' %(nick))
         return ErrorRedirect.defaultError()
-    try:
-        c=pymongo.Connection('127.0.0.1', 27017)
-    except Exception as e:
-        dlog.warning('connecting to mongodb fail: %s' %(str(e)))
-        return ErrorRedirect.defaultError()
-    ts = c.top.template 
+    ts = mongo.top.template 
     x = ts.find_and_modify({'_id':bson.ObjectId(tempid), 'status':'u'}, update={'$set':{'status':'S'}})
     if not x:
         dlog.warning('template[%s] is not found or is not used' %(tempid))
-        c.disconnect()
         return ErrorRedirect.defaultError()
-    its = c.top.items 
-    mp = c.top.manipulate
-    #mh = c.top.history
+    its = mongo.top.items 
+    mp = mongo.top.manipulate
     goods = its.find({'nick':nick})
     n = goods.count()
     mpid = uuid.uuid4().hex
     for i in goods:
         mp.insert({'tempid':tempid, 'nick':nick, 'num_iid':i['num_iid'], 'status':'S', 'created':time.time(), 'mpid':mpid})
     #mh.insert({'nick':nick, 'tempid':tempid, 'status':'U', 'created':time.time()})
-    c.disconnect()
     n = n/60+1
     d={'op':'stop', 'ti':n}
     return HttpResponse(json.dumps(d), mimetype="text/plain")
@@ -671,11 +586,7 @@ def topindex(request):
         setWGID(request, r)
         return r
     nick = param['nick']
-    try:
-        c=pymongo.Connection('127.0.0.1', 27017)
-    except Exception as e:
-        raise Exception('connecting to mongodb fail: %s' %(str(e)))
-    tu = c.top.user 
+    tu = mongo.top.user 
     uu = tu.find({'nick':nick})
     if uu.count()==0:
         try:
@@ -688,18 +599,14 @@ def topindex(request):
         uu = tu.find({'nick':nick})
         if uu.count() != 1:
             dlog.warning('more than 1 nick in db, nick: %s' %(nick))
-            c.disconnect()
             return ErrorRedirect.defaultError()
         uu = uu[0]
         if 'sessV' in uu and not uu['sessV']:
             dlog.warning('sessionKey expire: %s' %(nick))
-            c.disconnect()
             return ErrorRedirect.sessionKey()
     except Exception as e:
         dlog.warning('error occur when checking sessionKey in db[%s]: %s' %(nick, str(e)))
-        c.disconnect()
         return ErrorRedirect.defaultError()
-    c.disconnect()
     r = render_to_response('index.html', {'nick':nick})
     if param['sk_from_req']:
         g=request.GET
@@ -747,7 +654,8 @@ def toperror(request):
     setWGID(request, r)
     return r
 
-
+def useShow(request):
+    return r
 
 
 

@@ -177,6 +177,6 @@ LOGGING = {
 }
 
 #for mongodb 
-import mongoengine 
-mongoengine.connect('top', host='127.0.0.1', port=27017)
+import pymongo
+mongo = pymongo.Connection()
 
