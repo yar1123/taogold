@@ -672,7 +672,11 @@ def useShow(request):
             itmptime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(itmptime))
             itemsnum = i['success']
             itemsnum = len(itemsnum)
-            sid = ushop.get(i['nick'], fields='sid')
+            try:
+                sid = ushop.get(i['nick'], fields='sid')
+                sid = sid['shop']['sid']
+            except:
+                sid=0
             d = {'time': itmptime,
                     'nick':i['nick'],
                     'level':u['user']['seller_credit']['level'],
