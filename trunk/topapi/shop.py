@@ -19,4 +19,4 @@ class Shop(TBase):
 if __name__ == '__main__':
     s = Shop()
 
-    print s.get('淘金电商', fields='sid')
+    print s.get('淘金电商')
