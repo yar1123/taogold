@@ -657,7 +657,7 @@ def toperror(request):
 def useShow(request):
     db = mongo.top
     try:
-        x = db.history.find({'status':'U'}, fields=['nick', 'tempid', 'success']).sort( [('_id', -1), ] ).limit(10)
+        x = db.history.find({'status':'U', 'nick':{'$nin':['淘金电商', '淘宝开放平台', '装修市场测试']}}, fields=['nick', 'tempid', 'success']).sort( [('_id', -1), ] ).limit(10)
         r = []
         for i in x:
             u = db.user.find_one({'nick':i['nick']}, fields=['user.seller_credit.level'])
