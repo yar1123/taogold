@@ -339,7 +339,8 @@ def onsaleGoods(request):
         #catid = int(catid)
         goods = [i for i in goods if catid in i['seller_cids'].split(',')]
     if word:
-        goods = [i for i in goods if word in i['title']]
+        word = word.lower()
+        goods = [i for i in goods if word in i['title'].lower()]
     goods = goods[start*len : (start+1)*len]
     rstr = json.dumps(goods)
     c.disconnect()
