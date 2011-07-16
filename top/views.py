@@ -677,6 +677,7 @@ def useShow(request):
                 sid = sid['shop']['sid']
                 st = sid['shop']['title']
             except:
+                raise
                 sid=0
                 st=''
             d = {'time': itmptime,
