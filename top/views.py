@@ -655,6 +655,7 @@ def toperror(request):
     return r
 
 def useShow(request):
+    db = mongo.top
     try:
         x = db.history.find({'status':'U'}, fields=['nick', 'tempid', 'success']).sort( [('_id', 1), ] ).limit(10)
         r = []
