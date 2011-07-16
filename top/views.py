@@ -673,6 +673,7 @@ def useShow(request):
             r.append(d)
     except Exception as e:
         dlog.warning('error in useShow: %s' %(str(e)))
+        raise
         return ErrorRedirect.defaultError()
     y = json.dumps(r)
     return HttpResponse(y, mimetype="text/plain")
