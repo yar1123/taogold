@@ -4,7 +4,15 @@
 首页
 {% endblock %}
 
+{% block customjs %}
+<script src="/assets/js/main/index.js"></script>
+{% endblock %}
+
 {% block maincontent %}
+<div class="box box-padding">
+    <div class="box-hd"><h3>最新用户</h3></div>
+    <div id="S_UserList" class="box-bd"></div>
+</div>
 <div class="box box-padding">
     <div class="box-bd">
         <div class="intro">
