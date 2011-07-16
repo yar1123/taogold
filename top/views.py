@@ -679,7 +679,8 @@ def useShow(request):
         raise
         return ErrorRedirect.defaultError()
     y = json.dumps(r)
-    return HttpResponse(y, mimetype="text/plain")
+    #return HttpResponse(y, mimetype="text/plain")
+    return HttpResponse(y, mimetype="application/json")
 
 
 
