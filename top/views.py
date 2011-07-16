@@ -673,8 +673,9 @@ def useShow(request):
             itemsnum = i['success']
             itemsnum = len(itemsnum)
             try:
-                sid = ushop.get(i['nick'], fields='sid')
+                sid = ushop.get(i['nick'], fields='sid,title')
                 sid = sid['shop']['sid']
+                st = sid['shop']['title']
             except:
                 sid=0
             d = {'time': itmptime,
@@ -683,6 +684,7 @@ def useShow(request):
                     'tempname':t['name'],
                     'itemsnum':itemsnum,
                     'sid':sid,
+                    'stitle':st,
                     }
             r.append(d)
     except Exception as e:
