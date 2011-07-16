@@ -669,7 +669,7 @@ def useShow(request):
                     'nick':i['nick'],
                     'level':u['user']['seller_credit']['level'],
                     'tempname':t['name'],
-                    'itemsnum':len(x['success'])
+                    'itemsnum':len(i['success'])
                     }
             r.append(d)
     except Exception as e:
