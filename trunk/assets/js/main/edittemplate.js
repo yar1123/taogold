@@ -101,7 +101,7 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
             dialog.appendContent(D.create(str));
             
             //item模板
-            itemTempl = '<div><div class="img"><image src="{pic_url}"/></div><a class="title" href="http://item.taobao.com/item.htm?id={num_iid}" target="_blank">{title}</a><span class="price">￥{price}</span><div class="operation"><a class="add" href="#">推荐</a><a class="moveup" href="#">上移</a><a class="movedown" href="#">下移</a><a class="remove" href="#">删除</a></div></div>';   
+            itemTempl = '<div"><div class="img"><image src="{pic_url}"/></div><a class="title" iid="{num_iid}" href="http://item.taobao.com/item.htm?id={num_iid}" target="_blank">{title}</a><span class="price">￥{price}</span><div class="operation"><a class="add" href="#">推荐</a><a class="moveup" href="#">上移</a><a class="movedown" href="#">下移</a><a class="remove" href="#">删除</a></div></div>';   
             
             //实例化选择item
             coupleSelect = new CoupleSelect({src:'#S_CoupleSelectSrc',target:'#S_CoupleSelectTarget',itemCls:'item',itemTempl:itemTempl});
@@ -183,6 +183,24 @@ KISSY.use("taogold/preview,taogold/dialog,taogold/coupleselect",function(S, Prev
                         param,
                         function(o){
                             var data = eval(o);
+                            
+                            if(data.length == 0) return;
+                            
+                            //筛选数据，如果在已选中宝贝中有，则去掉该项数据
+                            var selectedItems = coupleSelect.getTargetItems();
+                            var selectedIids = [];
+                            for(var i = 0,len = selectedItems.length;i<len;i++){
+                                selectedIids.push(D.get('.title',selectedItems[i]).getAttribute('iid'));
+                            }
+                            selectedIids = selectedIids.toString(); 
+                            for(var i=0,len = data.length;i<len;i++){
+                                if(selectedIids.indexOf(data[i].num_iid)>-1){
+                                    data.splice(i,1);
+                                    i--;
+                                    len--;
+                                }
+                            }
+                            
                             //如果更换了分类或关键词，则重新加载备选项，否则鼠标在coupleSelect源滚动时，增加备选项
                             if((param.cat == lastParam.cat) && (param.kw == lastParam.kw)){
                                 coupleSelect.appendSrcItems(data);
