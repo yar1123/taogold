@@ -655,7 +655,27 @@ def toperror(request):
     return r
 
 def useShow(request):
-    return r
+    try:
+        x = db.history.find({'status':'U'}, fields=['nick', 'tempid', 'success']).sort( [('_id', 1), ] ).limit(10)
+        r = []
+        for i in x:
+            u = db.user.find_one({'nick':i['nick']}, fields=['user.seller_credit.level'])
+            t = db.template.find_one({'_id':bson.ObjectId(i['tempid'])})
+            itmptime = i['_id'].generation_time.strftime('%s')
+            itmptime = int(itmptime) + 28800
+            itmptime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(itmptime))
+            d = {'time': itmptime,
+                    'nick':i['nick'],
+                    'level':u['user']['seller_credit']['level'],
+                    'tempname':t['name'],
+                    'itemsnum':len(x['success'])
+                    }
+            r.append(d)
+    except Exception as e:
+        dlog.warning('error in useShow: %s' %(str(e)))
+        return ErrorRedirect.defaultError()
+    y = json.dumps(r)
+    return HttpResponse(y, mimetype="text/plain")
 
 
 
