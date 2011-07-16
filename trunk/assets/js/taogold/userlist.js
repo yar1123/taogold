@@ -1,4 +1,4 @@
-KISSY.add("taogold/userlist",function(S){
+KISSY.add("taogold/userlist",function(S, Switchable){
     var D = S.DOM, E = S.Event, doc = document;
     var levelPicPath = 'http://img.taobaocdn.com/newrank/',
         levelPicNames = [
@@ -7,7 +7,7 @@ KISSY.add("taogold/userlist",function(S){
         's_cap_1.gif','s_cap_2.gif','s_cap_3.gif','s_cap_4.gif','s_cap_5.gif',
         's_crown_1.gif','s_crown_2.gif','s_crown_3.gif','s_crown_4.gif','s_crown_5.gif'    
     ],
-        templ = '<div class="userinfo"><a href="">{nick}<img src="{level}" /></a> {time} 为 <b>{itemsnum}</b> 个宝贝启用了 "{tempname}" 。</div>';
+        templ = '<li class="item"><a href="">{nick}<img src="{level}" /></a> {time} 为 <b>{itemsnum}</b> 个宝贝启用了 "{tempname}" </li>';
     
     function UserList(container){
         var self = this;
@@ -29,15 +29,25 @@ KISSY.add("taogold/userlist",function(S){
         },
         _render:function(data){
             var self = this, container = this.container, str = '';
-            str += '<div class="userlist">';
+            str += '<div class="userlist" style="position:relative;"><ul class="list">';
             for(var i = 0,len = data.length;i<len;i++){
                 data[i].level = levelPicPath + levelPicNames[data[i].level];
                 str += S.substitute(templ,data[i]);
             }
-            str += '</div>';
-            container.innerHTML = str;            
+            str += '</ul></div>';
+            container.innerHTML = str; 
+
+            console.log(Switchable.Slide);
+            Switchable.Slide(D.get('.userlist',container), {
+                contentCls: 'list',
+                hasTriggers: false,
+                effect: 'scrolly',
+                easing: 'easeOutStrong',
+                interval: 3,
+                duration: .2
+            });
         }
     });
     
     return UserList;
-});
+},{requires:['switchable']});
