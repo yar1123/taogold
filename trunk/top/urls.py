@@ -30,4 +30,5 @@ urlpatterns = patterns('',
     url(r'^top/history.html$', viewHistory),
     url(r'^top/hisdetail.html$', historyDetail),
     url(r'^top/cats.html$', getCats),
+    url(r'^top/ushow.html$', useShow),
 )
