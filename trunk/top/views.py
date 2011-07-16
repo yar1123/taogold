@@ -659,6 +659,7 @@ def toperror(request):
 
 def useShow(request):
     db = mongo.top 
+    ushop = Shop()
     user_filter = ['淘金电商', '淘宝开放平台', '装修市场测试', '商家测试帐号17']
     try:
         x = db.history.find({'status':'U', 'nick':{'$nin':user_filter}}, fields=['nick', 'tempid', 'success']).sort( [('_id', -1), ] ).limit(10)
@@ -671,11 +672,13 @@ def useShow(request):
             itmptime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(itmptime))
             itemsnum = i['success']
             itemsnum = len(itemsnum)
+            sid = ushop.get(i['nick'], fields='sid')
             d = {'time': itmptime,
                     'nick':i['nick'],
                     'level':u['user']['seller_credit']['level'],
                     'tempname':t['name'],
                     'itemsnum':itemsnum,
+                    'sid':sid,
                     }
             r.append(d)
     except Exception as e:
