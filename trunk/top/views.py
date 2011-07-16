@@ -677,7 +677,6 @@ def useShow(request):
                 st = sid['shop']['title']
                 sid = sid['shop']['sid']
             except:
-                raise
                 sid=0
                 st=''
             d = {'time': itmptime,
@@ -694,8 +693,8 @@ def useShow(request):
         raise
         return ErrorRedirect.defaultError()
     y = json.dumps(r)
-    #return HttpResponse(y, mimetype="text/plain")
-    return HttpResponse(y, mimetype="application/json")
+    return HttpResponse(y, mimetype="text/plain")
+    #return HttpResponse(y, mimetype="application/json")
 
 
 
