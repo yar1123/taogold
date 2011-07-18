@@ -48,5 +48,7 @@
 
 .couple-select .bar{padding:5px 10px;border-bottom:1px dashed #ddd;background:#f2f2f2;}
 
-.userlist{height:154px;overflow:hidden;}
-.userlist .item{padding:5px;border-bottom:1px dashed #ddd;}
+.userlist{position:relative;height:92px;overflow:hidden;}
+.userlist .list{width:100%;}
+.userlist .item{height:92px;overflow:hidden;}
+.userlist .userinfo{padding:5px;border-bottom:1px dashed #ddd;}
