@@ -7,7 +7,7 @@ KISSY.add("taogold/userlist",function(S, Switchable){
         's_cap_1.gif','s_cap_2.gif','s_cap_3.gif','s_cap_4.gif','s_cap_5.gif',
         's_crown_1.gif','s_crown_2.gif','s_crown_3.gif','s_crown_4.gif','s_crown_5.gif'    
     ],
-        templ = '<li class="item"><a href="">{nick}<img src="{level}" /></a> {time} 为 <b>{itemsnum}</b> 个宝贝启用了 "{tempname}" </li>';
+        templ = '<div class="userinfo"><a href="http://shop{sid}.taobao.com" target="_blank">{nick}<img src="{level}" /></a> {time} 为 <b>{itemsnum}</b> 个宝贝启用了 "{tempname}" </div>';
     
     function UserList(container){
         var self = this;
@@ -29,15 +29,19 @@ KISSY.add("taogold/userlist",function(S, Switchable){
         },
         _render:function(data){
             var self = this, container = this.container, str = '';
-            str += '<div class="userlist" style="position:relative;"><ul class="list">';
-            for(var i = 0,len = data.length;i<len;i++){
-                data[i].level = levelPicPath + levelPicNames[data[i].level];
-                str += S.substitute(templ,data[i]);
+            str += '<div class="box box-padding"><div class="box-hd"><h3>最新用户</h3></div><div class="box-bd"><div class="userlist"><ul class="list">';
+            for(var i = 0,len = Math.floor(data.length/3);i<len;i++){
+                str += '<li class="item">';
+                for(var j = 0; j < 3 ;j++){
+                    var idx = i*3+j;
+                    data[idx].level = levelPicPath + levelPicNames[data[idx].level];
+                    str += S.substitute(templ,data[idx]);
+                }
+                str += '</li>';
             }
-            str += '</ul></div>';
+            str += '</ul></div></div></div>';
             container.innerHTML = str; 
 
-            console.log(Switchable.Slide);
             Switchable.Slide(D.get('.userlist',container), {
                 contentCls: 'list',
                 hasTriggers: false,
