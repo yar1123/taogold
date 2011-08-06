@@ -11,7 +11,10 @@ KISSY.use("taogold/preview,taogold/dialog",function(S, Preview, Dialog){
 
     var D = S.DOM, E = S.Event, doc = document, currentTrigger;
     
-    var useTips = '启用该模板，将往您的所有宝贝描述里插入您设定的推荐内容。<br/>确定要启用吗？',
+    var useTips = {
+            'a':'启用“系统自动推荐”模板，系统每周会对您的每个宝贝进行一次全面分析，并自动更新相关宝贝推荐结果（会邮件通知到您）。<br/>确定要启用吗？',
+            'b':'启用“人工选择宝贝”模板，将往您的所有宝贝描述里插入您设定的推荐内容。<br/>确定要启用吗？'
+        },
         stopTips = '禁用该模板，将从您的所有宝贝描述里删除您设定的推荐内容。<br/>确定要禁用吗？';
            
     var alertDialog = new Dialog({title:'提示', width:400, closeBtn:false}),
@@ -47,7 +50,7 @@ KISSY.use("taogold/preview,taogold/dialog",function(S, Preview, Dialog){
         if(D.hasClass(t,'S_UseTrigger') || D.hasClass(t,'S_StopUseTrigger')){
             e.preventDefault();
             currentTrigger = t;
-            confirmDialog.refreshContent(D.hasClass(t,'S_UseTrigger') ? useTips : stopTips);
+            confirmDialog.refreshContent(D.hasClass(t,'S_UseTrigger') ? useTips[currentTrigger.getAttribute('tempmode')] : stopTips);
             confirmDialog.show();                   
         }
     })

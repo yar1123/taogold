@@ -49,7 +49,7 @@
                                 <a href="/top/rechome.html">刷新页面</a>
                             {% else %}
                                 {% if i.status == 's' %}
-                                <a class="S_UseTrigger" tempid="{{i.id}}" href="/top/use.html?tempid={{i.id}}">启用</a> 
+                                <a class="S_UseTrigger" tempid="{{i.id}}" tempmode="{{i.mode}}" href="/top/use.html?tempid={{i.id}}">启用</a> 
                                 {%endif%}
 
                                 {% if i.status == 'u' %}
