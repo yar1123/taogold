@@ -47,7 +47,7 @@
                             {%if i.status == 'T' %}正在禁用...{% endif %}
                         </td>
                         <td >
-                            {%if i.status == 'U' or i.status == 'S' %}
+                            {%if i.status == 'U' or i.status == 'S' or i.status == 'V' or  i.status == 'T'%}
                                 <a href="/newtop/rechome.html">刷新页面</a>
                             {% else %}
                                 {% if i.status == 's' %}
