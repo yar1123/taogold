@@ -248,10 +248,10 @@ def start_tsvr(tnum=30):
     fw.write(str(os.getpid()))
     fw.flush()
     fw.close
-    Tsvr('update').run()
-    #Tsvr('new_user').start()
-    #for i in range(tnum):
-    #    Tsvr('update').start()
+    #Tsvr('update').run()
+    Tsvr('new_user').start()
+    for i in range(tnum):
+        Tsvr('update').start()
 
 def main():
     try:
@@ -266,12 +266,12 @@ def main():
             sys.exit(0)
     except Exception as e:
         sys.exit('fork #2 error: %s' %(str(e)))
-    start_tsvr(2)
+    start_tsvr(30)
 
 
 if __name__ == '__main__':
     logging.config.fileConfig('./conf/log.conf')
     tlog = logging.getLogger('root')
-    start_tsvr(2)
-    #main()
+    #start_tsvr(2)
+    main()
 
