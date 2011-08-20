@@ -21,17 +21,67 @@ class Tsvr(): #threading.Thread ):
         #threading.Thread.__init__ ( self )
 
     def _doUpdateStop(self, nick):
-        return
+        tlog.debug('update(stop) for %s' %(nick))
+        u = self.db.user.find_one({'_id':nick})
+        if not u:
+            raise Exception('%s not in db' %(nick))
+        allitems = Items().onsale(u['top_session'], fields='num_iid,title')
+        tbitem = Item()
+        temp = u['tg_temp']
+        flag = '<a name="recommend_wgid_%s"></a>.*<a name="recommend_wgid_%s"></a>' %(temp['html_flag'], temp['html_flag'])
+        repl = re.compile(flag, re.DOTALL)
+        hisid = self.db.history.save({'nick':nick, 'm':2})
+        suc = 0
+        fail = 0
+        for item in allitems:
+            num_iid = item['num_iid']
+            title = item['title']
+            tlog.debug('process update: nick=%s num_iid=%s' %(nick, num_iid))
+            try:
+                item_allinfo = tbitem.get(u['top_session'], num_iid, fields='desc')
+            except Exception as e:
+                tlog.warning('get [%s:%d] desc from taobao fail: %s' %(nick, num_iid, repr(e)))
+                self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'从淘宝获取数据失败'})
+                fail += 1
+                continue
+            if 'desc' in item_allinfo:
+                desc = item_allinfo['desc']
+            else:
+                tlog.warning('desc not in [%s:%d] info getting from taobao: %s' %(nick, num_iid, repr(e)))
+                self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'没有商品描述'})
+                fail += 1
+                continue
+            if temp['html_flag'] not in desc:
+#没有启用，算成功
+                self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'成功1'})
+                suc += 1
+                continue
+            try:
+                desc = repl.sub(' ', desc)
+                tbinfo = tbitem.update(u['top_session'], num_iid, desc=desc)
+                tlog.debug('update [%s:%d] result: %s' %(nick, num_iid, repr(tbinfo)))
+            except Exception as e:
+                tlog.warning('update[use] item[%s:%d] to taobao fail: %s' %(nick, num_iid))
+                self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'更新推荐数据失败'})
+                fail += 1
+                continue
+            self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'成功2'})
+            suc += 1
+        self.db.history.update({'_id':hisid}, {'$set':{'suc':suc, 'fail':fail}})
 
     def _doUpdateUse(self, nick):
         tlog.debug('update for %s' %(nick))
         u = self.db.user.find_one({'_id':nick})
         if not u:
             raise Exception('%s not in db' %(nick))
-        allitems = Items().onsale(u['top_session'], fields='num_iid')
+        allitems = Items().onsale(u['top_session'], fields='num_iid,title')
         tbitem = Item()
+        hisid = self.db.history.save({'nick':nick, 'm':1})
+        suc = 0
+        fail = 0
         for item in allitems:
             num_iid = item['num_iid']
+            title = item['title']
             tlog.debug('process update: nick=%s num_iid=%s' %(nick, num_iid))
             di = self.db.items.find_one({'_id':num_iid})
             if di:
@@ -52,22 +102,28 @@ class Tsvr(): #threading.Thread ):
                 page = self.generatePage(nick, rec_iids)
             except Exception as e:
                 tlog.warning('generate rec page for [%s:%d] fail: %s' %(nick, num_iid, str(e)))
+                self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'生成widget失败'})
+                fail += 1
                 continue 
             temp = u['tg_temp']
-            #has_flag = page.find(temp['html_flag'])
             if temp['html_flag'] not in page:
-                tlog.warning('generated page wrong')
-                print 'generated page wrong'*3
+                tlog.warning('generated wrong page for [%s:%d]' %(nick, num_iid))
+                self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'生成错误的widget'})
+                fail += 1
                 continue
             try:
                 item_allinfo = tbitem.get(u['top_session'], num_iid, fields='desc')
             except Exception as e:
                 tlog.warning('get [%s:%d] desc from taobao fail: %s' %(nick, num_iid, repr(e)))
+                self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'从淘宝获取数据失败'})
+                fail += 1
                 continue
             if 'desc' in item_allinfo:
                 desc = item_allinfo['desc']
             else:
                 tlog.warning('desc not in [%s:%d] info getting from taobao: %s' %(nick, num_iid, repr(e)))
+                self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'没有商品描述'})
+                fail += 1
                 continue
             try:
                 if temp['position'] != 'b':
@@ -81,11 +137,15 @@ class Tsvr(): #threading.Thread ):
                 tbinfo = tbitem.update(u['top_session'], num_iid, desc=desc)
                 tlog.debug('update [%s:%d] result: %s' %(nick, num_iid, repr(tbinfo)))
             except Exception as e:
-                raise
+                self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'更新推荐数据失败'})
+                fail += 1
                 tlog.warning('update[use] item[%s:%d] to taobao fail: %s'
                         %(nick, num_iid, str(e)))
 #增加对淘宝的错误码的判断，部分错误码需要停止该用户的继续更新操作
                 continue
+            self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'成功'})
+            suc += 1
+        self.db.history.update({'_id':hisid}, {'$set':{'suc':suc, 'fail':fail}})
 
     def generatePage(self, nick, num_iids):
         str_iids = ';'.join([str(i) for i in num_iids])
@@ -110,12 +170,16 @@ class Tsvr(): #threading.Thread ):
             if not x:
                 return False
             self._doUpdateUse(x['_id'])
+            x = self.db.user.find_and_modify({'_id':x['_id']},
+                    update={'$set':{'tg_temp.status':'u'}})
         else:
             x = self.db.user.find_and_modify({'tg_temp.status':'S'},
                     update={'$set':{'tg_temp.status':'T'}})
             if not x:
                 return False
             self._doUpdateStop(x['_id'])
+            x = self.db.user.find_and_modify({'_id':x['_id']},
+                    update={'$set':{'tg_temp.status':'s'}})
         return True
 
     def manipulate(self):

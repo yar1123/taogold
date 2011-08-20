@@ -17,7 +17,7 @@
 
 <div class="box">
     <div class="box-hd">
-        <h3>历史操作详情</h3>
+        <h3>历史操作详情 |  操作类型 {{ history.m }} |  成功 {{ history.suc }} | 失败 {{ history.fail }}</h3>
     </div>
     <div class="box-bd">
         <div class="grid">
@@ -30,7 +30,7 @@
                 <thead>
                     <tr class="row">
                         <th>宝贝名称</th>
-                        <th>操作类型</th>
+                        <th>更新时间</th>
                         <th>操作结果</th>
                     </tr>
                 </thead>
@@ -39,12 +39,10 @@
                     <tr class="row">
                         <td><a href="http://item.taobao.com/item.htm?id={{d.num_iid}}" target="_blank">{{d.title}}</a></td>
                         <td>
-                            {%if manipulate == 'u'%} 启用 {%endif%}
-                            {%if manipulate == 's'%} 禁用 {%endif%}
+                            {{ d.time }}
                         </td>
                         <td>
-                            {%if op == 'suc' %}成功{%endif%}
-                            {%if op == 'fail' %}失败{%endif%}
+                            {{ d.r }}
                         </td>
                     </tr>
                     {%endfor%}

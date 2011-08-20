@@ -214,7 +214,6 @@ def viewHistory(request):
     if not u:
         dlog.warning('get user[%s] from db fail' %(nick))
         return ErrorRedirect.defaultError()
-    t = u['tg_temp']
     mh = mongo.taogold.history
     try:
         hl = mh.find({'nick':nick})
@@ -230,16 +229,6 @@ def viewHistory(request):
             i['time']= time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(itmptime))
         except:
             i['time']= i['_id'].generation_time.strftime('%Y-%m-%d %H:%M:%S')
-        try:
-            i['success_num'] = len(i['success'])
-        except:
-            i['success_num'] = 0
-        try:
-            i['fail_num'] = len(i['fail'])
-        except:
-            i['fail_num'] = 0 
-        i['manipulate'] = i['status'].lower()
-        i['name']=t['name']
         i['id']=str(i['_id'])
         qsl.append(i)
     d={'history':qsl, 'nick':nick}
@@ -254,46 +243,30 @@ def historyDetail(request):
     nick = param['nick']
     g = request.GET
     hisid=g.get('hisid', '').strip()
-    mp=g.get('mp', '').strip()
-    op = g.get('op', '').strip()
-    if not hisid or op not in ['suc', 'fail'] or not mp:
+    if not hisid:
         dlog.warning('user[%s] get hisid or op from request fail' %(nick))
         return ErrorRedirect.defaultError()
-    mh = mongo.taogold.history 
-    q = mh.find({'_id':bson.ObjectId(hisid), 'mpid':mp})
-    if q.count() != 1:
-        dlog.warning('error in getting history from db: %s' %(hisid))
-        return ErrorRedirect.defaultError()
-    q = q[0]
-    if op == 'suc':
-        num = len(q['success'])
-        ct = q['success']
-    else:
-        num = len(q['fail'])
-        ct = q['fail']
     try:
-        pn = int(g.get('pn', '1'))-1
-    except:
-        pn = 0
-    rn = 20
-    pn = pn*rn
-    num = math.ceil(1.0*num/rn)
-    ct = ct[pn:pn+rn]
-    details = []
-    its = mongo.taogold.items
-    for i in ct:
-        print i[0]
-        ai = its.find_one({'_id':i[0]})
-        if ai:
-            if op == 'fail':
-                try:
-                    ai['fail_factor'] = i[1]
-                except:
-                    ai['fail_factor'] = 'unkown'
-            details.append(ai)
-    d={'details':details, 
-            'manipulate':q['status']=='U' and 'u' or 's', 
-            'op':op, 'nick':nick, 'pagenum':num, 'pn':pn, 'op':op, 'hisid':hisid}
+        bhisid = bson.ObjectId(hisid)
+    except Exception as e:
+        dlog.warning('%s:%s is wrong history id' %(nick, hisid))
+        return ErrorRedirect.defaultError()
+    his = mongo.taogold.history.find_one({'_id':bhisid})
+    if not his:
+        dlog.warning('get history item of [%s:%s] fail' %(nick, hisid))
+        return ErrorRedirect.defaultError()
+    cur = mongo.taogold.hisdetail.find({'hisid':bhisid})
+    dsl = []
+    for i in cur:
+        try:
+            itmptime = i['_id'].generation_time.strftime('%s')
+            itmptime = int(itmptime) + 28800
+            i['time']= time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(itmptime))
+        except:
+            i['time']= i['_id'].generation_time.strftime('%Y-%m-%d %H:%M:%S')
+        dsl.append(i)
+    d={'details':dsl, 'history': his,
+            'nick':nick, 'hisid':hisid}
     return render_to_response('operation-detail.html', d)
 
 def useTemplate(request):
@@ -330,7 +303,6 @@ def topindex(request):
     try:
         param = checkSessionAndGetNick(request)
     except Exception as e:
-        raise
         dlog.warning('session key error: %s' %(str(e)))
         r = ErrorRedirect.sessionKey()
         setWGID(request, r)
