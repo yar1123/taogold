@@ -46,21 +46,21 @@
                         </td>
                         <td >
                             {%if i.status == 'U' or i.status == 'S' %}
-                                <a href="/top/rechome.html">刷新页面</a>
+                                <a href="/newtop/rechome.html">刷新页面</a>
                             {% else %}
                                 {% if i.status == 's' %}
-                                <a class="S_UseTrigger" tempid="{{i.id}}" tempmode="{{i.mode}}" href="/top/use.html?tempid={{i.id}}">启用</a> 
+                                <a class="S_UseTrigger" tempid="{{i.id}}" tempmode="{{i.mode}}" href="/newtop/use.html?tempid={{i.id}}">启用</a> 
                                 {%endif%}
 
                                 {% if i.status == 'u' %}
-                                    <a class="S_StopUseTrigger" tempid="{{i.id}}" href="/top/stop.html?tempid={{i.id}}">禁用</a> 
+                                    <a class="S_StopUseTrigger" tempid="{{i.id}}" href="/newtop/stop.html?tempid={{i.id}}">禁用</a> 
                                 {%endif%}                    
 
                                 | 
-                                <a class="S_PriviewTrigger" data-temp-id="{{i.id}}" href="/top/preview.html?tempid={{i.id}}">预览</a> 
+                                <a class="S_PriviewTrigger" data-temp-id="{{i.id}}" href="/newtop/preview.html?tempid={{i.id}}">预览</a> 
                                 | 
                                 {% if i.editable %}
-                                <a href="/top/edit.html?tempid={{i.id}}">修改</a>  
+                                <a href="/newtop/edit.html?tempid={{i.id}}">修改</a>  
                                 {% else %}
                                 <span title="预置模板不允许修改，需要自定义宝贝请点“创建模板”。">修改</span>  
                                 {% endif %}
