@@ -43,6 +43,7 @@
                             {%if i.status == 's' %}尚未启用{%endif%}
                             {%if i.status == 'U' %}正在启用...{% endif %}
                             {%if i.status == 'S' %}正在禁用...{% endif %}
+                            {%if i.status == 'V' %}正在更新...{% endif %}
                         </td>
                         <td >
                             {%if i.status == 'U' or i.status == 'S' %}
