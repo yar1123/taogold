@@ -1,0 +1,30 @@
+# Create your views here.
+
+import pymongo
+from topapi import *
+
+#from topapi.user import User
+#from topapi.items import Items
+#from topapi.item import Item
+#from topapi.shop import Shop
+#from topapi.sellercats import Sellercats
+
+from django.http import HttpResponse
+
+def wg(request):
+    #a=Items().list('4052705bdeff38LouvM7bc868bd2bcdf523d323dd6c3e49701793981', '9462948778', fields='num_iid,title')
+    #a=Item().get('4052705bdeff38LouvM7bc868bd2bcdf523d323dd6c3e49701793981', '9462948778')
+    #a=Item().update('4052705bdeff38LouvM7bc868bd2bcdf523d323dd6c3e49701793981', '9462948778', desc='hello world!')
+    #a=Shop().get('4052705bdeff38LouvM7bc868bd2bcdf523d323dd6c3e49701793981', 'wgd243')
+    a=Sellercats().list('4052705bdeff38LouvM7bc868bd2bcdf523d323dd6c3e49701793981', 'wgd243')
+    return HttpResponse(str(a))#'hello wgwang!')
+    c=pymongo.Connection('127.0.0.1', 27017)
+    db=c.top 
+    r=db.top.find_one()
+    return HttpResponse(str(r))#'hello wgwang!')
+
+
+
+
+
+

@@ -1,0 +1,55 @@
+{% extends "page.html" %}
+
+{% block pagetitle %}
+历史操作详情
+{% endblock %}
+
+{% block maincontent %}
+
+<!-- {{{ msg -->
+<div class="msg">
+	<div class="msg-default msg-tips">
+		<i class="msg-icon"></i>
+		<div class="msg-content">供您查看启用或禁用模板时涉及的具体宝贝</div>
+	</div>
+</div>
+<!-- msg }}} -->
+
+<div class="box">
+    <div class="box-hd">
+        <h3>历史操作详情 |  操作类型 {% if history.m == 1 %} 启用 {% else %} 禁用 {%endif%} |  成功 {{ history.suc }} | 失败 {{ history.fail }}</h3>
+    </div>
+    <div class="box-bd">
+        <div class="grid">
+            <table class="table">
+                <colgroup>
+                    <col width="548">
+                    <col width="100">
+                    <col width="100">
+                </colgroup>
+                <thead>
+                    <tr class="row">
+                        <th>宝贝名称</th>
+                        <th>更新时间</th>
+                        <th>操作结果</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for d in details %}
+                    <tr class="row">
+                        <td><a href="http://item.taobao.com/item.htm?id={{d.num_iid}}" target="_blank">{{d.title}}</a></td>
+                        <td>
+                            {{ d.time }}
+                        </td>
+                        <td>
+                            {{ d.r }}
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
