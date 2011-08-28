@@ -103,7 +103,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'newtop.urls'
+ROOT_URLCONF = 'top.urls'
 
 TEMPLATE_DIRS = (
     os.path.abspath('./template/'),
@@ -125,7 +125,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'newtop',
+    'top',
 )
 
 # A sample logging configuration. The only tangible logging
