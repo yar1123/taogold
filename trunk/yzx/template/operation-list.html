@@ -1,0 +1,69 @@
+{% extends "page.html" %}
+
+{% block pagetitle %}
+历史操作
+{% endblock %}
+
+{% block maincontent %}
+<!-- {{{ msg -->
+<div class="msg">
+	<div class="msg-default msg-tips">
+		<i class="msg-icon"></i>
+		<div class="msg-content">供您查看每个模板的最近操作记录</div>
+	</div>
+</div>
+<!-- msg }}} -->
+
+<div class="box">
+    <div class="box-hd">
+        <h3>历史操作</h3>
+    </div>
+    <div class="box-bd">
+        <div class="grid">
+            <table class="table">
+                <colgroup>
+                    <col width="170">
+                    <col width="278">
+                    <col width="100">
+                    <col width="200">
+                </colgroup>
+                <thead>
+                    <tr class="row">
+                        <th>操作时间</th>
+                        <th>模板名称</th>
+                        <th>操作类型</th>
+                        <th>操作结果</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for h in history %}
+                    <tr class="row">
+                        <td>{{h.time}}</td>
+                        <td>{{h.name}}</td>
+                        <td>
+                            {%if h.m == 1 %}启用{%endif%}
+                            {%if h.m == 2 %}禁用{%endif%}
+                        </td>
+                        <td>
+                            成功：
+                            {% if h.suc == 0 %}
+                            {{h.suc}} 
+                            {%else%}
+                            <a href="/newtop/hisdetail.html?hisid={{h.id}}&op=suc">{{h.suc}}</a>
+                            {%endif%}
+                            | 
+                            失败：
+                            {% if h.fail == 0 %}
+                            {{h.fail}} 
+                            {%else%}
+                            <a href="/newtop/hisdetail.html?hisid={{h.id}}&op=fail">{{h.fail}}</a>
+                            {%endif%} 
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
