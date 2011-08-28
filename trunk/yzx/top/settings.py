@@ -106,11 +106,12 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'top.urls'
 
 TEMPLATE_DIRS = (
-    os.path.abspath('./template/'),
+    os.path.abspath('./yzx/template/'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-) 
+)
+
 
 FORCE_SCRIPT_NAME = ''
 
