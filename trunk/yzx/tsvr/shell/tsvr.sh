@@ -28,7 +28,7 @@ mkdir -p $rootdir/status
 mkdir -p $rootdir/logs 
 
 . $shdir/functions
-export PYTHONPATH=$rootdir/../
+export PYTHONPATH=$rootdir/../../
 
 start()
 {
