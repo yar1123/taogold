@@ -383,18 +383,15 @@ def toperror(request):
 def useShow(request):
     db = mongo.taogold
     ushop = Shop()
-    user_filter = ['淘金电商', '淘宝开放平台', '装修市场测试', '商家测试帐号17']
+    user_filter = [] #['淘金电商', '淘宝开放平台', '装修市场测试', '商家测试帐号17']
     try:
-        x = db.history.find({'status':'U', 'nick':{'$nin':user_filter}}, fields=['nick', 'tempid', 'success']).sort( [('_id', -1), ] ).limit(10)
+        x = db.history.find({'m':1, 'nick':{'$nin':user_filter}}, fields=['nick', 'suc']).sort( [('_id', -1), ]).limit(10)
         r = []
         for i in x:
-            u = db.user.find_one({'nick':i['nick']}, fields=['user.seller_credit.level'])
-            t = db.template.find_one({'_id':bson.ObjectId(i['tempid'])})
+            u = db.user.find_one({'nick':i['nick']}, fields=['seller_credit.level'])
             itmptime = i['_id'].generation_time.strftime('%s')
             itmptime = int(itmptime) + 28800
             itmptime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(itmptime))
-            itemsnum = i['success']
-            itemsnum = len(itemsnum)
             try:
                 sid = ushop.get(i['nick'], fields='sid,title')
                 st = sid['shop']['title']
@@ -404,9 +401,8 @@ def useShow(request):
                 st=''
             d = {'time': itmptime,
                     'nick':i['nick'],
-                    'level':u['user']['seller_credit']['level'],
-                    'tempname':t['name'],
-                    'itemsnum':itemsnum,
+                    'level':u['seller_credit']['level'],
+                    'itemsnum':i['suc'],
                     'sid':sid,
                     'stitle':st,
                     }
