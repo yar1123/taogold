@@ -1,33 +1,19 @@
 ﻿{% extends "page.html" %}
 
-{% block pagetitle %}
-首页
-{% endblock %}
-
 {% block customjs %}
-<script src="/newassets/js/main/index.js"></script>
+<script src="/assets/js/main/index.js"></script>
 {% endblock %}
 
-{% block maincontent %}
-<div id="S_UserList"></div>
-<div class="box box-padding">
-    <div class="box-bd">
-        <div class="intro">
-            <p><b>欢迎使用淘金宝！只需<span class="h">一键操作</span>，自动为宝贝描述插入最合适的“相关宝贝推荐”，帮您<span class="h">提高转化率</span>，增加收入。</b></p>
-            <p class="go"><a href="/newtop/rechome.html"><img src="/newassets/appimg/index-btn.jpg" alt="我懂了，立即进模板列表点击“启用”吧！" /></a></p>
-            <dl>
-                <dt>两种推广模式</dt>
-                <dd>1、<em class="b">自动模式</em>：只需一键启用，系统自动为您算出最适合的3个宝贝，帮您节省挑选宝贝的时间</dd>
-                <dd>2、<em class="b">人工模式</em>：您可以选择人工选择3个宝贝进行推荐，满足您要特意推广某些单品的活动需要</dd>
-                <dt>两种设计风格</dt>
-                <dd>1、<em class="b">集市店铺</em>：采用淘宝橙色调，与淘宝主站风格保持完美一致，所有浏览器完美兼容。</dd>
-                <dd>2、<em class="b">商城店铺</em>：采用商城红色调，与淘宝商城风格保持完美一致，所有浏览器完美兼容。</dd>
-                <dd><img src="/newassets/appimg/preview.jpg" alt="设计风格预览"/></dd>
-                <dt>一键禁用，彻底卸载</dt>
-                <dd>插入到宝贝描述的推荐代码，可以一键禁用，彻底卸载，让您无后顾之忧</dd>
-                <dd>您还可以通过“历史操作”查询到对每个模板的操作记录，100%安心。</dd>
-            </dl>
-        </div>
-    </div>
+{% block content %}
+<div><img src="/assets/appimg/preview.jpg" /></div>
+<div>
+    <a href="#"><img src="/assets/appimg/use-btn.png"/></a>
 </div>
+<ul class="intro">
+    <li>一键启用，自动为宝贝描述加入最合适的关联宝贝推荐，帮您<em>提高转化率，增加收入</em>。</li>
+    <li>风格自动与淘宝主站和商城保持完美一致，所有浏览器完美兼容。</li>
+    <li>为您记录每次操作详情，100%安心。</li>
+    <li>一键禁用，彻底卸载，让您无后顾之忧。</li>
+</ul>
+<div id="S_UserList"></div>
 {% endblock %}

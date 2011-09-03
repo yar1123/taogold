@@ -231,8 +231,8 @@ def viewHistory(request):
             i['time']= i['_id'].generation_time.strftime('%Y-%m-%d %H:%M:%S')
         i['id']=str(i['_id'])
         qsl.append(i)
-    d={'history':qsl, 'nick':nick}
-    return render_to_response('operation-list.html', d)
+    d={'history':qsl, 'nick':nick,'pagename':'history'}
+    return render_to_response('history.html', d)
 
 def historyDetail(request):
     try:
@@ -333,7 +333,7 @@ def topindex(request):
             return ErrorRedirect.defaultError()
     elif param['sk_from_req']:
         db.user.update({'_id':nick}, {'$set':{'top_session':param['top_session']}}, upsert=True)
-    r = render_to_response('index.html', {'nick':nick})
+    r = render_to_response('index.html', {'nick':nick,'pagename':'index'})
     if param['sk_from_req']:
         g=request.GET
         r.set_cookie('top_session', g.get('top_session', ''))
@@ -351,7 +351,7 @@ def topshare(request):
         setWGID(request, r)
         return r
     nick = param['nick']
-    r = render_to_response('share.html', {'nick':nick})
+    r = render_to_response('help.html', {'nick':nick,'pagename':'help'})
     if param['sk_from_req']:
         g=request.GET
         r.set_cookie('top_session', g.get('top_session', ''))
@@ -370,7 +370,7 @@ def toperror(request):
         setWGID(request, r)
         return r
     nick = param['nick']
-    r = render_to_response('error.html', {'nick':nick})
+    r = render_to_response('error.html', {'nick':nick,'pagename':'error'})
     if param['sk_from_req']:
         g=request.GET
         r.set_cookie('top_session', g.get('top_session', ''))
