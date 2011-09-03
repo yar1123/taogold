@@ -76,7 +76,7 @@ class Tsvr(threading.Thread ):
             raise Exception('%s not in db' %(nick))
         allitems = Items().onsale(u['top_session'], fields='num_iid,title')
         tbitem = Item()
-        hisid = self.db.history.save({'nick':nick, 'm':1})
+        hisid = self.db.history.save({'nick':nick, 'm':1}) # use 1, stop 2
         suc = 0
         fail = 0
         for item in allitems:
