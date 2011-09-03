@@ -13,12 +13,12 @@ from topapi import *
 import logging 
 import logging.config
 
-class Tsvr(): #threading.Thread ):
+class Tsvr(threading.Thread ):
     def __init__(self, type):
         self.type=type
         self.mc = pymongo.Connection('127.0.0.1', 27017)
         self.db = self.mc.taogold
-        #threading.Thread.__init__ ( self )
+        threading.Thread.__init__ ( self )
 
     def _doUpdateStop(self, nick):
         tlog.debug('update(stop) for %s' %(nick))
