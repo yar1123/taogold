@@ -210,6 +210,13 @@ def viewHistory(request):
         dlog.warning('check session fail: %s' %str(e))
         return ErrorRedirect.sessionKey()
     nick = param['nick']
+    g = request.GET 
+    try:
+        start = int(g.get('start', 0))
+        pagenum  = int(g.get('num', 10))
+    except:
+        start =0
+        pagenum = 10
     db = mongo.taogold
     u = db.user.find_one({'_id':nick})
     if not u:
@@ -227,7 +234,13 @@ def viewHistory(request):
         return 'no history'
     hisok = 1
     hl = hl[0]
-    cur = db.hisdetail.find({'hisid':hl['_id']})
+    try:
+        itmptime = hl['_id'].generation_time.strftime('%s')
+        itmptime = int(itmptime) + 28800
+        hl['time']= time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(itmptime))
+    except:
+        hl['time']= hl['_id'].generation_time.strftime('%Y-%m-%d %H:%M:%S')
+    cur = db.hisdetail.find({'hisid':hl['_id']}, skip=start, limit=pagenum)
     dsl = []
     for i in cur:
         try:
