@@ -1,3 +1,48 @@
-root WARNING tsvr.py:235 2011-09-04 00:24:19,982 2817:140251509765888	get_items in new_user fail: [Errno 111] Connection refused
-root WARNING tsvr.py:235 2011-09-04 00:24:21,002 2817:140251509765888	get_items in new_user fail: could not connect to 127.0.0.1:27017: [Errno 111] Connection refused
-root WARNING tsvr.py:235 2011-09-04 00:24:22,004 2817:140251509765888	get_items in new_user fail: could not connect to 127.0.0.1:27017: [Errno 111] Connection refused
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,392 17839:140285317052160	run thread, type: new_user
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,394 17839:140285308659456	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,396 17839:140285300266752	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,398 17839:140285291874048	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,400 17839:140285283481344	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,403 17839:140285275088640	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,404 17839:140285266695936	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,406 17839:140285258303232	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,406 17839:140285249910528	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,420 17839:140285241517824	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,421 17839:140285233125120	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,422 17839:140285224732416	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,423 17839:140285216339712	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,424 17839:140285207947008	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,424 17839:140285199554304	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,425 17839:140285191161600	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,426 17839:140285182768896	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,427 17839:140285174376192	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,429 17839:140285165983488	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,430 17839:140285157590784	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,430 17839:140285149198080	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,431 17839:140285140805376	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,432 17839:140285132412672	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,433 17839:140285124019968	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,433 17839:140285115627264	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,434 17839:140285107234560	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,435 17839:140285098841856	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,436 17839:140285090449152	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,437 17839:140285082056448	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,437 17839:140285073663744	run thread, type: update
+root DEBUG tsvr.py:240 2011-09-04 16:48:18,438 17839:140285065271040	run thread, type: update
+root DEBUG tsvr.py:73 2011-09-04 16:48:18,447 17839:140285308659456	update for 淘金电商
+root DEBUG tsvr.py:86 2011-09-04 16:48:18,493 17839:140285308659456	process update: nick=淘金电商 num_iid=9944468036
+root WARNING tsvr.py:92 2011-09-04 16:48:18,521 17839:140285308659456	get rec_iid for [淘金电商:9944468036] fail, use random
+root WARNING tsvr.py:105 2011-09-04 16:48:18,544 17839:140285308659456	generate rec page for [淘金电商:9944468036] fail: HTTP Error 404: Not Found
+root DEBUG tsvr.py:86 2011-09-04 16:48:18,544 17839:140285308659456	process update: nick=淘金电商 num_iid=9944149390
+root WARNING tsvr.py:92 2011-09-04 16:48:18,545 17839:140285308659456	get rec_iid for [淘金电商:9944149390] fail, use random
+root WARNING tsvr.py:105 2011-09-04 16:48:18,546 17839:140285308659456	generate rec page for [淘金电商:9944149390] fail: HTTP Error 404: Not Found
+root DEBUG tsvr.py:86 2011-09-04 16:48:18,546 17839:140285308659456	process update: nick=淘金电商 num_iid=9944298262
+root WARNING tsvr.py:92 2011-09-04 16:48:18,547 17839:140285308659456	get rec_iid for [淘金电商:9944298262] fail, use random
+root WARNING tsvr.py:105 2011-09-04 16:48:18,549 17839:140285308659456	generate rec page for [淘金电商:9944298262] fail: HTTP Error 404: Not Found
+root DEBUG tsvr.py:86 2011-09-04 16:48:18,549 17839:140285308659456	process update: nick=淘金电商 num_iid=9943870986
+root WARNING tsvr.py:105 2011-09-04 16:48:18,618 17839:140285308659456	generate rec page for [淘金电商:9943870986] fail: HTTP Error 404: Not Found
+root DEBUG tsvr.py:24 2011-09-04 16:49:00,520 17839:140285258303232	update(stop) for 淘金电商
+root DEBUG tsvr.py:39 2011-09-04 16:49:06,735 17839:140285258303232	process update: nick=淘金电商 num_iid=9944468036
+root DEBUG tsvr.py:39 2011-09-04 16:49:21,813 17839:140285258303232	process update: nick=淘金电商 num_iid=9944149390
+root DEBUG tsvr.py:39 2011-09-04 16:49:26,862 17839:140285258303232	process update: nick=淘金电商 num_iid=9944298262
+root DEBUG tsvr.py:39 2011-09-04 16:49:31,924 17839:140285258303232	process update: nick=淘金电商 num_iid=9943870986

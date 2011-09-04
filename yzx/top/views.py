@@ -253,9 +253,9 @@ def viewHistory(request):
         dsl.append(i)
     page = {
             'start':start,
-            'num':num,
+            'num':pagenum,
             'amount':hdnum,
-            'page':hdnum/num,
+            'page':hdnum/pagenum,
             }
     d={'details':dsl, 'history': hl,
             'nick':nick, 'hisok':hisok, 'page':page, 'pagename':'history'}
