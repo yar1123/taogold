@@ -256,13 +256,13 @@
  */
 
 /*一般设定*/
-.grid{width:100%;overflow:hidden;}
+.grid{margin-bottom:10px;width:100%;overflow:hidden;}
 .grid-zebra .row-even td{background-color:#f9f9f9;}
-.grid .table{width:100%;border:1px solid #ccc;}
+.grid .table{width:100%;}
 .grid caption{text-align:left;}
 .grid th,
 .grid td{padding:5px 10px;text-align:left;}
-.grid th{height:18px;line-height:14px;vertical-align:bottom;font-weight:normal;border:1px solid #ddd;border-top:none;background:#f2f2f2 url(../img/bg-repeatx.png) repeat-x 0 -130px;}
+.grid th{height:18px;line-height:14px;vertical-align:bottom;font-weight:bold;border:1px solid #ddd;background:#f2f2f2;}
 .grid td{vertical-align:top;border-top:1px dashed #ddd;background:#fff;}
 
 /*排序相关*/
@@ -288,7 +288,9 @@
 .grid .row-hover td{background:#e8fcd6;}
 
 .grid .row-selected td{background:#e1edff!important;}
-.grid .row-selected td.cell-extra{background:#cce1ff url(../img/bg-repeaty.png) repeat-y -11px 0!important}/**
+.grid .row-selected td.cell-extra{background:#cce1ff url(../img/bg-repeaty.png) repeat-y -11px 0!important}
+
+/**
  * Tree Style
  * @author fool2fish<fool2fish@gmail.com>
  */

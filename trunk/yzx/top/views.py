@@ -250,7 +250,7 @@ def viewHistory(request):
         except:
             i['time']= i['_id'].generation_time.strftime('%Y-%m-%d %H:%M:%S')
         dsl.append(i)
-    d={'details':dsl, 'history': hl,
+    d={'details':dsl, 'history': hl,'pagename':'history',
             'nick':nick, 'hisok':hisok}
     return render_to_response('history.html', d)
 

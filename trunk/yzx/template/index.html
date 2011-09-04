@@ -5,16 +5,20 @@
 {% endblock %}
 
 {% block content %}
-<div><img src="/assets/appimg/preview.jpg" /></div>
-<div id="J_OpBox" class="op-box">
-    <a id="J_UseBtn" class="use-btn" href="#" title="启用">立即启用</a>
-    <div id="J_MsgBox" class="msg-box"></div>
+<div id="J_Users" class="users"></div>
+<div class="show">
+    <img src="/assets/appimg/preview.jpg" />
 </div>
-<ul class="intro">
-    <li>一键启用，自动为宝贝描述加入最合适的关联宝贝推荐，帮您<em>提高转化率，增加收入</em>。</li>
-    <li>风格自动与淘宝主站和商城保持完美一致，所有浏览器完美兼容。</li>
-    <li>为您记录每次操作详情，100%安心。</li>
-    <li>一键禁用，彻底卸载，让您无后顾之忧。</li>
-</ul>
-<div id="S_UserList"></div>
+<div id="J_Op" class="op" status="{{ temp.status }}">
+    <a id="J_OpBtn" href="#"></a>
+    <div id="J_OpTips" class="op-tips"></div>
+</div>
+<div class="intro">
+    <ul>
+        <li>一键启用，自动为宝贝描述加入最合适的关联宝贝推荐，帮您<em>提高转化率，增加收入</em>。</li>
+        <li>风格自动与淘宝主站和商城保持完美一致，所有浏览器完美兼容。</li>
+        <li>为您记录每次操作详情，100%安心。</li>
+        <li>一键禁用，彻底卸载，让您无后顾之忧。</li>
+    </ul>
+</div>
 {% endblock %}
