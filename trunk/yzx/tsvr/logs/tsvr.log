@@ -1,33 +1,3 @@
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,790 2817:140251509765888	run thread, type: new_user
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,793 2817:140251501373184	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,826 2817:140251492980480	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,827 2817:140251484587776	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,828 2817:140251476195072	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,829 2817:140251467802368	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,847 2817:140251459409664	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,848 2817:140251451016960	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,849 2817:140251442624256	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,852 2817:140251434231552	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,853 2817:140251425838848	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,854 2817:140251417446144	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,855 2817:140251409053440	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,856 2817:140251400660736	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,857 2817:140251392268032	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,857 2817:140251383875328	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,858 2817:140251375482624	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,859 2817:140251367089920	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,860 2817:140251358697216	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,861 2817:140251350304512	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,862 2817:140251341911808	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,863 2817:140251333519104	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,864 2817:140251325126400	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,864 2817:140251316733696	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,865 2817:140251308340992	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,866 2817:140251299948288	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,867 2817:140251291555584	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,868 2817:140251283162880	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,869 2817:140251274770176	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,870 2817:140251266377472	run thread, type: update
-root DEBUG tsvr.py:239 2011-09-03 22:27:00,870 2817:140251257984768	run thread, type: update
-root WARNING tsvr.py:207 2011-09-03 22:27:02,488 2817:140251509765888	get onsale items of [淘金电商] from taobao fail: 'sub_code'
-root WARNING tsvr.py:212 2011-09-03 22:27:02,542 2817:140251509765888	get inventory items of [淘金电商] from taobao fail: 'sub_code'
+root WARNING tsvr.py:235 2011-09-04 00:24:19,982 2817:140251509765888	get_items in new_user fail: [Errno 111] Connection refused
+root WARNING tsvr.py:235 2011-09-04 00:24:21,002 2817:140251509765888	get_items in new_user fail: could not connect to 127.0.0.1:27017: [Errno 111] Connection refused
+root WARNING tsvr.py:235 2011-09-04 00:24:22,004 2817:140251509765888	get_items in new_user fail: could not connect to 127.0.0.1:27017: [Errno 111] Connection refused
