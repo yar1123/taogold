@@ -1,61 +1,98 @@
 {% extends "page.html" %}
 
 {% block content %}
+
+{% if hisok %}
+
 <!-- {{{ msg -->
 <div class="msg">
 	<div class="msg-default msg-tips">
 		<i class="msg-icon"></i>
-        <div class="msg-content">hisok={{hisok}} 您最近一次在 <em>{{history.time}}</em> 进行了 <em>{%if history.m == 1 %}启用{% else %} 禁用{%endif%}</em> 操作，本次操作成功 <em>{{history.suc}}</em> 个，失败 <em>{{history.fail}}</em> 个。以下为详细的操作记录。</div>
+        <div class="msg-content">您最近一次在 <em>{{history.time}}</em> 进行了 <em>{%if history.m == 1 %}启用{% else %} 禁用{%endif%}</em> 操作，本次操作成功 <em>{{history.suc}}</em> 个，失败 <em>{{history.fail}}</em> 个。以下为详细的操作记录。</div>
 	</div>
 </div>
 <!-- msg }}} -->
 
 <div class="grid">
-            <table class="table">
-                <colgroup>
-                    <col width="548">
-                    <col width="100">
-                    <col width="100">
-                </colgroup>
-                <thead>
-                    <tr class="row">
-                        <th>宝贝名称</th>
-                        <th>更新时间</th>
-                        <th>操作结果</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {%for d in details %}
-                    <tr class="row">
-                        <td><a href="http://item.taobao.com/item.htm?id={{d.num_iid}}" target="_blank">{{d.title}}</a></td>
-                        <td>
-                            {{ d.time }}
-                        </td>
-                        <td>
-                            {{ d.r }}
-                        </td>
-                    </tr>
-                    {%endfor%}
-                </tbody>
-            </table>
-        </div>
+    <table class="table">
+        <colgroup>
+            <col width="500">
+            <col width="150">
+            <col width="250">
+        </colgroup>
+        <thead>
+            <tr class="row">
+                <th>宝贝名称</th>
+                <th>更新时间</th>
+                <th>操作结果</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for d in details %}
+            <tr class="row">
+                <td><a href="http://item.taobao.com/item.htm?id={{d.num_iid}}" target="_blank">{{d.title}}</a></td>
+                <td>
+                    {{ d.time }}
+                </td>
+                <td>
+                    {% if d.r == '成功' %}
+                        {{ d.r }}
+                    {% else %}
+                        <em>{{ d.r }}</em>
+                    {% endif %}
+                </td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
 
-<h3>操作成功的宝贝</h3>
-<ul>
-    <li><a href="#">宝贝名称</a></li>
-    <li><a href="#">宝贝名称</a></li>
-    <li><a href="#">宝贝名称</a></li>
-    <li><a href="#">宝贝名称</a></li>
-    <li><a href="#">宝贝名称</a></li>
-</ul>
+<!-- {{{ pagination -->
+<div class="pagination pagination-normal">
+    <div class="pagination-wrapper">
+        <span class="info">共{{page.amount}}条</span>
+        {% if page.start == 0 %}
+        <span class="start">首页</span>
+        {% else %}
+        <a class="start" href="?start=0">首页</a>
+        {% endif %}
+        {% if page.start == 0 %}
+        <span class="prev">上一页</span>
+        {% else %}
+        <a class="prev" href="#start={{page.start}}">上一页</a>
+        {% endif %}
+        
+        <a class="page" href="#">1</a>
+        <a class="page" href="#">2</a>
+        <span class="page">3</span>
+        <a class="page" href="#">4</a>
+        <a class="page" href="#">5</a>
+        
+        {% if page.start == page.page %}
+        <span class="next">下一页</span>
+        {% else %}
+        <a class="next" href="#">下一页</a>
+        {% endif %}
+        {% if page.start == page.page %}
+        <span class="end">末页</span>
+        {% else %}
+        <a class="end" href="#">末页</a>
+        {% endif %}
+    </div>
+</div>
+<!-- pagination }}} -->
 
-<h3>操作失败的宝贝</h3>
-<ul>
-    <li><a href="#">宝贝名称</a></li>
-    <li><a href="#">宝贝名称</a></li>
-    <li><a href="#">宝贝名称</a></li>
-    <li><a href="#">宝贝名称</a></li>
-    <li><a href="#">宝贝名称</a></li>
-</ul>
+{% else %}
+
+<!-- {{{ msg -->
+<div class="msg">
+	<div class="msg-default msg-tips">
+		<i class="msg-icon"></i>
+        <div class="msg-content">您还没有启用过我们的服务，请<a href="/top/index.html">返回首页</a>启用。</div>
+	</div>
+</div>
+<!-- msg }}} -->
+
+{% endif %}
 
 {% endblock %}

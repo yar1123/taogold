@@ -3,6 +3,7 @@
  **************************************************************/
 body{padding-top:42px;}
 em{color:#f30;}
+b{font-weight:bold;color:#f30;}
  
 /**************************************************************
  * .header
@@ -20,21 +21,36 @@ em{color:#f30;}
 /**************************************************************
  * .footer
  **************************************************************/
-.footer{margin-top:10px;padding:25px 0;text-align:center;color:#666;border-top:1px solid #ddd;}
+.footer{margin-top:10px;padding:15px 0 35px 0;text-align:center;color:#666;border-top:1px solid #ddd;}
  
 /**************************************************************
  * .content
  **************************************************************/
-.content{padding:0 10px;}
+.content{margin:0 10px;max-width:950px;}
  
 /**************************************************************
  * .index
  **************************************************************/
 .index .header .menu .index{font-weight:bold;line-height:28px;border-top:2px solid #f30;}
-.index .op-box{position:relative;overflow:hidden;margin:10px 0;padding:10px;border:1px solid #fff;}
-.index .use-btn{float:left;width:189px;height:54px;overflow:hidden;line-height:1000px;background:url(../img/use-btn.png);}
-.index .use-confirm{background-position:0 -54px;}
-.index .msg-box{position:absolute;left:210px;bottom:18px;}
+.index .users{margin-bottom:10px;}
+.index .show{margin-bottom:10px;}
+.index .op{overflow:hidden;margin-bottom:10px;padding:10px;border:1px solid #fff;}
+.index .op-use,
+.index .op-use-confirm,
+.index .op-stop,
+.index .op-stop-confirm{float:left;width:189px;height:54px;overflow:hidden;line-height:1000px;background:url(../img/use-btn.png);}
+.index .op-use-confirm{background-position:0 -54px;}
+.index .op-stop,
+.index .op-stop-confirm{width:149px;height:44px;background-position:0 -108px;}
+.index .op-stop-confirm{background-position:0 -152px;}
+.index .op-tips{float:left;margin-left:10px;margin-top:8px;}
+.index .intro{margin-bottom:10px;}
+
+.userlist{position:relative;height:60px;overflow:hidden;}
+.userlist .list{width:100%;}
+.userlist li{height:60px;overflow:hidden;}
+.userlist .item{height:20px}
+.userlist img{vertical-align:middle;}
 
 /**************************************************************
  * .history

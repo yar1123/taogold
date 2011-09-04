@@ -7,7 +7,7 @@ KISSY.add("taogold/userlist",function(S, Switchable){
         's_cap_1.gif','s_cap_2.gif','s_cap_3.gif','s_cap_4.gif','s_cap_5.gif',
         's_crown_1.gif','s_crown_2.gif','s_crown_3.gif','s_crown_4.gif','s_crown_5.gif'    
     ],
-        templ = '<div class="userinfo"><a href="http://shop{sid}.taobao.com" target="_blank">{nick}<img src="{level}" /></a> {time} 为 <b>{itemsnum}</b> 个宝贝启用了 "{tempname}" </div>';
+        templ = '<div class="item"><a href="http://shop{sid}.taobao.com" target="_blank">{nick} <img src="{level}" /> </a> {time} 为 <b>{itemsnum}</b> 个宝贝启用了我们的服务。 </div>';
     
     function UserList(container){
         var self = this;
@@ -23,15 +23,15 @@ KISSY.add("taogold/userlist",function(S, Switchable){
                 null,
                 function(o){
                     var data = eval(o);
-                    self._render(data);                  
+                    self._render(data);
                 }
             );
         },
-        _render:function(data){
+        _render:function(data){  
             var self = this, container = this.container, str = '';
-            str += '<div class="box box-padding"><div class="box-hd"><h3>最新用户</h3></div><div class="box-bd"><div class="userlist"><ul class="list">';
+            str += '<div class="userlist"><ul class="list">';
             for(var i = 0,len = Math.floor(data.length/3);i<len;i++){
-                str += '<li class="item">';
+                str += '<li>';
                 for(var j = 0; j < 3 ;j++){
                     var idx = i*3+j;
                     data[idx].level = levelPicPath + levelPicNames[data[idx].level];
@@ -39,7 +39,7 @@ KISSY.add("taogold/userlist",function(S, Switchable){
                 }
                 str += '</li>';
             }
-            str += '</ul></div></div></div>';
+            str += '</div>';
             container.innerHTML = str; 
 
             Switchable.Slide(D.get('.userlist',container), {
@@ -48,8 +48,9 @@ KISSY.add("taogold/userlist",function(S, Switchable){
                 effect: 'scrolly',
                 easing: 'easeOutStrong',
                 interval: 3,
-                duration: .2
+                duration: .5
             });
+            
         }
     });
     
