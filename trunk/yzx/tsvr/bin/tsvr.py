@@ -79,6 +79,7 @@ class Tsvr(threading.Thread ):
         hisid = self.db.history.save({'nick':nick, 'm':1}) # use 1, stop 2
         suc = 0
         fail = 0
+        allnum = len(allitems)
         for item in allitems:
             num_iid = item['num_iid']
             title = item['title']
