@@ -389,9 +389,13 @@ def useShow(request):
         r = []
         for i in x:
             u = db.user.find_one({'nick':i['nick']}, fields=['seller_credit.level'])
-            itmptime = i['_id'].generation_time.strftime('%s')
-            itmptime = int(itmptime) + 28800
-            itmptime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(itmptime))
+            try:
+                itmptime = i['_id'].generation_time.strftime('%s')
+                itmptime = int(itmptime) + 28800
+                itmptime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(itmptime))
+            except Exception as e:
+                dlog.warning('formating time fail: %s' %(str(e)))
+                itmptime = i['_id'].generation_time.strftime('%Y-%m-%d %H:%M:%S')
             try:
                 sid = ushop.get(i['nick'], fields='sid,title')
                 st = sid['shop']['title']
@@ -399,17 +403,19 @@ def useShow(request):
             except:
                 sid=0
                 st=''
-            d = {'time': itmptime,
-                    'nick':i['nick'],
-                    'level':u['seller_credit']['level'],
-                    'itemsnum':i['suc'],
-                    'sid':sid,
-                    'stitle':st,
-                    }
-            r.append(d)
+            try:
+                d = {'time': itmptime,
+                        'nick':i['nick'],
+                        'level':u['seller_credit']['level'],
+                        'itemsnum':i['suc'],
+                        'sid':sid,
+                        'stitle':st,
+                        }
+                r.append(d)
+            except Exception as e:
+                dlog.warning('get some info fail: %s' %(str(e)))
     except Exception as e:
         dlog.warning('error in useShow: %s' %(str(e)))
-        raise
         return ErrorRedirect.defaultError()
     y = json.dumps(r)
     return HttpResponse(y, mimetype="text/plain")
