@@ -210,6 +210,44 @@ def viewHistory(request):
         dlog.warning('check session fail: %s' %str(e))
         return ErrorRedirect.sessionKey()
     nick = param['nick']
+    db = mongo.taogold
+    u = db.user.find_one({'_id':nick})
+    if not u:
+        dlog.warning('get user[%s] from db fail' %(nick))
+        return ErrorRedirect.defaultError()
+    try:
+        hl = db.history.find({'nick':nick})
+    except Exception as e:
+        dlog.warning('error in getting history of nick=%s: %s' %(nick, str(e)))
+        return ErrorRedirect.defaultError()
+    hl = hl.sort('_id', pymongo.DESCENDING).limit(1)
+    if hl.count() <= 0:
+        dlog.debug('no history of user: %s' %(nick))
+        hisok = 0
+        return 'no history'
+    hisok = 1
+    hl = hl[0]
+    cur = db.hisdetail.find({'hisid':hl['_id']})
+    dsl = []
+    for i in cur:
+        try:
+            itmptime = i['_id'].generation_time.strftime('%s')
+            itmptime = int(itmptime) + 28800
+            i['time']= time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(itmptime))
+        except:
+            i['time']= i['_id'].generation_time.strftime('%Y-%m-%d %H:%M:%S')
+        dsl.append(i)
+    d={'details':dsl, 'history': hl,
+            'nick':nick, 'hisok':hisok}
+    return render_to_response('history.html', d)
+
+def viewHistory_old(request):
+    try:
+        param  = checkSessionAndGetNick(request)
+    except Exception as e:
+        dlog.warning('check session fail: %s' %str(e))
+        return ErrorRedirect.sessionKey()
+    nick = param['nick']
     u = mongo.taogold.user.find_one({'_id':nick})
     if not u:
         dlog.warning('get user[%s] from db fail' %(nick))
