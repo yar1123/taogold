@@ -242,7 +242,7 @@ def viewHistory(request):
         hl['time']= hl['_id'].generation_time.strftime('%Y-%m-%d %H:%M:%S')
     cur = db.hisdetail.find({'hisid':hl['_id']}, skip=start*pagenum, limit=pagenum)
     dsl = []
-    hdnum = cur.count(false)
+    hdnum = cur.count(False)
     for i in cur:
         try:
             itmptime = i['_id'].generation_time.strftime('%s')
