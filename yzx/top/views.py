@@ -309,7 +309,11 @@ def topindex(request):
         return r
     nick = param['nick']
     db = mongo.taogold
-    u = db.user.find_one({'_id':nick})
+    try:
+        u = db.user.find_one({'_id':nick})
+    except Exception as e:
+        dlog.warning('find [%s] in db fail, error: %s' %(nick, str(e)))
+        return ErrorRedirect.defaultError()
     if not u:
 #new user
         dlog.info('new user: %s' %(nick))
@@ -333,7 +337,7 @@ def topindex(request):
             return ErrorRedirect.defaultError()
     elif param['sk_from_req']:
         db.user.update({'_id':nick}, {'$set':{'top_session':param['top_session']}}, upsert=True)
-    r = render_to_response('index.html', {'nick':nick,'pagename':'index'})
+    r = render_to_response('index.html', {'nick':nick,'pagename':'index', 'temp':u['tg_temp']})
     if param['sk_from_req']:
         g=request.GET
         r.set_cookie('top_session', g.get('top_session', ''))
