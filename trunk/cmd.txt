@@ -1,33 +1,31 @@
 D:\project\taogold\mongodb-win\bin>mongod.exe --dbpath d:\project\taogold\mongodb-data
 
-D:\project\taogold>python django-admin.py runserver --settings=top.settings
+D:\project\taogold>python django-admin.py runserver --pythonpath="D:\project\taogold\yzx" --settings=top.settings
+
 
 （设置一次即可）新增环境变量：PYTHONPATH=D:\project\taogold
 
 
-(windows设置)
-修改 D:\project\taogold\tsvr\bin\tsvr.py 注释196-207行
+(windows设置,将tsvr.window.py改成tsvr.py即可)
+修改 D:\project\taogold\tsvr\bin\tsvr.py 注释以下代码
+try:
+pid = os.fork()
+if pid>0:
+sys.exit(0)
+except Exception as e:
+sys.exit('fork #1 error: %s' %(str(e)))
+try:
+pid = os.fork()
+if pid>0:
+sys.exit(0)
+except Exception as e:
+sys.exit('fork #2 error: %s' %(str(e)))
 
-D:\project\taogold\tsvr>python ./bin/tsvr.py
+D:\project\taogold\yzx\tsvr>python bin/tsvr.py
 
 http://127.0.0.1:8000/top/index.html
 登录后以127.0.0.1:8000替换app.23201.com
 
 多产品账户：huiqing_shen/shq820826
-
-
-
-
-
-ushow搞定
-
-状态： 未使用： s， 启用中， U， 启用操作中 V， 已使用 u， 禁用中 S， 禁用操作中 T
-
-历史记录那个，下面列表是否用异步方式？这个改动有点大，明天一起讨论下再改。
-
-
-
-
-
 
 
