@@ -258,7 +258,7 @@ def viewHistory(request):
             'page':hdnum/num,
             }
     d={'details':dsl, 'history': hl,
-            'nick':nick, 'hisok':hisok, 'page':page}
+            'nick':nick, 'hisok':hisok, 'page':page, 'pagename':'history'}
     return render_to_response('history.html', d)
 
 def viewHistory_old(request):
