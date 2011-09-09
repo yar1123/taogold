@@ -102,8 +102,8 @@ class Tsvr(threading.Thread ):
             if not rec_iids:
                 for i in range(3):
                     ii = random.randint(0, allnum-1)
-                    rec_iids.append(allitems[ii])
-            if len(rec_iids) <= 3:
+                    rec_iids.append(allitems[ii]['num_iid'])
+            if len(rec_iids) < 3:
                 rec_iids = []
             try:
                 page = self.generatePage(nick, rec_iids)
