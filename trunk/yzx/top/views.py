@@ -188,7 +188,7 @@ def previewTemplate(request):
         return ErrorRedirect.sessionKey()
     try:
         g = request.GET 
-        num_iids = g.get('iids', '').split(';')
+        num_iids = g.get('iids', '').split('.')
         num_iids = [ int(i) for i in num_iids ]
     except Exception as e:
         dlog.debug('get num_iids from request fail')

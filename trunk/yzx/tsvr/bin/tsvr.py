@@ -154,7 +154,7 @@ class Tsvr(threading.Thread ):
         self.db.history.update({'_id':hisid}, {'$set':{'suc':suc, 'fail':fail}})
 
     def generatePage(self, nick, num_iids):
-        str_iids = ';'.join([str(i) for i in num_iids])
+        str_iids = '.'.join([str(i) for i in num_iids])
         try:
             nick = urllib2.quote(nick)
         except:
