@@ -79,7 +79,7 @@ class Tsvr(threading.Thread ):
         hisid = self.db.history.save({'nick':nick, 'm':1}) # use 1, stop 2
         suc = 0
         fail = 0
-        xx = [ i[num_iid] for i in allitems ]
+        xx = [ i['num_iid'] for i in allitems ]
         for item in allitems:
             num_iid = item['num_iid']
             title = item['title']
@@ -159,7 +159,7 @@ class Tsvr(threading.Thread ):
             nick = urllib2.quote(nick)
         except:
             nick = urllib2.quote(nick.encode('utf-8'))
-        url = 'http://127.0.0.1:8100/top/preview.html?nick=%s&num_iids=%s' %(nick, str_iids)
+        url = 'http://127.0.0.1:8100/top/preview.html?nick=%s&iids=%s' %(nick, str_iids)
         f = urllib2.urlopen(url)
         page = f.read()
         f.close()
