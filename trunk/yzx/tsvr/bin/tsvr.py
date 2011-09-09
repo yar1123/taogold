@@ -79,7 +79,7 @@ class Tsvr(threading.Thread ):
         hisid = self.db.history.save({'nick':nick, 'm':1}) # use 1, stop 2
         suc = 0
         fail = 0
-        allnum = len(allitems)
+        xx = [ i[num_iid] for i in allitems ]
         for item in allitems:
             num_iid = item['num_iid']
             title = item['title']
@@ -100,9 +100,8 @@ class Tsvr(threading.Thread ):
                     tlog.warning('get [%s:%d] from taobao and insert db fail' %(nick, num_iid))
                 rec_iids = []
             if not rec_iids:
-                for i in range(3):
-                    ii = random.randint(0, allnum-1)
-                    rec_iids.append(allitems[ii]['num_iid'])
+                random.shuffle(xx)
+                rec_iids = xx[:3]
             if len(rec_iids) < 3:
                 rec_iids = []
             try:
