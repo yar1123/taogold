@@ -7,7 +7,7 @@ import bson
 import os 
 import sys 
 import urllib2 
-
+import random
 from topapi import *
 
 import logging 
@@ -98,6 +98,12 @@ class Tsvr(threading.Thread ):
                     self.db.items.insert(get_tb_item_info)
                 except Exception as e:
                     tlog.warning('get [%s:%d] from taobao and insert db fail' %(nick, num_iid))
+                rec_iids = []
+            if not rec_iids:
+                for i in range(3):
+                    ii = random.randint(0, allnum-1)
+                    rec_iids.append(allitems[ii])
+            if len(rec_iids) <= 3:
                 rec_iids = []
             try:
                 page = self.generatePage(nick, rec_iids)
