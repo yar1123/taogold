@@ -21,12 +21,12 @@ KISSY.use("taogold/userlist",function(S, UserList){
         USE_CONFIRM_TXT = '确认启用',
         STOP_TXT = '我想停用',
         STOP_CONFIRM_TXT = '确认停用',
-        USING_TIPS = '启用中…',
-        STOPPING_TIPS = '停用中…',
-        USE_CONFIRM_TIPS = '启用模板提示。<br/>确定要启用吗？',
-        STOP_CONFIRM_TIPS = '禁用该模板，将从您的所有宝贝描述里删除您设定的推荐内容。<br/>确定要禁用吗？',
-        USE_REQUEST_TIPS = '正在启用，预计{minute}分钟后生效。<br/>届时我们会为您自动刷新页面，您也可以手动刷新页面。',
-        STOP_REQUEST_TIPS = '正在停用，预计{minute}分钟后生效。<br/>届时我们会为您自动刷新页面，您也可以手动刷新页面。';
+        USING_TIPS = '上次启用操作仍在处理中，请耐心等待…',
+        STOPPING_TIPS = '上次停用操作仍在处理中，请耐心等待…',
+        USE_CONFIRM_TIPS = '启用模板，将向您的所有宝贝描述里加入经过智能计算高度匹配的推荐内容。<br/>确定要启用吗？',
+        STOP_CONFIRM_TIPS = '停用模板，将从您的所有宝贝描述里删除插入的推荐内容。<br/>确定要停用吗？',
+        USE_REQUEST_TIPS = '模板启用中，本次操作预计 {ti} 分钟后生效。<br/>届时我们会为您自动刷新页面，您也可以手动刷新页面。',
+        STOP_REQUEST_TIPS = '模板停用，本次操作预计 {ti} 分钟后生效。<br/>届时我们会为您自动刷新页面，您也可以手动刷新页面。';
 
     var op = D.get('#J_Op'), 
         opBtn = D.get('#J_OpBtn'), 
@@ -55,12 +55,14 @@ KISSY.use("taogold/userlist",function(S, UserList){
             btnCls = USE_CLS;
             btnTxt = USE_TXT;
         case 'S':
+        case 'T':
             tipsTxt = STOPPING_TIPS;
             break;
         case 'u':
             btnCls = STOP_CLS;
             btnTxt = STOP_TXT;
         case 'U':
+        case 'V':
             tipsTxt = USING_TIPS;
             break;
         default:
@@ -83,7 +85,10 @@ KISSY.use("taogold/userlist",function(S, UserList){
                     '/top/use.html',
                     null,
                     function(o){
-                        opChange(STOP_CLS, STOP_TXT, 'use returned');
+                        var data = S.JSON.parse(o);
+                        console.log(data);
+                        opChange(STOP_CLS, STOP_TXT, S.substitute(USE_REQUEST_TIPS, data));
+                        setTimeout(function(){window.location.reload();},data.ti*60*1000);
                     }
                 );
                 break;
@@ -97,7 +102,10 @@ KISSY.use("taogold/userlist",function(S, UserList){
                     '/top/stop.html',
                     null,
                     function(o){
-                        opChange(USE_CLS, USE_TXT, 'stop returned');
+                        var data = S.JSON.parse(o);
+                        console.log(data);
+                        opChange(USE_CLS, USE_TXT, S.substitute(STOP_REQUEST_TIPS, data));
+                        setTimeout(function(){window.location.reload();},data.ti*60*1000);
                     }
                 );
                 break;
