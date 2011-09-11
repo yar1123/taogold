@@ -212,11 +212,13 @@ def viewHistory(request):
     nick = param['nick']
     g = request.GET 
     try:
-        start = int(g.get('start', 0))
+        start = int(g.get('start', 1))
         pagenum  = int(g.get('num', 40))
     except:
-        start =0
+        start =1
         pagenum = 40
+    if start < 1:
+        start = 1
     db = mongo.taogold
     u = db.user.find_one({'_id':nick})
     if not u:
@@ -240,7 +242,7 @@ def viewHistory(request):
         hl['time']= time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(itmptime))
     except:
         hl['time']= hl['_id'].generation_time.strftime('%Y-%m-%d %H:%M:%S')
-    cur = db.hisdetail.find({'hisid':hl['_id']}, skip=start*pagenum, limit=pagenum)
+    cur = db.hisdetail.find({'hisid':hl['_id']}, skip=(start-1)*pagenum, limit=pagenum)
     dsl = []
     hdnum = cur.count(False)
     for i in cur:
