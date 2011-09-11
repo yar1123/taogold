@@ -2,7 +2,7 @@ KISSY.config({
     packages:[
         {
             name:"taogold",
-            path:"../assets/js/"
+            path:"../assets/2.0/js/"
         }
     ]
 });
