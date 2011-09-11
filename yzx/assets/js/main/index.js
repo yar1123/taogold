@@ -82,7 +82,7 @@ KISSY.use("taogold/userlist",function(S, UserList){
             case USE_CONFIRM_CLS:
                 //确认启用
                 S.io.get(
-                    '/top/use.html',
+                    'use.html',
                     null,
                     function(o){
                         var data = S.JSON.parse(o);
@@ -99,7 +99,7 @@ KISSY.use("taogold/userlist",function(S, UserList){
             case STOP_CONFIRM_CLS:
                 //确认停用
                 S.io.get(
-                    '/top/stop.html',
+                    'stop.html',
                     null,
                     function(o){
                         var data = S.JSON.parse(o);
