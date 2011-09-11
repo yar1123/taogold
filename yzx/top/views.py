@@ -253,7 +253,7 @@ def viewHistory(request):
         except:
             i['time']= i['_id'].generation_time.strftime('%Y-%m-%d %H:%M:%S')
         dsl.append(i)
-    pageamount = math.floor(1.0*hdnum/pagenum)
+    pageamount = int(math.ceil(1.0*hdnum/pagenum))
     page = {
             'start':start,
             'num':pagenum,
