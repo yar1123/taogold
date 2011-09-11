@@ -251,11 +251,20 @@ def viewHistory(request):
         except:
             i['time']= i['_id'].generation_time.strftime('%Y-%m-%d %H:%M:%S')
         dsl.append(i)
+    pageamount = hdnum/pagenum
     page = {
             'start':start,
             'num':pagenum,
             'amount':hdnum,
-            'page':hdnum/pagenum,
+            'page':pageamount,
+            'prev1':start-1,
+            'prev2':start-2,
+            'prev3':start-3,
+            'prev4':start-4,
+            'next1':start+1 > pageamount and -1 or start+1,
+            'next2':start+2 > pageamount and -1 or start+2,
+            'next3':start+3 > pageamount and -1 or start+3,
+            'next4':start+4 > pageamount and -1 or start+4,
             }
     d={'details':dsl, 'history': hl,
             'nick':nick, 'hisok':hisok, 'page':page, 'pagename':'history'}
