@@ -50,33 +50,63 @@
 <!-- {{{ pagination -->
 <div class="pagination pagination-normal">
     <div class="pagination-wrapper">
-        <span class="info">共{{page.amount}}条</span>
-        {% if page.start == 0 %}
+        <span class="info">共{{page.page}}页/ {{page.amount}}条</span>
+        {% if page.start == 1 %}
         <span class="start">首页</span>
-        {% else %}
-        <a class="start" href="?start=0">首页</a>
-        {% endif %}
-        {% if page.start == 0 %}
         <span class="prev">上一页</span>
         {% else %}
-        <a class="prev" href="#start={{page.start}}">上一页</a>
+        <a class="start" href="?start=0">首页</a>
+        <a class="prev" href="?start={{page.prev1}}">上一页</a>
         {% endif %}
         
-        <a class="page" href="#">1</a>
-        <a class="page" href="#">2</a>
-        <span class="page">3</span>
-        <a class="page" href="#">4</a>
-        <a class="page" href="#">5</a>
+        {% if page.next4 < 1 %}
+        {% if page.prev4 > 0 %}
+            <a class="page" href="?start={{page.prev4}}">{{page.prev4}}</a>
+        {% endif %}    
+        {% endif %}
+        
+        {% if page.next2 < 1 %}
+        {% if page.prev4 > 0 %}
+            <a class="page" href="?start={{page.prev4}}">{{page.prev4}}</a>
+        {% endif %}    
+        {% endif %}
+        
+        {% if page.prev2 > 0 %}
+            <a class="page" href="?start={{page.prev2}}">{{page.prev2}}</a>
+        {% endif %}  
+
+        {% if page.prev1 > 0 %}
+            <a class="page" href="?start={{page.prev1}}">{{page.prev1}}</a>
+        {% endif %} 
+        
+        <span class="page">{{page.start}}</span>
+        
+        {% if page.next1 > 0 %}
+            <a class="page" href="?start={{page.next1}}">{{page.next1}}</a>
+        {% endif %} 
+        
+        {% if page.next2 > 0 %}
+            <a class="page" href="?start={{page.next2}}">{{page.next2}}</a>
+        {% endif %} 
+        
+        {% if page.prev2 < 1 %}
+        {% if page.next3 > 0 %}
+            <a class="page" href="?start={{page.next3}}">{{page.next3}}</a>
+        {% endif %}    
+        {% endif %}
+        
+        {% if page.prev1 < 1 %}
+        {% if page.next4 > 0 %}
+            <a class="page" href="?start={{page.next4}}">{{page.next4}}</a>
+        {% endif %}    
+        {% endif %}
         
         {% if page.start == page.page %}
         <span class="next">下一页</span>
-        {% else %}
-        <a class="next" href="#">下一页</a>
-        {% endif %}
-        {% if page.start == page.page %}
         <span class="end">末页</span>
         {% else %}
-        <a class="end" href="#">末页</a>
+        <a class="next" href="?start={{page.next1}}">下一页</a>
+        <a class="end" href="?start={{page.page}}">末页</a>
         {% endif %}
     </div>
 </div>
@@ -88,7 +118,7 @@
 <div class="msg">
 	<div class="msg-default msg-tips">
 		<i class="msg-icon"></i>
-        <div class="msg-content">您还没有启用过我们的服务，请<a href="/top/index.html">返回首页</a>启用。</div>
+        <div class="msg-content">您还没有启用过我们的服务，请<a href="index.html">返回首页</a>启用。</div>
 	</div>
 </div>
 <!-- msg }}} -->
