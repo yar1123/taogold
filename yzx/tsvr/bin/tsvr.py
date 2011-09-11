@@ -260,7 +260,7 @@ def start_tsvr(tnum=30):
         Tsvr('update').start()
 
 def main():
-    try:
+    """try:
         pid = os.fork()
         if pid>0:
             sys.exit(0)
@@ -271,7 +271,7 @@ def main():
         if pid>0:
             sys.exit(0)
     except Exception as e:
-        sys.exit('fork #2 error: %s' %(str(e)))
+        sys.exit('fork #2 error: %s' %(str(e)))"""
     start_tsvr(30)
 
 

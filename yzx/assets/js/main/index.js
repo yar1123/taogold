@@ -86,7 +86,6 @@ KISSY.use("taogold/userlist",function(S, UserList){
                     null,
                     function(o){
                         var data = S.JSON.parse(o);
-                        console.log(data);
                         opChange(STOP_CLS, STOP_TXT, S.substitute(USE_REQUEST_TIPS, data));
                         setTimeout(function(){window.location.reload();},data.ti*60*1000);
                     }
@@ -103,7 +102,6 @@ KISSY.use("taogold/userlist",function(S, UserList){
                     null,
                     function(o){
                         var data = S.JSON.parse(o);
-                        console.log(data);
                         opChange(USE_CLS, USE_TXT, S.substitute(STOP_REQUEST_TIPS, data));
                         setTimeout(function(){window.location.reload();},data.ti*60*1000);
                     }
