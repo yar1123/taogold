@@ -8,7 +8,7 @@ b{font-weight:bold;color:#f30;}
 /**************************************************************
  * .header
  **************************************************************/
-.header{position:fixed;z-index:100;left:0;top:0;width:100%;height:32px;color:#ccc;line-height:32px;background:#000;_position:absolute;}
+.header{position:fixed;z-index:10000;left:0;top:0;width:100%;height:32px;color:#ccc;line-height:32px;background:#000;_position:absolute;}
 .header a{text-decoration:none;color:#fff;}
 .header .menu{float:left;margin-left:10px;}
 .header .menu li{float:left;}
@@ -26,14 +26,14 @@ b{font-weight:bold;color:#f30;}
 /**************************************************************
  * .content
  **************************************************************/
-.content{margin:0 10px;max-width:950px;}
+.content{margin:0 auto;max-width:950px;}
  
 /**************************************************************
  * .index
  **************************************************************/
 .index .header .menu .index{font-weight:bold;line-height:28px;border-top:2px solid #f30;}
 .index .users{margin-bottom:10px;}
-.index .show{margin-bottom:10px;}
+.index .show{margin-bottom:10px;width:750px;}
 .index .op{overflow:hidden;margin-bottom:10px;padding:10px;border:1px solid #fff;_zoom:1;}
 .index .op-use,
 .index .op-use-confirm,

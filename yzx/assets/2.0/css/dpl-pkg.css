@@ -6,34 +6,17 @@
 .box{
     margin-bottom:15px;
     background:#fff;
-    -moz-box-shadow:1px 1px 5px #666;
-    -webkit-box-shadow:1px 1px 5px #666;
-    box-shadow:1px 1px 5px #666;
-    -moz-border-radius: 4px;
-    -khtml-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
+
 }
-.box .box-hd{position:relative;overflow:hidden;height:23px;padding:4px 10px;border-bottom:1px solid #ddd;background:#f2f2f2 url(../img/bg-repeatx.png) repeat-x 0 -130px;
-    -moz-border-radius: 4px;
-    -khtml-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    border:1px solid #ccc\9;
-    border-bottom:none\9;
-}
+.box .box-hd{position:relative;overflow:hidden;height:23px;padding:4px 10px;border:1px solid #ccc;border-bottom:none;background:#f2f2f2;}
 .box .box-hd h3{float:left;font-size:15px;font-family:"微软雅黑";font-weight:bold;}
 .box .box-act{float:right;padding-top:2px;}
-.box .box-bd{
-    padding-bottom:2px;
-    border:1px solid #ccc\9;
-    border-top:1px solid #ccc\9;
-}
+.box .box-bd{border:1px solid #ccc;}
 
-.box-padding .box-bd{padding:10px;}
+.box-padding .box-bd{padding:10px 10px 0 10px;}
 
-.box  .box-ft{margin-top:-1px;padding:8px 0;text-align:center;border-top:1px dashed #ccc;border:1px solid #ccc\9;border-top:1px dashed #fff\9;}
-.box  .box-ft button{min-width:60px;height:28px;margin-right:15px;padding:1px 6px;*padding:0;font-weight:bold;font-size:14px;border:1px solid #80b2ff;background:url(../img/bg-repeatx.png) repeat-x 0 -10px;cursor:pointer;}
+.box  .box-ft{margin-top:-1px;padding:8px 0;text-align:center;border:1px solid #ccc;border-top:none;}
+.box  .box-ft button{min-width:60px;height:28px;margin-right:15px;padding:1px 6px;*padding:0;font-weight:bold;font-size:14px;border:1px solid #ccc;background:#e5e5e5;cursor:pointer;}
 .box  .box-ft button{
     -moz-border-radius: 4px;
     -khtml-border-radius: 4px;
@@ -52,7 +35,7 @@
     box-shadow: 0px 0px 2px #aaa;
 }
 
-.box  .box-ft button.cancel-btn{border-color:#ccc;background-position:0 -130px;}
+.box  .box-ft button.cancel-btn{color:#888;}
 
 
 /**

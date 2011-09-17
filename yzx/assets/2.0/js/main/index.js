@@ -7,7 +7,7 @@ KISSY.config({
     ]
 });
 
-KISSY.use("taogold/userlist",function(S, UserList){
+KISSY.use("taogold/userlist,taogold/preview",function(S, UserList, Preview){
 
     var D = S.DOM,
         E = S.Event,
@@ -19,14 +19,14 @@ KISSY.use("taogold/userlist",function(S, UserList){
         STOP_CONFIRM_CLS = 'op-stop-confirm',
         USE_TXT = '立即启用',
         USE_CONFIRM_TXT = '确认启用',
-        STOP_TXT = '我想停用',
-        STOP_CONFIRM_TXT = '确认停用',
+        STOP_TXT = '我想禁用',
+        STOP_CONFIRM_TXT = '确认禁用',
         USING_TIPS = '上次启用操作仍在处理中，请耐心等待…',
-        STOPPING_TIPS = '上次停用操作仍在处理中，请耐心等待…',
+        STOPPING_TIPS = '上次禁用操作仍在处理中，请耐心等待…',
         USE_CONFIRM_TIPS = '启用模板，将向您的所有宝贝描述里加入经过智能计算高度匹配的推荐内容。<br/>确定要启用吗？',
-        STOP_CONFIRM_TIPS = '停用模板，将从您的所有宝贝描述里删除插入的推荐内容。<br/>确定要停用吗？',
-        USE_REQUEST_TIPS = '模板启用中，本次操作预计 {ti} 分钟后生效。<br/>届时我们会为您自动刷新页面，您也可以手动刷新页面。',
-        STOP_REQUEST_TIPS = '模板停用，本次操作预计 {ti} 分钟后生效。<br/>届时我们会为您自动刷新页面，您也可以手动刷新页面。';
+        STOP_CONFIRM_TIPS = '禁用模板，将从您的所有宝贝描述里删除插入的推荐内容。<br/>确定要禁用吗？',
+        USE_REQUEST_TIPS = '模板启用中，本次操作预计 {ti} 分钟后生效。<br/>您可以<a class="J_Preview" href="#">点此预览</a>启用效果。',
+        STOP_REQUEST_TIPS = '模板禁用中，本次操作预计 {ti} 分钟后生效。';
 
     var op = D.get('#J_Op'), 
         opBtn = D.get('#J_OpBtn'), 
@@ -54,15 +54,21 @@ KISSY.use("taogold/userlist",function(S, UserList){
         case 's':
             btnCls = USE_CLS;
             btnTxt = USE_TXT;
+            break;
         case 'S':
         case 'T':
+            btnCls = USE_CLS;
+            btnTxt = USE_TXT;
             tipsTxt = STOPPING_TIPS;
             break;
         case 'u':
             btnCls = STOP_CLS;
             btnTxt = STOP_TXT;
+            break;
         case 'U':
         case 'V':
+            btnCls = STOP_CLS;
+            btnTxt = STOP_TXT;
             tipsTxt = USING_TIPS;
             break;
         default:
@@ -70,7 +76,7 @@ KISSY.use("taogold/userlist",function(S, UserList){
     }    
     opChange(btnCls,btnTxt,tipsTxt);
     
-    //启用/停用操作
+    //启用/禁用操作
     E.on(opBtn,'click',function(e){
         e.preventDefault(); 
         switch(opBtn.className){
@@ -92,11 +98,11 @@ KISSY.use("taogold/userlist",function(S, UserList){
                 );
                 break;
             case STOP_CLS:
-                //我想停用
+                //我想禁用
                 opChange(STOP_CONFIRM_CLS, STOP_CONFIRM_TXT, STOP_CONFIRM_TIPS);
                 break;
             case STOP_CONFIRM_CLS:
-                //确认停用
+                //确认禁用
                 S.io.get(
                     'stop.html',
                     null,
@@ -114,5 +120,13 @@ KISSY.use("taogold/userlist",function(S, UserList){
     
     //最近订购用户
     new UserList('#J_Users');
+    
+    E.on(doc.body,'click',function(e){
+        var t = e.target;
+        if(D.hasClass(t,'J_Preview')){
+            e.preventDefault();
+            new Preview();
+        }
+    });
     
 });
