@@ -429,5 +429,27 @@ def useShow(request):
 
 
 
+def topold(request):
+    try:
+        param = checkSessionAndGetNick(request)
+    except Exception as e:
+        dlog.warning('session key error: %s' %(str(e)))
+        r = ErrorRedirect.sessionKey()
+        setWGID(request, r)
+        return r
+    nick = param['nick']
+    db = mongo.top
+    try:
+        u = db.nick.find_one({'nick':nick, 'status':'u'})
+    except Exception as e:
+        dlog.warning('find [%s] in db fail, error: %s' %(nick, str(e)))
+        return ErrorRedirect.defaultError()
+    if u:
+        ok = 1
+    else:
+        ok = 0
+    y = json.dumps({'olduser':ok})
+    return HttpResponse(y, mimetype="text/plain")
+
 
 
