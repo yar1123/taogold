@@ -51,7 +51,7 @@ KISSY.add("taogold/dialog",function(S,Overlay,Mask){
                 if(type == 'confirm') footstr += '<button class="cancel-btn" type="button">取 消</button>';
                 footstr += '</div>';
             }
-            str = '<div class="overlay box box-padding" style="display:none;position:absolute;width:'+ cfg.width +'px;z-index:10000;">'+
+            str = '<div class="overlay box box-padding" style="display:none;position:absolute;width:'+ cfg.width +'px;z-index:9999;">'+
                         '<div class="box-hd">'+
                             '<h3 class="box-title">' + cfg.title + '</h3>'+
                             (cfg.closeBtn ? '<div class="box-act"><a class="box-close" href="#">\u5173\u95ed</a></div>': '')+
@@ -94,7 +94,7 @@ KISSY.add("taogold/dialog",function(S,Overlay,Mask){
         },
         _setPosition:function(){
             var self = this;
-            var l = (D.viewportWidth() - self._el.offsetWidth)/2,
+            var l = (D.viewportWidth() - self._config.width)/2,
                 t = D.scrollTop() + (D.viewportHeight() - self._el.offsetHeight)/2;
             self._el.style.left =(l>0 ? l : 0) +'px';
             self._el.style.top = (t>0 ? t : 0)+'px';

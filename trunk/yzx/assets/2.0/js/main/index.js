@@ -7,7 +7,7 @@ KISSY.config({
     ]
 });
 
-KISSY.use("taogold/userlist,taogold/preview",function(S, UserList, Preview){
+KISSY.use("taogold/userlist,taogold/preview,taogold/dialog",function(S, UserList, Preview, Dialog){
 
     var D = S.DOM,
         E = S.Event,
@@ -121,6 +121,7 @@ KISSY.use("taogold/userlist,taogold/preview",function(S, UserList, Preview){
     //最近订购用户
     new UserList('#J_Users');
     
+    //预览
     E.on(doc.body,'click',function(e){
         var t = e.target;
         if(D.hasClass(t,'J_Preview')){
@@ -128,5 +129,20 @@ KISSY.use("taogold/userlist,taogold/preview",function(S, UserList, Preview){
             new Preview();
         }
     });
+    
+    //新老版用户状态检查
+    S.io.get(
+        'old.html',
+        null,
+        function(o){
+            var data = S.JSON.parse(o), olduser = data.olduser;
+            console.log(olduser);
+            if(olduser){
+                var dialog = new Dialog({title:'升级提示',type:'alert',closeBtn:0,width:770});
+                dialog.appendContent('您还在使用老版淘金宝的相关宝贝推荐，请点此返回老版，禁用老模板后，再来启用新版。<br/>老版将于近期停止服务，新版淘金宝，推荐更精准，更快速，推荐您尽快切换。<br/><br/>点此<a href="/oldtop/index.html">返回老版</a>。<br/><br/>');
+                dialog.show();
+            }
+        }
+    );
     
 });
