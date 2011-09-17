@@ -51,7 +51,7 @@
                                 <a href="/newtop/rechome.html">刷新页面</a>
                             {% else %}
                                 {% if i.status == 's' %}
-                                <a class="S_UseTrigger" tempid="{{i.id}}" tempmode="{{i.mode}}" href="/newtop/use.html?tempid={{i.id}}">启用</a> 
+                                <span>启用</span>
                                 {%endif%}
 
                                 {% if i.status == 'u' %}
@@ -62,7 +62,7 @@
                                 <a class="S_PriviewTrigger" data-temp-id="{{i.id}}" href="/newtop/preview.html?tempid={{i.id}}">预览</a> 
                                 | 
                                 {% if i.editable %}
-                                <a href="/newtop/edit.html?tempid={{i.id}}">修改</a>  
+                                <span>修改</span>
                                 {% else %}
                                 <span title="预置模板不允许修改，需要自定义宝贝请点“创建模板”。">修改</span>  
                                 {% endif %}
