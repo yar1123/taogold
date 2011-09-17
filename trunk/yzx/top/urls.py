@@ -24,6 +24,5 @@ urlpatterns = patterns('',
     url(r'^top/error.html', toperror),
     url(r'^top/help.html', topshare),
     url(r'^top/history.html$', viewHistory),
-    url(r'^top/hisdetail.html$', historyDetail),
     url(r'^top/ushow.html$', useShow),
 )
