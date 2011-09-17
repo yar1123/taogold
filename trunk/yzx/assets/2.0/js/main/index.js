@@ -23,7 +23,7 @@ KISSY.use("taogold/userlist,taogold/preview",function(S, UserList, Preview){
         STOP_CONFIRM_TXT = '确认禁用',
         USING_TIPS = '上次启用操作仍在处理中，请耐心等待…',
         STOPPING_TIPS = '上次禁用操作仍在处理中，请耐心等待…',
-        USE_CONFIRM_TIPS = '启用模板，将向您的所有宝贝描述里加入经过智能计算高度匹配的推荐内容。<br/>确定要启用吗？',
+        USE_CONFIRM_TIPS = '启用模板，将向您的所有宝贝描述里加入经过智能计算高度匹配的推荐内容。<br/>您可以<a class="J_Preview" href="#">点此预览</a>启用效果。确定要启用吗？',
         STOP_CONFIRM_TIPS = '禁用模板，将从您的所有宝贝描述里删除插入的推荐内容。<br/>确定要禁用吗？',
         USE_REQUEST_TIPS = '模板启用中，本次操作预计 {ti} 分钟后生效。<br/>您可以<a class="J_Preview" href="#">点此预览</a>启用效果。',
         STOP_REQUEST_TIPS = '模板禁用中，本次操作预计 {ti} 分钟后生效。';
