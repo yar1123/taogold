@@ -47,8 +47,8 @@ KISSY.add("taogold/dialog",function(S,Overlay,Mask){
             
             //为alert或confirm类型的对话框增加按钮
             if(type == 'alert' || type == 'confirm'){
-                footstr = '<div class="box-ft"><button class="confirm-btn" type="button">\u786e\u5b9a</button>';
-                if(type == 'confirm') footstr += '<button class="cancel-btn" type="button">\u53d6\u6d88</button>';
+                footstr = '<div class="box-ft"><button class="confirm-btn" type="button">确 定</button>';
+                if(type == 'confirm') footstr += '<button class="cancel-btn" type="button">取 消</button>';
                 footstr += '</div>';
             }
             str = '<div class="overlay box box-padding" style="display:none;position:absolute;width:'+ cfg.width +'px;z-index:10000;">'+
