@@ -175,17 +175,16 @@ def generatePage(nick, num_iids=[]):
 
 def previewTemplate(request):
     url_host = request.get_host()
+    nick=''
     if '127.0.0.1' in url_host or 'localhost' in url_host:
         nick = request.GET.get('nick', '')
-    else:
+    if not nick:
         try:
             param  = checkSessionAndGetNick(request)
         except Exception as e:
             dlog.warning('check session fail: %s' %str(e))
             return ErrorRedirect.sessionKey()
         nick = param['nick']
-    if not nick:
-        return ErrorRedirect.sessionKey()
     try:
         g = request.GET 
         num_iids = g.get('iids', '').split('.')
