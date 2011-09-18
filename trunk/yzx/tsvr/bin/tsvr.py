@@ -53,7 +53,7 @@ class Tsvr(threading.Thread ):
                 continue
             if temp['html_flag'] not in desc:
 #没有启用，算成功
-                self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'成功1'})
+                self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'成功'})
                 suc += 1
                 continue
             try:
@@ -65,7 +65,7 @@ class Tsvr(threading.Thread ):
                 self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'更新推荐数据失败'})
                 fail += 1
                 continue
-            self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'成功2'})
+            self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'成功'})
             suc += 1
         self.db.history.update({'_id':hisid}, {'$set':{'suc':suc, 'fail':fail}})
 
