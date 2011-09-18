@@ -390,7 +390,7 @@ def useShow(request):
     ushop = Shop()
     user_filter = [] #['淘金电商', '淘宝开放平台', '装修市场测试', '商家测试帐号17']
     try:
-        x = db.history.find({'m':1, 'nick':{'$nin':user_filter}}, fields=['nick', 'suc']).sort( [('_id', -1), ]).limit(10)
+        x = db.history.find({'m':1, 'nick':{'$nin':user_filter}, 'suc':{'$gt':0}}, fields=['nick', 'suc']).sort( [('_id', -1), ]).limit(10)
         r = []
         for i in x:
             u = db.user.find_one({'nick':i['nick']}, fields=['seller_credit.level'])
