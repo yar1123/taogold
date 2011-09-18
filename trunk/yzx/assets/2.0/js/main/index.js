@@ -27,8 +27,8 @@ KISSY.use("taogold/userlist,taogold/preview,taogold/dialog",function(S, UserList
         STOPPED_TIPS = '<b>服务未启用</b>，进入<a href="history.html">操作记录</a>可以查看最近一次的操作记录。',
         USE_CONFIRM_TIPS = '启用服务后，系统会对您的每个宝贝进行一次全面分析，然后在其宝贝详情里自动插入相关宝贝推荐。<br/>您可以<a class="J_Preview" href="#">点此预览</a>启用效果。确定要启用吗？',
         STOP_CONFIRM_TIPS = '禁用服务后，将从您的所有宝贝描述里删除相关宝贝推荐。<br/>确定要禁用吗？',
-        USE_REQUEST_TIPS = '<b>服务启用中</b>，预计 {ti} 分钟后完成，届时请按<a href="#">点此刷新</a>查看。<br/>您还可以<a class="J_Preview" href="#">点此预览</a>启用效果。',
-        STOP_REQUEST_TIPS = '<b>服务禁用中</b>，预计 {ti} 分钟后完成，届时请按<a href="#">点此刷新</a>查看。';
+        USE_REQUEST_TIPS = '<b>服务正在启用</b>，预计 {ti} 分钟后完成，届时请按<a href="index.html">点此刷新</a>查看。<br/>您还可以<a class="J_Preview" href="#">点此预览</a>启用效果。',
+        STOP_REQUEST_TIPS = '<b>服务正在禁用</b>，预计 {ti} 分钟后完成，届时请按<a href="index.html">点此刷新</a>查看。';
 
     var op = D.get('#J_Op'), 
         opBtn = D.get('#J_OpBtn'), 
