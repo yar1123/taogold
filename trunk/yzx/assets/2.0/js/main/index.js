@@ -143,7 +143,7 @@ KISSY.use("taogold/userlist,taogold/preview,taogold/dialog",function(S, UserList
             console.log(olduser);
             if(olduser){
                 var dialog = new Dialog({title:'升级提示',type:'alert',closeBtn:0,width:770});
-                dialog.appendContent('您还在使用老版淘金宝的相关宝贝推荐，请返回老版禁用老模板后，再来启用新版。<br/>老版将于近期停止服务，新版淘金宝，推荐更精准，更快速，推荐您尽快切换。<br/><br/>点此<a href="/oldtop/rechome.html">返回老版禁用老模板</a>。<br/><br/>');
+                dialog.appendContent('您还在使用老版淘金宝的相关宝贝推荐，请返回老版禁用老模板后，再来启用新版。<br/>老版将于近期停止服务，新版淘金宝，推荐更精准，更快速，推荐您尽快切换。<br/><br/>点此<a href="/newtop/rechome.html">返回老版禁用老模板</a>。<br/><br/>');
                 dialog.show();
             }
         }
