@@ -282,7 +282,7 @@ def useTemplate(request):
     if not x:
         dlog.warning('user[%s] is not found or is not unused' %(nick))
         return ErrorRedirect.defaultError()
-    d={'op':'use', 'ti':60}
+    d={'op':'use', 'ti':10}
     return HttpResponse(json.dumps(d), mimetype="text/plain")
 
 def stopTemplate(request):
@@ -297,7 +297,7 @@ def stopTemplate(request):
     if not x:
         dlog.warning('user[%s] is not found or is not used' %(nick))
         return ErrorRedirect.defaultError()
-    d={'op':'stop', 'ti':60}
+    d={'op':'stop', 'ti':10}
     return HttpResponse(json.dumps(d), mimetype="text/plain")
 
 def topindex(request):
