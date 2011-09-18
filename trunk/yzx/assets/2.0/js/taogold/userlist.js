@@ -7,7 +7,7 @@ KISSY.add("taogold/userlist",function(S, Switchable){
         's_cap_1.gif','s_cap_2.gif','s_cap_3.gif','s_cap_4.gif','s_cap_5.gif',
         's_crown_1.gif','s_crown_2.gif','s_crown_3.gif','s_crown_4.gif','s_crown_5.gif'    
     ],
-        templ = '<div class="item"><a href="http://shop{sid}.taobao.com" target="_blank">{nick} <img src="{level}" /> </a> {time} 为 <b>{itemsnum}</b> 个宝贝启用了我们的服务。 </div>';
+        templ = '<div class="item"><a href="http://shop{sid}.taobao.com" target="_blank">{nick} {level} </a> {time} 为 <b>{itemsnum}</b> 个宝贝启用了我们的服务。 </div>';
     
     function UserList(container){
         var self = this;
@@ -33,8 +33,10 @@ KISSY.add("taogold/userlist",function(S, Switchable){
             for(var i = 0,len = Math.floor(data.length/3);i<len;i++){
                 str += '<li>';
                 for(var j = 0; j < 3 ;j++){
-                    var idx = i*3+j;
-                    data[idx].level = levelPicPath + levelPicNames[data[idx].level];
+                    var idx = i*3+j, level = data[idx].level, levelImg = '';
+                    if(level) levelImg = '<img src="'+levelPicPath+levelPicNames[level]+'" />';
+                    console.log(levelPicNames[data[idx].level]);
+                    data[idx].level = levelImg;
                     str += S.substitute(templ,data[idx]);
                 }
                 str += '</li>';
