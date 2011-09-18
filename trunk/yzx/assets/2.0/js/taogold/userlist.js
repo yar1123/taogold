@@ -34,8 +34,7 @@ KISSY.add("taogold/userlist",function(S, Switchable){
                 str += '<li>';
                 for(var j = 0; j < 3 ;j++){
                     var idx = i*3+j, level = data[idx].level, levelImg = '';
-                    if(level) levelImg = '<img src="'+levelPicPath+levelPicNames[level]+'" />';
-                    console.log(levelPicNames[data[idx].level]);
+                    if(level) levelImg = '<img src="'+levelPicPath+levelPicNames[level-1]+'" />';
                     data[idx].level = levelImg;
                     str += S.substitute(templ,data[idx]);
                 }
