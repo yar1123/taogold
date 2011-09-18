@@ -159,7 +159,7 @@ class Tsvr(threading.Thread ):
             nick = urllib2.quote(nick)
         except:
             nick = urllib2.quote(nick.encode('utf-8'))
-        url = 'http://127.0.0.1:8100/top/preview.html?nick=%s&iids=%s' %(nick, str_iids)
+        url = 'http://127.0.0.1/top/preview.html?nick=%s&iids=%s' %(nick, str_iids)
         f = urllib2.urlopen(url)
         page = f.read()
         f.close()
@@ -175,7 +175,10 @@ class Tsvr(threading.Thread ):
                     update={'$set':{'tg_temp.status':'V'}})
             if not x:
                 return False
-            self._doUpdateUse(x['_id'])
+            try:
+                self._doUpdateUse(x['_id'])
+            except Exception as e:
+                tlog.warning('_doUpdateUse error: %s' %(str(e)))
             x = self.db.user.find_and_modify({'_id':x['_id']},
                     update={'$set':{'tg_temp.status':'u'}})
         else:
@@ -183,7 +186,10 @@ class Tsvr(threading.Thread ):
                     update={'$set':{'tg_temp.status':'T'}})
             if not x:
                 return False
-            self._doUpdateStop(x['_id'])
+            try:
+                self._doUpdateStop(x['_id'])
+            except Exception as e:
+                tlog.warning('_doUpdateUse error: %s' %(str(e)))
             x = self.db.user.find_and_modify({'_id':x['_id']},
                     update={'$set':{'tg_temp.status':'s'}})
         return True
