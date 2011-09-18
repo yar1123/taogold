@@ -34,7 +34,7 @@ start()
 {
   echo "Starting tsvr........." 
   #[ -f $rootdir/status/mongod.lock ] && echo "mongod is running!" && return
-  daemon --pidfile $rootdir/status/tsvr.pid python ./bin/tsvr.py 
+  daemon --pidfile $rootdir/status/tsvr.pid python26 $rootdir/bin/tsvr.py 
   RETVAL=$?
   echo
   [ $RETVAL -eq 0 ] && touch $rootdir/status/tsvr.lock
