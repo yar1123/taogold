@@ -23,12 +23,12 @@ KISSY.use("taogold/userlist,taogold/preview,taogold/dialog",function(S, UserList
         STOP_CONFIRM_TXT = '确认禁用',
         USING_TIPS = '上次启用操作仍在处理中，请耐心等待…',
         STOPPING_TIPS = '上次禁用操作仍在处理中，请耐心等待…',
-        USED_TIPS = '<b>服务已启用</b>，<a href="history.html">点击操作记录</a>可以查看哪些宝贝已成功启用了相关宝贝推荐。',
-        STOPPED_TIPS = '<b>服务未启用</b>，<a href="history.html">点击操作记录</a>可以查看最近一次的操作记录。',
+        USED_TIPS = '<b>服务已启用</b>，进入<a href="history.html">操作记录</a>可以查看哪些宝贝已成功启用了我们的服务。',
+        STOPPED_TIPS = '<b>服务未启用</b>，进入<a href="history.html">操作记录</a>可以查看最近一次的操作记录。',
         USE_CONFIRM_TIPS = '启用服务后，系统会对您的每个宝贝进行一次全面分析，然后在其宝贝详情里自动插入相关宝贝推荐。<br/>您可以<a class="J_Preview" href="#">点此预览</a>启用效果。确定要启用吗？',
         STOP_CONFIRM_TIPS = '禁用服务后，将从您的所有宝贝描述里删除相关宝贝推荐。<br/>确定要禁用吗？',
-        USE_REQUEST_TIPS = '<b>服务启用中</b>，本次操作预计 {ti} 分钟后生效，届时请按F5刷新查看。<br/>您可以<a class="J_Preview" href="#">点此预览</a>启用效果。',
-        STOP_REQUEST_TIPS = '<b>服务禁用中</b>，本次操作预计 {ti} 分钟后生效，届时请按F5刷新查看。';
+        USE_REQUEST_TIPS = '<b>服务启用中</b>，预计 {ti} 分钟后完成，届时请按<a href="#">点此刷新</a>查看。<br/>您还可以<a class="J_Preview" href="#">点此预览</a>启用效果。',
+        STOP_REQUEST_TIPS = '<b>服务禁用中</b>，预计 {ti} 分钟后完成，届时请按<a href="#">点此刷新</a>查看。';
 
     var op = D.get('#J_Op'), 
         opBtn = D.get('#J_OpBtn'), 
