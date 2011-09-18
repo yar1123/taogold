@@ -440,7 +440,7 @@ def topold(request):
     nick = param['nick']
     db = mongo.top
     try:
-        u = db.nick.find_one({'nick':nick, 'status':'u'})
+        u = db.template.find_one({'nick':nick, 'status':'u'})
     except Exception as e:
         dlog.warning('find [%s] in db fail, error: %s' %(nick, str(e)))
         return ErrorRedirect.defaultError()
