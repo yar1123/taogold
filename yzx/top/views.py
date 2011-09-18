@@ -231,9 +231,8 @@ def viewHistory(request):
     hl = hl.sort('_id', pymongo.DESCENDING).limit(1)
     if hl.count() <= 0:
         dlog.debug('no history of user: %s' %(nick))
-        hisok = 0
-        return 'no history'
-    hisok = 1
+        d = {'hisok':0}
+        return render_to_response('history.html', d)
     hl = hl[0]
     try:
         itmptime = hl['_id'].generation_time.strftime('%s')
@@ -268,7 +267,7 @@ def viewHistory(request):
             'next4':start+4 > pageamount and -1 or start+4,
             }
     d={'details':dsl, 'history': hl,
-            'nick':nick, 'hisok':hisok, 'page':page, 'pagename':'history'}
+            'nick':nick, 'hisok':1, 'page':page, 'pagename':'history'}
     return render_to_response('history.html', d)
 
 def useTemplate(request):
