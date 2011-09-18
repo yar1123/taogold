@@ -16,7 +16,7 @@ import logging.config
 class Tsvr(threading.Thread ):
     def __init__(self, type):
         self.type=type
-        self.mc = pymongo.Connection('127.0.0.1', 27017)
+        self.mc = pymongo.Connection('127.0.0.1', 57324)
         self.db = self.mc.taogold
         threading.Thread.__init__ ( self )
 
