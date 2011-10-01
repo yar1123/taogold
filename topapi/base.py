@@ -47,7 +47,10 @@ class TBase(object):
         if rsp.has_key('error_response'):
             error_code = rsp['error_response']['code']
             msg = rsp['error_response']['msg']
-            sub_code = rsp['error_response']['sub_code']
+            try:
+                sub_code = rsp['error_response']['sub_code']
+            except:
+                sub_code = 'error in getting sub code'
             raise Exception((error_code, msg, sub_code))
         else:
             rsp = rsp[self.method.replace('.','_') + '_response']
