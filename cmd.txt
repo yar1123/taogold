@@ -26,6 +26,6 @@ D:\project\taogold\yzx\tsvr>python bin/tsvr.py
 http://127.0.0.1:8000/top/index.html
 登录后以127.0.0.1:8000替换app.23201.com
 
-多产品账户：huiqing_shen/shq820826
+
 
 
