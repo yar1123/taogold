@@ -61,7 +61,7 @@ class Tsvr(threading.Thread ):
                 tbinfo = tbitem.update(u['top_session'], num_iid, desc=desc)
                 tlog.debug('update [%s:%d] result: %s' %(nick, num_iid, repr(tbinfo)))
             except Exception as e:
-                tlog.warning('update[use] item[%s:%d] to taobao fail: %s' %(nick, num_iid))
+                tlog.warning('update[use] item[%s:%d] to taobao fail: %s' %(nick, num_iid, repr(e)))
                 self.db.hisdetail.save({'hisid':hisid, 'num_iid':num_iid, 'title':title, 'r':'更新推荐数据失败'})
                 fail += 1
                 continue
