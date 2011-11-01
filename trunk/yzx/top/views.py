@@ -10,6 +10,7 @@ import uuid
 import base64
 import hashlib 
 import operator
+import socket 
 
 import pymongo
 import bson 
@@ -331,7 +332,19 @@ def topindex(request):
         u['inP'] = False
         u.update({'tg_temp':defaultTemplate()})
         u['top_session'] = param['top_session']
-        u['tg_new'] = True
+        try: 
+            sock = socket.socket()
+            sock.connect(('127.0.0.1', 8300))
+            new_user_data = {'top_session':param['top_session'], 'nick':nick}
+            new_user_data = json.dumps(new_user_data)
+            sock.send(new_user_data+'\n\n')
+            res = sock.recv(128)
+            if 'success' not in res:
+                raise Exception('recv from new user[%s] server: %s' %(nick, res))
+            u['tg_new'] = False
+        except Exception as e:
+            dlog.warning('send new to new user gevent socket fail: %s' %(repr(e))) 
+            u['tg_new'] = True
         try:
             db.user.save(u, safe=True, check_keys=True)
         except Exception as e:
