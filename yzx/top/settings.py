@@ -179,5 +179,8 @@ LOGGING = {
 
 #for mongodb 
 import pymongo
-mongo = pymongo.Connection()
+mongo = pymongo.Connection('127.0.0.1:57324')
+mongo_old = pymongo.Connection()
+
+
 
