@@ -334,7 +334,7 @@ def topindex(request):
         u['top_session'] = param['top_session']
         try: 
             sock = socket.socket()
-            sock.settimtout(0.5)
+            sock.settimeout(0.5)
             sock.connect(('127.0.0.1', 8300))
             new_user_data = {'top_session':param['top_session'], 'nick':nick}
             new_user_data = json.dumps(new_user_data)
