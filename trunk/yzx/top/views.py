@@ -28,6 +28,7 @@ from topapi import *
 from misc import *
 
 from settings import mongo
+from settings import mongo_old
 
 dlog = logging.getLogger('django')
 
@@ -388,7 +389,7 @@ def toperror(request):
 def useShow(request):
     db = mongo.taogold
     ushop = Shop()
-    user_filter = [] #['淘金电商', '淘宝开放平台', '装修市场测试', '商家测试帐号17']
+    user_filter = ['淘金电商', '淘宝开放平台', '装修市场测试', '商家测试帐号17']
     try:
         x = db.history.find({'m':1, 'nick':{'$nin':user_filter}, 'suc':{'$gt':0}}, fields=['nick', 'suc']).sort( [('_id', -1), ]).limit(30)
         r = []
@@ -438,7 +439,7 @@ def topold(request):
         setWGID(request, r)
         return r
     nick = param['nick']
-    db = mongo.top
+    db = mongo_old.top
     try:
         u = db.template.find_one({'nick':nick, 'status':'u'})
     except Exception as e:
