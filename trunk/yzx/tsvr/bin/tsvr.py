@@ -26,6 +26,7 @@ class Tsvr(threading.Thread ):
         if not u:
             raise Exception('%s not in db' %(nick))
         allitems = Items().onsale(u['top_session'], fields='num_iid,title')
+        tlog.debug('process update for nick=%s num=%d' %(nick, len(allitems)))
         tbitem = Item()
         temp = u['tg_temp']
         flag = '<a name="recommend_wgid_%s"></a>.*<a name="recommend_wgid_%s"></a>' %(temp['html_flag'], temp['html_flag'])
@@ -36,7 +37,7 @@ class Tsvr(threading.Thread ):
         for item in allitems:
             num_iid = item['num_iid']
             title = item['title']
-            tlog.debug('process update: nick=%s num_iid=%s' %(nick, num_iid))
+            tlog.debug('process update: nick=%s num_iid=%d' %(nick, num_iid))
             try:
                 item_allinfo = tbitem.get(u['top_session'], num_iid, fields='desc')
             except Exception as e:
